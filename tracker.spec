@@ -32,11 +32,11 @@ linking and audit trails for a file object.
 It has the ability to index, store, harvest metadata. retrieve and search  
 all types of files and other first class objects
 
-%package        devel
-Summary:	Headers for developing programs that will use %{name}
-Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
-Requires:	pkgconfig
+%package devel
+Summary: Headers for developing programs that will use %{name}
+Group: Development/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: pkgconfig
 
 %description devel
 This package contains the static libraries and header files needed for
