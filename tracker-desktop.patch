@@ -1,0 +1,108 @@
+--- Makefile.in	2006-11-20 13:34:48.000000000 -0500
++++ Makefile.in.new	2006-11-20 21:21:11.000000000 -0500
+@@ -66,8 +66,9 @@
+     *) f=$$p;; \
+   esac;
+ am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
+-am__installdirs = "$(DESTDIR)$(pkgconfigdir)"
++am__installdirs = "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(xdgconfigdir)"
+ pkgconfigDATA_INSTALL = $(INSTALL_DATA)
++xdgconfigDATA_INSTALL = $(INSTALL_DATA)
+ DATA = $(pkgconfig_DATA)
+ ETAGS = etags
+ CTAGS = ctags
+@@ -299,7 +300,9 @@
+ target_alias = @target_alias@
+ SUBDIRS = data src filters thumbnailers docs po
+ pkgconfigdir = $(libdir)/pkgconfig
++xdgconfigdir = $(sysconfdir)/xdg/autostart
+ pkgconfig_DATA = tracker.pc
++xdgconfig_DATA= trackerd.desktop
+ debian_files = \
+ 	debian/changelog \
+ 	debian/compat \
+@@ -331,12 +334,11 @@
+ 
+ EXTRA_DIST = \
+ 	$(pkgconfig_DATA) \
++	$(xdgconfig_DATA) \
+ 	AUTHORS NEWS INSTALL COPYING README \
+ 	ChangeLog \
+ 	configure.in \
+ 	rdf-query-examples/*.rdf \
+-	trackerd.desktop \
+-	trackerd-kde.desktop \
+ 	intltool-extract.in \
+ 	intltool-merge.in \
+ 	intltool-update.in \
+@@ -422,6 +424,15 @@
+ 	  echo " $(pkgconfigDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgconfigdir)/$$f'"; \
+ 	  $(pkgconfigDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgconfigdir)/$$f"; \
+ 	done
++install-xdgconfigDATA: $(xdgconfig_DATA)
++	@$(NORMAL_INSTALL)
++	test -z "$(xdgconfigdir)" || $(mkdir_p) "$(DESTDIR)$(xdgconfigdir)"
++	@list='$(xdgconfig_DATA)'; for p in $$list; do \
++	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
++	  f=$(am__strip_dir) \
++	  echo " $(xdgconfigDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(xdgconfigdir)/$$f'"; \
++	  $(xdgconfigDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(xdgconfigdir)/$$f"; \
++	done
+ 
+ uninstall-pkgconfigDATA:
+ 	@$(NORMAL_UNINSTALL)
+@@ -430,6 +441,13 @@
+ 	  echo " rm -f '$(DESTDIR)$(pkgconfigdir)/$$f'"; \
+ 	  rm -f "$(DESTDIR)$(pkgconfigdir)/$$f"; \
+ 	done
++uninstall-xdgconfigDATA:
++	@$(NORMAL_UNINSTALL)
++	@list='$(xdgconfig_DATA)'; for p in $$list; do \
++	  f=$(am__strip_dir) \
++	  echo " rm -f '$(DESTDIR)$(xdgconfigdir)/$$f'"; \
++	  rm -f "$(DESTDIR)$(xdgconfigdir)/$$f"; \
++	done
+ 
+ # This directory's subdirectories are mostly independent; you can cd
+ # into them and run `make' without going through this Makefile.
+@@ -710,7 +728,7 @@
+ all-am: Makefile $(DATA) config.h
+ installdirs: installdirs-recursive
+ installdirs-am:
+-	for dir in "$(DESTDIR)$(pkgconfigdir)"; do \
++	for dir in "$(DESTDIR)$(pkgconfigdir) $(DESTDIR)$(xdgconfigdir)"; do \
+ 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
+ 	done
+ install: install-recursive
+@@ -758,7 +776,7 @@
+ 
+ info-am:
+ 
+-install-data-am: install-pkgconfigDATA
++install-data-am: install-pkgconfigDATA install-xdgconfigDATA
+ 
+ install-exec-am:
+ 
+--- trackerd.desktop	2006-11-15 19:08:17.000000000 -0500
++++ trackerd.desktop.new	2006-11-20 20:37:59.000000000 -0500
+@@ -8,5 +8,8 @@
+ Terminal=false
+ Type=Application
+ Categories=
+-OnlyShowIn=GNOME;
+ X-GNOME-Autostart-enabled=true
++X-KDE-autostart-after=panel
++X-KDE-StartupNotify=false
++X-KDE-UniqueApplet=true
++NoDisplay=true
+--- src/tracker-search-tool/tracker-search-tool.desktop.in	2006-11-20 08:11:41.000000000 -0500
++++ src/tracker-search-tool/tracker-search-tool.desktop.in.new	2006-11-20 20:24:40.000000000 -0500
+@@ -6,6 +6,6 @@
+ Icon=gnome-searchtool
+ Terminal=false
+ Type=Application
+-Categories=GTK;Application;Utility;
++Categories=GTK;Utility;
+ StartupNotify=true
+-NoDisplay=true 
++NoDisplay=true
