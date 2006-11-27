@@ -1,27 +1,16 @@
---- Makefile.in	2006-11-20 13:34:48.000000000 -0500
-+++ Makefile.in.new	2006-11-20 21:21:11.000000000 -0500
-@@ -66,8 +66,9 @@
-     *) f=$$p;; \
-   esac;
- am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
--am__installdirs = "$(DESTDIR)$(pkgconfigdir)"
-+am__installdirs = "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(xdgconfigdir)"
- pkgconfigDATA_INSTALL = $(INSTALL_DATA)
-+xdgconfigDATA_INSTALL = $(INSTALL_DATA)
- DATA = $(pkgconfig_DATA)
- ETAGS = etags
- CTAGS = ctags
-@@ -299,7 +300,9 @@
- target_alias = @target_alias@
+--- Makefile.am	2006-11-20 23:57:45.000000000 -0500
++++ Makefile.am.new	2006-11-20 23:58:00.000000000 -0500
+@@ -1,7 +1,9 @@
  SUBDIRS = data src filters thumbnailers docs po
+ 
  pkgconfigdir = $(libdir)/pkgconfig
 +xdgconfigdir = $(sysconfdir)/xdg/autostart
  pkgconfig_DATA = tracker.pc
-+xdgconfig_DATA= trackerd.desktop
++xdgconfig_DATA = trackerd.desktop
+ 
  debian_files = \
  	debian/changelog \
- 	debian/compat \
-@@ -331,12 +334,11 @@
+@@ -34,12 +36,11 @@
  
  EXTRA_DIST = \
  	$(pkgconfig_DATA) \
@@ -35,54 +24,6 @@
  	intltool-extract.in \
  	intltool-merge.in \
  	intltool-update.in \
-@@ -422,6 +424,15 @@
- 	  echo " $(pkgconfigDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgconfigdir)/$$f'"; \
- 	  $(pkgconfigDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgconfigdir)/$$f"; \
- 	done
-+install-xdgconfigDATA: $(xdgconfig_DATA)
-+	@$(NORMAL_INSTALL)
-+	test -z "$(xdgconfigdir)" || $(mkdir_p) "$(DESTDIR)$(xdgconfigdir)"
-+	@list='$(xdgconfig_DATA)'; for p in $$list; do \
-+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-+	  f=$(am__strip_dir) \
-+	  echo " $(xdgconfigDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(xdgconfigdir)/$$f'"; \
-+	  $(xdgconfigDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(xdgconfigdir)/$$f"; \
-+	done
- 
- uninstall-pkgconfigDATA:
- 	@$(NORMAL_UNINSTALL)
-@@ -430,6 +441,13 @@
- 	  echo " rm -f '$(DESTDIR)$(pkgconfigdir)/$$f'"; \
- 	  rm -f "$(DESTDIR)$(pkgconfigdir)/$$f"; \
- 	done
-+uninstall-xdgconfigDATA:
-+	@$(NORMAL_UNINSTALL)
-+	@list='$(xdgconfig_DATA)'; for p in $$list; do \
-+	  f=$(am__strip_dir) \
-+	  echo " rm -f '$(DESTDIR)$(xdgconfigdir)/$$f'"; \
-+	  rm -f "$(DESTDIR)$(xdgconfigdir)/$$f"; \
-+	done
- 
- # This directory's subdirectories are mostly independent; you can cd
- # into them and run `make' without going through this Makefile.
-@@ -710,7 +728,7 @@
- all-am: Makefile $(DATA) config.h
- installdirs: installdirs-recursive
- installdirs-am:
--	for dir in "$(DESTDIR)$(pkgconfigdir)"; do \
-+	for dir in "$(DESTDIR)$(pkgconfigdir) $(DESTDIR)$(xdgconfigdir)"; do \
- 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
- 	done
- install: install-recursive
-@@ -758,7 +776,7 @@
- 
- info-am:
- 
--install-data-am: install-pkgconfigDATA
-+install-data-am: install-pkgconfigDATA install-xdgconfigDATA
- 
- install-exec-am:
- 
 --- trackerd.desktop	2006-11-15 19:08:17.000000000 -0500
 +++ trackerd.desktop.new	2006-11-20 20:37:59.000000000 -0500
 @@ -8,5 +8,8 @@

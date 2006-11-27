@@ -1,7 +1,7 @@
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
 Version: 0.5.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
@@ -17,6 +17,8 @@ BuildRequires: sqlite-devel
 %else
 BuildRequires: dbus-devel, dbus-glib
 %endif
+#Temporarily
+BuildRequires: automake autoconf
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -48,6 +50,9 @@ developing with tracker
 %patch -p0 -b .desktop
 
 %build
+aclocal
+automake
+autoconf
 %if "%fedora" >= "6"
 %configure --disable-static --enable-external-sqlite
 %else
@@ -103,6 +108,9 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Nov 27 2006 Deji Akingunola <dakingun@gmail.com> - 0.5.2-2
+- Apply patch on Makefile.am instead of Makefile.in
+
 * Mon Nov 06 2006 Deji Akingunola <dakingun@gmail.com> - 0.5.2-1
 - Update to 0.5.2
 
