@@ -1,7 +1,7 @@
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
 Version: 0.5.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
