@@ -18,7 +18,7 @@ BuildRequires: sqlite-devel
 BuildRequires: dbus-devel, dbus-glib
 %endif
 #Temporarily
-BuildRequires: automake autoconf
+BuildRequires: automake autoconf libtool
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -110,6 +110,7 @@ rm -rf %{buildroot}
 %changelog
 * Mon Nov 27 2006 Deji Akingunola <dakingun@gmail.com> - 0.5.2-2
 - Apply patch on Makefile.am instead of Makefile.in
+- Add libtool to BR
 
 * Mon Nov 06 2006 Deji Akingunola <dakingun@gmail.com> - 0.5.2-1
 - Update to 0.5.2
