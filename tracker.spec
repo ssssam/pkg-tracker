@@ -1,12 +1,11 @@
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
-Version: 0.5.2
-Release: 3%{?dist}
+Version: 0.5.3
+Release: 1%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
 Source0: http://www.gnome.org/~jamiemcc/tracker/tracker-%{version}.tar.gz
-Patch0: tracker-desktop.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: gmime-devel, poppler-devel, gettext
 BuildRequires: gnome-desktop-devel, gamin-devel
@@ -17,8 +16,6 @@ BuildRequires: sqlite-devel
 %else
 BuildRequires: dbus-devel, dbus-glib
 %endif
-#Temporarily
-BuildRequires: automake autoconf libtool
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -47,12 +44,8 @@ developing with tracker
 
 %prep
 %setup -q
-%patch -p0 -b .desktop
 
 %build
-aclocal
-automake
-autoconf
 %if "%fedora" >= "6"
 %configure --disable-static --enable-external-sqlite
 %else
@@ -98,6 +91,7 @@ rm -rf %{buildroot}
 %{_datadir}/dbus-1/services/tracker.service
 %{_datadir}/autostart/*.desktop
 %{_libdir}/*.so.*
+%{_libdir}/tracker/
 %{_mandir}/man1/tracker*.1.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
 
@@ -108,6 +102,9 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Dec 26 2006 Deji Akingunola <dakingun@gmail.com> - 0.5.3-1
+- Update to 0.5.3
+
 * Mon Nov 27 2006 Deji Akingunola <dakingun@gmail.com> - 0.5.2-2
 - Apply patch on Makefile.am instead of Makefile.in
 - Add libtool to BR
