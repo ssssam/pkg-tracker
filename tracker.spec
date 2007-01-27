@@ -1,13 +1,15 @@
+%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
-Version: 0.5.3
+Version: 0.5.4
 Release: 1%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
 Source0: http://www.gnome.org/~jamiemcc/tracker/tracker-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: gmime-devel, poppler-devel, gettext
+BuildRequires: gmime-devel, poppler-devel, gettext, file-devel
 BuildRequires: gnome-desktop-devel, gamin-devel
 BuildRequires: libexif-devel, libgsf-devel, gstreamer-devel
 BuildRequires: desktop-file-utils, intltool
@@ -44,6 +46,7 @@ developing with tracker
 
 %prep
 %setup -q
+sed -i '/^#!\/usr\/bin\/python/ d' python/deskbar-handler/*.py
 
 %build
 %if "%fedora" >= "6"
@@ -57,7 +60,7 @@ make
 										
 %install
 rm -rf %{buildroot}
-make DESTDIR=%{buildroot} install
+make DESTDIR=%{buildroot} DESKBAR_HANDLER_DIR=%{python_sitelib}/deskbar install
 
 # Add an autostart for trackerd (for KDE)
 mkdir -p %{buildroot}%{_datadir}/autostart
@@ -92,6 +95,7 @@ rm -rf %{buildroot}
 %{_datadir}/autostart/*.desktop
 %{_libdir}/*.so.*
 %{_libdir}/tracker/
+%{python_sitelib}/deskbar/*.py*
 %{_mandir}/man1/tracker*.1.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
 
@@ -102,6 +106,9 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Sat Jan 27 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-1
+- Update to 0.5.4
+
 * Tue Dec 26 2006 Deji Akingunola <dakingun@gmail.com> - 0.5.3-1
 - Update to 0.5.3
 
