@@ -3,7 +3,7 @@
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
 Version: 0.5.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
@@ -39,14 +39,25 @@ Summary: Headers for developing programs that will use %{name}
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: pkgconfig
+Requires: dbus-glib-devel
 
 %description devel
 This package contains the static libraries and header files needed for
 developing with tracker
 
+%package search-tool
+Summary: Tracker search tool(s)
+Group: User Interface/Desktops
+Requires: %{name} = %{version}-%{release}
+
+%description search-tool
+Graphical frontend to tracker search facilities. This has dependencies on
+GNOME libraries
+
 %prep
 %setup -q
-sed -i '/^#!\/usr\/bin\/python/ d' python/deskbar-handler/*.py
+# remove shebangs from the python files as none should be executable scripts
+sed -e '/^#!\//,1 d' -i python/deskbar-handler/*.py
 
 %build
 %if "%fedora" >= "6"
@@ -54,6 +65,10 @@ sed -i '/^#!\/usr\/bin\/python/ d' python/deskbar-handler/*.py
 %else
 %configure --disable-static
 %endif
+# Disable rpath
+sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+
 # make %{?_smp_mflags} fails
 make
 
@@ -88,14 +103,12 @@ rm -rf %{buildroot}
 %{_bindir}/htmless
 %{_bindir}/o3totxt
 %{_bindir}/tracker*
+%exclude %{_bindir}/tracker-search-tool
+%exclude %{_bindir}/tracker-thumbnailer
 %{_datadir}/tracker/
-%{_datadir}/pixmaps/tracker/
-%{_datadir}/applications/*.desktop
 %{_datadir}/dbus-1/services/tracker.service
-%{_datadir}/autostart/*.desktop
 %{_libdir}/*.so.*
 %{_libdir}/tracker/
-%{python_sitelib}/deskbar/*.py*
 %{_mandir}/man1/tracker*.1.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
 
@@ -105,7 +118,21 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 
+%files search-tool
+%defattr(-, root, root, -)
+%{_bindir}/tracker-search-tool
+%{_bindir}/tracker-thumbnailer
+%{_datadir}/pixmaps/tracker/
+%{_datadir}/applications/*.desktop
+%{_datadir}/autostart/*.desktop
+%{python_sitelib}/deskbar/*.py*
+
 %changelog
+* Mon Jan 29 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-2
+- Split out tracker-search-tool sub-packages, for the GUI facility
+- Add proper requires for the -devel subpackage
+- Deal with the rpmlint complaints on rpath
+
 * Sat Jan 27 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-1
 - Update to 0.5.4
 
