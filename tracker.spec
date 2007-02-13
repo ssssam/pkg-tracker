@@ -1,7 +1,7 @@
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
 Version: 0.5.4
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
@@ -73,7 +73,8 @@ make
 										
 %install
 rm -rf %{buildroot}
-make DESTDIR=%{buildroot} install
+make DESTDIR=%{buildroot} \
+    DESKBAR_HANDLER_DIR=%{buildroot}%{_libdir}/deskbar-applet/handlers install
 
 # Add an autostart for trackerd (for KDE)
 mkdir -p %{buildroot}%{_datadir}/autostart
