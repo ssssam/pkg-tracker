@@ -1,7 +1,7 @@
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
 Version: 0.5.4
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
@@ -73,8 +73,8 @@ make
 										
 %install
 rm -rf %{buildroot}
-make DESTDIR=%{buildroot} \
-    DESKBAR_HANDLER_DIR=%{buildroot}%{_libdir}/deskbar-applet/handlers install
+make DESTDIR=%{buildroot}	\
+	DESKBAR_HANDLER_DIR=%{_libdir}/deskbar-applet/handlers install
 
 # Add an autostart for trackerd (for KDE)
 mkdir -p %{buildroot}%{_datadir}/autostart
@@ -128,7 +128,7 @@ rm -rf %{buildroot}
 
 %changelog
 * Tue Feb 13 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-3
-- Package the deskbar plugin properly
+- Package the deskbar plugin properly (BZ #228308)
 
 * Mon Jan 29 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-2
 - Split out tracker-search-tool sub-packages, for the GUI facility
