@@ -1,9 +1,7 @@
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
 Version: 0.5.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
@@ -12,7 +10,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: gmime-devel, poppler-devel, gettext, file-devel
 BuildRequires: gnome-desktop-devel, gamin-devel
 BuildRequires: libexif-devel, libgsf-devel, gstreamer-devel
-BuildRequires: desktop-file-utils, intltool
+BuildRequires: desktop-file-utils, intltool, deskbar-applet
 %if "%fedora" >= "6"
 BuildRequires: sqlite-devel
 %else
@@ -75,7 +73,7 @@ make
 										
 %install
 rm -rf %{buildroot}
-make DESTDIR=%{buildroot} DESKBAR_HANDLER_DIR=%{python_sitelib}/deskbar install
+make DESTDIR=%{buildroot} install
 
 # Add an autostart for trackerd (for KDE)
 mkdir -p %{buildroot}%{_datadir}/autostart
@@ -125,9 +123,12 @@ rm -rf %{buildroot}
 %{_datadir}/pixmaps/tracker/
 %{_datadir}/applications/*.desktop
 %{_datadir}/autostart/*.desktop
-%{python_sitelib}/deskbar/*.py*
+%{_libdir}/deskbar-applet/handlers/*.py*
 
 %changelog
+* Tue Feb 13 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-3
+- Package the deskbar plugin properly
+
 * Mon Jan 29 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-2
 - Split out tracker-search-tool sub-packages, for the GUI facility
 - Add proper requires for the -devel subpackage
