@@ -1,7 +1,7 @@
 Summary: An object database, tag/metadata database, search tool and indexer
 Name: tracker
 Version: 0.5.4
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.gnome.org/~jamiemcc/tracker/
@@ -109,6 +109,7 @@ rm -rf %{buildroot}
 %{_libdir}/*.so.*
 %{_libdir}/tracker/
 %{_mandir}/man1/tracker*.1.gz
+%{_datadir}/autostart/*.desktop
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
 
 %files devel
@@ -123,10 +124,12 @@ rm -rf %{buildroot}
 %{_bindir}/tracker-thumbnailer
 %{_datadir}/pixmaps/tracker/
 %{_datadir}/applications/*.desktop
-%{_datadir}/autostart/*.desktop
 %{_libdir}/deskbar-applet/handlers/*.py*
 
 %changelog
+* Fri Mar 30 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-6
+- Ship both autostart desktop files in the main package (BZ #233323)
+
 * Tue Feb 13 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-3
 - Package the deskbar plugin properly (BZ #228308)
 
