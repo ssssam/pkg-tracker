@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.0
-Release:	1%{?dist}
+Release:	1%{?dist}.1
 License:	GPL
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -62,7 +62,8 @@ sed -e '/^#!\//,1 d' -i python/deskbar-handler/*.py
 %build
 %if "%fedora" >= "6"
 %configure --disable-static --enable-external-sqlite	\
-	--enable-preferences --enable-deskbar-applet
+	--enable-preferences --enable-deskbar-applet	\
+	--with-deskbar-applet-handler-dir=%{_libdir}/deskbar-applet/handlers
 %else
 %configure --disable-static --enable-preferences	\
 	--enable-deskbar-applet
@@ -132,6 +133,7 @@ rm -rf %{buildroot}
 %changelog
 * Mon Jul 23 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.0-1
 - Update to 0.6.0
+- Manually specify path to deskbar-applet handler directory, koji can't find it
 
 * Mon Jan 29 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-2
 - Split out tracker-search-tool sub-packages, for the GUI facility
