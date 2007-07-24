@@ -1,20 +1,21 @@
-Summary: An object database, tag/metadata database, search tool and indexer
-Name: tracker
-Version: 0.5.4
-Release: 6%{?dist}
-License: GPL
-Group: Applications/System
-URL: http://www.gnome.org/~jamiemcc/tracker/
-Source0: http://www.gnome.org/~jamiemcc/tracker/tracker-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: gmime-devel, poppler-devel, gettext, file-devel
-BuildRequires: gnome-desktop-devel, gamin-devel
-BuildRequires: libexif-devel, libgsf-devel, gstreamer-devel
-BuildRequires: desktop-file-utils, intltool, deskbar-applet
+Summary:	An object database, tag/metadata database, search tool and indexer
+Name:		tracker
+Version:	0.6.0
+Release:	1%{?dist}
+License:	GPL
+Group:		Applications/System
+URL:		http://www.gnome.org/~jamiemcc/tracker/
+Source0:	http://www.gnome.org/~jamiemcc/tracker/tracker-0.6.0.tar.bz2
+Source1:	tracker-handler.py
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:	gmime-devel, poppler-devel, gettext
+BuildRequires:	gnome-desktop-devel, gamin-devel
+BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel
+BuildRequires:	desktop-file-utils, intltool, deskbar-applet
 %if "%fedora" >= "6"
-BuildRequires: sqlite-devel
+BuildRequires:	sqlite-devel
 %else
-BuildRequires: dbus-devel, dbus-glib
+BuildRequires:	dbus-devel, dbus-glib
 %endif
 
 %description
@@ -33,20 +34,20 @@ It has the ability to index, store, harvest metadata. retrieve and search
 all types of files and other first class objects
 
 %package devel
-Summary: Headers for developing programs that will use %{name}
-Group: Development/Libraries
-Requires: %{name} = %{version}-%{release}
-Requires: pkgconfig
-Requires: dbus-glib-devel
+Summary:	Headers for developing programs that will use %{name}
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	pkgconfig
+Requires:	dbus-glib-devel
 
 %description devel
 This package contains the static libraries and header files needed for
 developing with tracker
 
 %package search-tool
-Summary: Tracker search tool(s)
-Group: User Interface/Desktops
-Requires: %{name} = %{version}-%{release}
+Summary:	Tracker search tool(s)
+Group:		User Interface/Desktops
+Requires:	%{name} = %{version}-%{release}
 
 %description search-tool
 Graphical frontend to tracker search facilities. This has dependencies on
@@ -54,36 +55,36 @@ GNOME libraries
 
 %prep
 %setup -q
+cp -pr %{SOURCE1} python/deskbar-handler/
 # remove shebangs from the python files as none should be executable scripts
 sed -e '/^#!\//,1 d' -i python/deskbar-handler/*.py
 
 %build
 %if "%fedora" >= "6"
-%configure --disable-static --enable-external-sqlite
+%configure --disable-static --enable-external-sqlite	\
+	--enable-preferences --enable-deskbar-applet
 %else
-%configure --disable-static
+%configure --disable-static --enable-preferences	\
+	--enable-deskbar-applet
 %endif
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-# make %{?_smp_mflags} fails
-make
+make %{?_smp_mflags}
 
-										
 %install
 rm -rf %{buildroot}
-make DESTDIR=%{buildroot}	\
-	DESKBAR_HANDLER_DIR=%{_libdir}/deskbar-applet/handlers install
+make DESTDIR=%{buildroot} install
 
 # Add an autostart for trackerd (for KDE)
 mkdir -p %{buildroot}%{_datadir}/autostart
 cp -pr trackerd.desktop %{buildroot}%{_datadir}/autostart/
 
-desktop-file-install --delete-original                   \
-        --vendor="fedora"                           \
-        --dir=%{buildroot}%{_datadir}/applications   \
-        %{buildroot}%{_datadir}/applications/%{name}-search-tool.desktop
+desktop-file-install --delete-original			\
+	--vendor="fedora"				\
+	--dir=%{buildroot}%{_datadir}/applications	\
+	%{buildroot}%{_datadir}/applications/%{name}-search-tool.desktop
 
 rm -rf %{buildroot}%{_libdir}/*.la
 
@@ -99,39 +100,38 @@ rm -rf %{buildroot}
 %files -f %{name}.lang
 %defattr(-, root, root, -)
 %doc AUTHORS ChangeLog COPYING NEWS README
-%{_bindir}/htmless
 %{_bindir}/o3totxt
 %{_bindir}/tracker*
+%exclude %{_bindir}/tracker-preferences
 %exclude %{_bindir}/tracker-search-tool
 %exclude %{_bindir}/tracker-thumbnailer
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/tracker.service
 %{_libdir}/*.so.*
 %{_libdir}/tracker/
-%{_mandir}/man1/tracker*.1.gz
-%{_datadir}/autostart/*.desktop
+%{_mandir}/*/tracker*.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
 
 %files devel
 %defattr(-, root, root, -)
 %{_includedir}/tracker*
+%{_includedir}/libtracker-gtk/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 
 %files search-tool
 %defattr(-, root, root, -)
+%{_bindir}/tracker-preferences
 %{_bindir}/tracker-search-tool
 %{_bindir}/tracker-thumbnailer
-%{_datadir}/pixmaps/tracker/
-%{_datadir}/applications/*.desktop
 %{_libdir}/deskbar-applet/handlers/*.py*
+%{_datadir}/icons/*/*/apps/tracker.*
+%{_datadir}/applications/*.desktop
+%{_datadir}/autostart/*.desktop
 
 %changelog
-* Fri Mar 30 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-6
-- Ship both autostart desktop files in the main package (BZ #233323)
-
-* Tue Feb 13 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-3
-- Package the deskbar plugin properly (BZ #228308)
+* Mon Jul 23 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.0-1
+- Update to 0.6.0
 
 * Mon Jan 29 2007 Deji Akingunola <dakingun@gmail.com> - 0.5.4-2
 - Split out tracker-search-tool sub-packages, for the GUI facility
