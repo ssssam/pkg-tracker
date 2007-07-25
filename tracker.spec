@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.0
-Release:	1%{?dist}.1
+Release: 2%{?dist}.1
 License:	GPL
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -131,6 +131,9 @@ rm -rf %{buildroot}
 %{_datadir}/autostart/*.desktop
 
 %changelog
+* Wed Jul 25 2007 Jeremy Katz <katzj@redhat.com> - 0.6.0-2.1
+- rebuild for toolchain bug
+
 * Mon Jul 23 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.0-1
 - Update to 0.6.0
 - Manually specify path to deskbar-applet handler directory, koji can't find it
