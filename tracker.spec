@@ -1,8 +1,8 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.0
-Release: 2%{?dist}.1
-License:	GPL
+Release:	3%{?dist}
+License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/tracker-0.6.0.tar.bz2
@@ -131,6 +131,9 @@ rm -rf %{buildroot}
 %{_datadir}/autostart/*.desktop
 
 %changelog
+* Fri Aug 03 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.0-3
+- License tag update
+
 * Wed Jul 25 2007 Jeremy Katz <katzj@redhat.com> - 0.6.0-2.1
 - rebuild for toolchain bug
 
