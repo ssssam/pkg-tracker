@@ -1,15 +1,14 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.0
-Release:	3%{?dist}
+Version:	0.6.1
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
-Source0:	http://www.gnome.org/~jamiemcc/tracker/tracker-0.6.0.tar.bz2
-Source1:	tracker-handler.py
+Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-devel, gettext
-BuildRequires:	gnome-desktop-devel, gamin-devel
+BuildRequires:	gnome-desktop-devel, gamin-devel, exempi-devel
 BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
 %if "%fedora" >= "6"
@@ -55,7 +54,6 @@ GNOME libraries
 
 %prep
 %setup -q
-cp -pr %{SOURCE1} python/deskbar-handler/
 # remove shebangs from the python files as none should be executable scripts
 sed -e '/^#!\//,1 d' -i python/deskbar-handler/*.py
 
@@ -131,6 +129,9 @@ rm -rf %{buildroot}
 %{_datadir}/autostart/*.desktop
 
 %changelog
+* Wed Aug 08 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.1-1
+- Update to 0.6.1
+
 * Fri Aug 03 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.0-3
 - License tag update
 
