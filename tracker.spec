@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.1
-Release:	2%{?dist}
+Version:	0.6.2
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -11,11 +11,7 @@ BuildRequires:	gmime-devel, poppler-devel, gettext
 BuildRequires:	gnome-desktop-devel, gamin-devel, exempi-devel
 BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
-%if "%fedora" >= "6"
-BuildRequires:	sqlite-devel
-%else
-BuildRequires:	dbus-devel, dbus-glib
-%endif
+BuildRequires:	sqlite-devel, pygtk2-devel
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -54,17 +50,14 @@ GNOME libraries
 
 %prep
 %setup -q
-# remove shebangs from the python files as none should be executable scripts
-sed -e '/^#!\//,1 d' -i python/deskbar-handler/*.py
+%define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 
 %build
-%if "%fedora" >= "6"
-%configure --disable-static --enable-external-sqlite	\
-	--enable-preferences --enable-deskbar-applet	\
-	--with-deskbar-applet-handler-dir=%{_libdir}/deskbar-applet/handlers
+%configure --disable-static --enable-deskbar-applet=auto	\
+%if "%deskbar_applet_ver" >= "2.19"
+	--with-deskbar-applet-dir=%{_libdir}/deskbar-applet/modules
 %else
-%configure --disable-static --enable-preferences	\
-	--enable-deskbar-applet
+	--with-deskbar-applet-dir=%{_libdir}/deskbar-applet/handlers
 %endif
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -123,12 +116,19 @@ rm -rf %{buildroot}
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-search-tool
 %{_bindir}/tracker-thumbnailer
+%if "%deskbar_applet_ver" >= "2.19"
+%{_libdir}/deskbar-applet/modules/tracker*.py*
+%else
 %{_libdir}/deskbar-applet/handlers/*.py*
+%endif
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
 %{_datadir}/autostart/*.desktop
 
 %changelog
+* Wed Sep 05 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.2-1
+- Version 0.6.2
+
 * Sat Aug 25 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.1-2
 - Rebuild
 
