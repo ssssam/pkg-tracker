@@ -1,11 +1,12 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
+Patch0:		trackerd-getenv.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-devel, gettext
 BuildRequires:	gnome-desktop-devel, gamin-devel, exempi-devel
@@ -50,6 +51,7 @@ GNOME libraries
 
 %prep
 %setup -q
+%patch0 -p1 -b .getenv
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 
 %build
@@ -126,6 +128,9 @@ rm -rf %{buildroot}
 %{_datadir}/autostart/*.desktop
 
 %changelog
+* Tue Sep 11 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.2-2
+- Make trackerd start on x86_64 (Bug #286361, fix by Will Woods)
+
 * Wed Sep 05 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.2-1
 - Version 0.6.2
 
