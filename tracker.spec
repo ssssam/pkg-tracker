@@ -1,18 +1,17 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.2
-Release:	2%{?dist}
+Version:	0.6.3
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
-Patch0:		trackerd-getenv.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-devel, gettext
 BuildRequires:	gnome-desktop-devel, gamin-devel, exempi-devel
 BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
-BuildRequires:	sqlite-devel, pygtk2-devel
+BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -34,7 +33,7 @@ Summary:	Headers for developing programs that will use %{name}
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	pkgconfig
-Requires:	dbus-glib-devel
+Requires:	dbus-glib-devel gtk2-devel
 
 %description devel
 This package contains the static libraries and header files needed for
@@ -51,16 +50,16 @@ GNOME libraries
 
 %prep
 %setup -q
-%patch0 -p1 -b .getenv
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
+%if "%deskbar_applet_ver" >= "2.19"
+ %define deskbar_applet_dir %(pkg-config --variable modulesdir deskbar-applet)
+%else
+ %define deskbar_applet_dir %(pkg-config --variable handlersdir deskbar-applet)
+%endif
 
 %build
 %configure --disable-static --enable-deskbar-applet=auto	\
-%if "%deskbar_applet_ver" >= "2.19"
-	--with-deskbar-applet-dir=%{_libdir}/deskbar-applet/modules
-%else
-	--with-deskbar-applet-dir=%{_libdir}/deskbar-applet/handlers
-%endif
+		--enable-external-qdbm
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
@@ -118,16 +117,15 @@ rm -rf %{buildroot}
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-search-tool
 %{_bindir}/tracker-thumbnailer
-%if "%deskbar_applet_ver" >= "2.19"
-%{_libdir}/deskbar-applet/modules/tracker*.py*
-%else
-%{_libdir}/deskbar-applet/handlers/*.py*
-%endif
+%{deskbar_applet_dir}/tracker*.py*
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
 %{_datadir}/autostart/*.desktop
 
 %changelog
+* Tue Sep 25 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.3-1
+- Version 0.6.3
+
 * Tue Sep 11 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.2-2
 - Make trackerd start on x86_64 (Bug #286361, fix by Will Woods)
 
