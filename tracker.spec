@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -86,9 +86,26 @@ rm -rf %{buildroot}%{_libdir}/*.la
 %clean
 rm -rf %{buildroot}
 
+
 %post -p /sbin/ldconfig
 
+
+%post search-tool
+touch --no-create %{_datadir}/icons/hicolor
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+fi
+
+
 %postun -p /sbin/ldconfig
+
+
+%postun search-tool
+touch --no-create %{_datadir}/icons/hicolor
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+fi
+
 
 %files -f %{name}.lang
 %defattr(-, root, root, -)
@@ -123,6 +140,9 @@ rm -rf %{buildroot}
 %{_datadir}/autostart/*.desktop
 
 %changelog
+* Sun Nov 25 2007 Brian Pepple <bpepple@fedoraproject.org> - 0.6.3-2
+- Add missing gtk+ icon cache scriptlets.
+
 * Tue Sep 25 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.3-1
 - Version 0.6.3
 
