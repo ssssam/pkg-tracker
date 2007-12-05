@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.3
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -140,6 +140,9 @@ fi
 %{_datadir}/autostart/*.desktop
 
 %changelog
+* Tue Dec 04 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.3-3
+- Rebuild for exempi-1.99.5
+
 * Sun Nov 25 2007 Brian Pepple <bpepple@fedoraproject.org> - 0.6.3-2
 - Add missing gtk+ icon cache scriptlets.
 
