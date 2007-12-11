@@ -1,15 +1,15 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.3
-Release:	3%{?dist}
+Version:	0.6.4
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-devel, gettext
-BuildRequires:	gnome-desktop-devel, gamin-devel, exempi-devel
-BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel
+BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
+BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel, exempi-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel
 
@@ -51,14 +51,16 @@ GNOME libraries
 %prep
 %setup -q
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
-%if "%deskbar_applet_ver" >= "2.19"
+%if "%deskbar_applet_ver" >= "2.19.4"
  %define deskbar_applet_dir %(pkg-config --variable modulesdir deskbar-applet)
+ %define deskbar_type module
 %else
  %define deskbar_applet_dir %(pkg-config --variable handlersdir deskbar-applet)
+ %define deskbar_type handler
 %endif
 
 %build
-%configure --disable-static --enable-deskbar-applet=auto	\
+%configure --disable-static --enable-deskbar-applet=%{deskbar_type}	\
 		--enable-external-qdbm
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -71,8 +73,8 @@ rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
 # Add an autostart for trackerd (for KDE)
-mkdir -p %{buildroot}%{_datadir}/autostart
-cp -pr trackerd.desktop %{buildroot}%{_datadir}/autostart/
+#mkdir -p %{buildroot}%{_datadir}/autostart
+#cp -pr trackerd.desktop %{buildroot}%{_datadir}/autostart/
 
 desktop-file-install --delete-original			\
 	--vendor="fedora"				\
@@ -86,9 +88,7 @@ rm -rf %{buildroot}%{_libdir}/*.la
 %clean
 rm -rf %{buildroot}
 
-
 %post -p /sbin/ldconfig
-
 
 %post search-tool
 touch --no-create %{_datadir}/icons/hicolor
@@ -96,16 +96,13 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
-
 %postun -p /sbin/ldconfig
-
 
 %postun search-tool
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
-
 
 %files -f %{name}.lang
 %defattr(-, root, root, -)
@@ -137,9 +134,13 @@ fi
 %{deskbar_applet_dir}/tracker*.py*
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
-%{_datadir}/autostart/*.desktop
+#%{_datadir}/autostart/*.desktop
+%{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Mon Dec 11 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.4-1
+- Version 0.6.4
+
 * Tue Dec 04 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.3-3
 - Rebuild for exempi-1.99.5
 
