@@ -1,11 +1,12 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.4
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
+Patch0:		tracker-post_0.6.4_fixes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-devel, gettext
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
@@ -50,6 +51,8 @@ GNOME libraries
 
 %prep
 %setup -q
+%patch0 -p0 -b .fix
+
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
  %define deskbar_applet_dir %(pkg-config --variable modulesdir deskbar-applet)
@@ -71,10 +74,6 @@ make %{?_smp_mflags}
 %install
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
-
-# Add an autostart for trackerd (for KDE)
-#mkdir -p %{buildroot}%{_datadir}/autostart
-#cp -pr trackerd.desktop %{buildroot}%{_datadir}/autostart/
 
 desktop-file-install --delete-original			\
 	--vendor="fedora"				\
@@ -134,10 +133,12 @@ fi
 %{deskbar_applet_dir}/tracker*.py*
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
-#%{_datadir}/autostart/*.desktop
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Fri Dec 14 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.4-2
+- Backport crasher fixes from upstream svn trunk
+
 * Mon Dec 11 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.4-1
 - Version 0.6.4
 
