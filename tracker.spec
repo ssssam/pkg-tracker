@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.4
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -51,7 +51,7 @@ GNOME libraries
 
 %prep
 %setup -q
-%patch0 -p0 -b .fix
+#%patch0 -p0 -b .fix
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
@@ -136,6 +136,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Fri Dec 14 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.4-3
+- Undo the patch, seems to be issues (bug #426060)
+
 * Fri Dec 14 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.4-2
 - Backport crasher fixes from upstream svn trunk
 
