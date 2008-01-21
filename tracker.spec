@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.4
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -13,6 +13,7 @@ BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
 BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel, exempi-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel
+Requires:	o3read
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -106,11 +107,11 @@ fi
 %files -f %{name}.lang
 %defattr(-, root, root, -)
 %doc AUTHORS ChangeLog COPYING NEWS README
-%{_bindir}/o3totxt
 %{_bindir}/tracker*
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_bindir}/tracker-search-tool
 %exclude %{_bindir}/tracker-thumbnailer
+%exclude %{_bindir}/o3totxt
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/tracker.service
 %{_libdir}/*.so.*
@@ -136,6 +137,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Mon Jan 21 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.4-4
+- Now require the externally packaged o3read to provide o3totxt
+
 * Fri Dec 14 2007 Deji Akingunola <dakingun@gmail.com> - 0.6.4-3
 - Undo the patch, seems to be issues (bug #426060)
 
