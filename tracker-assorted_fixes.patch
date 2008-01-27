@@ -1,49 +1,3 @@
-#Fix crasher where index name is null during merging and fixed invalid log file
---- src/trackerd/trackerd.c	2007/12/11 02:57:07	1070
-+++ src/trackerd/trackerd.c	2007/12/11 18:25:27	1074
-@@ -2486,12 +2486,6 @@
- 
-  	tracker->is_running = FALSE;
- 
--	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
--
--	tracker->dbus_con = tracker_dbus_init ();
--	
--	add_local_dbus_connection_monitoring (tracker->dbus_con);
--
- 	/* Make a temporary directory for Tracker into g_get_tmp_dir() directory */
- 	gchar *tmp_dir;
- 
-@@ -2505,6 +2499,18 @@
- 	tracker->config_dir = g_strdup (g_get_user_config_dir ());
- 	tracker->user_data_dir = g_build_filename (tracker->root_dir, "data", NULL);
- 
-+	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
-+
-+	/* reset log file */
-+	tracker_unlink (tracker->log_file);
-+
-+	tracker_log ("starting log");
-+
-+	tracker->dbus_con = tracker_dbus_init ();
-+	
-+	add_local_dbus_connection_monitoring (tracker->dbus_con);
-+
-+
- 	g_free (tmp_dir);
- 
- 	/* remove an existing one */
-@@ -2636,9 +2642,7 @@
- 	ioprio ();
- #endif
- 
--	/* reset log file */
--	tracker_unlink (tracker->log_file);
--
-+	
- 	/* deal with config options with defaults, config file and option params */
- 	set_defaults ();
-
 --- src/trackerd/tracker-indexer.c	2007/12/10 23:37:31	1068
 +++ src/trackerd/tracker-indexer.c	2007/12/11 21:16:02	1076
 @@ -215,7 +215,7 @@
@@ -164,4 +118,131 @@
 +			}
  		}		
  	}
- 	 
+ 	
+--- src/trackerd/tracker-utils.c	2007/12/11 18:29:27	1075
++++ src/trackerd/tracker-utils.c	2007/12/13 23:55:10	1079
+@@ -3491,11 +3491,13 @@
+ 	/* logging is thread safe */
+ 	static size_t   log_size = 0;
+ 
+-	if (! message)
++	if (!message)
+ 		return;
+ 
+ 	g_print ("%s\n", message);
+ 
++	if (!tracker->log_file) return;
++
+ 	/* ensure file logging is thread safe */
+ 	g_mutex_lock (tracker->log_access_mutex);
+ 
+--- src/trackerd/trackerd.c	2007/12/11 02:57:07	1070
++++ src/trackerd/trackerd.c	2007/12/13 23:55:10	1079
+@@ -618,19 +618,13 @@
+ static void
+ signal_handler (gint signo)
+ {
+-	if (!tracker->is_running) {
+-		return;
+-	}
+-
+ 	static gboolean in_loop = FALSE;
+ 
+-  	/* avoid re-entrant signals handler calls */
+-	if (in_loop && signo != SIGSEGV) {
+-		return;
++  	/* die if we get re-entrant signals handler calls */
++	if (in_loop) {
++		exit (EXIT_FAILURE);
+ 	}
+ 
+-  	in_loop = TRUE;
+-
+   	switch (signo) {
+ 
+   		case SIGSEGV:
+@@ -646,6 +640,8 @@
+ 		case SIGTERM:
+ 		case SIGINT:
+ 
++		  	in_loop = TRUE;
++
+ 			tracker->is_running = FALSE;
+ 			tracker_end_watching ();
+ 
+@@ -660,8 +656,7 @@
+ 			if (tracker->log_file && g_strsignal (signo)) {
+ 	   			tracker_log ("Received signal %s ", g_strsignal (signo));
+ 			}
+-			in_loop = FALSE;
+-    			break;
++			break;
+   	}
+ }
+ 
+@@ -2422,6 +2417,14 @@
+ 	if (!g_thread_supported ())
+ 		g_thread_init (NULL);
+ 
++	dbus_g_thread_init ();
++
++	tracker = g_new0 (Tracker, 1);
++
++	tracker->dbus_con = tracker_dbus_init ();
++	
++	add_local_dbus_connection_monitoring (tracker->dbus_con);
++
+ 	setlocale (LC_ALL, "");
+ 
+ 	bindtextdomain (GETTEXT_PACKAGE, TRACKER_LOCALEDIR);
+@@ -2478,20 +2481,14 @@
+ 	sigaction (SIGINT,  &act, NULL);
+ #endif
+ 
+-	dbus_g_thread_init ();
++	
+ 
+-	tracker = g_new0 (Tracker, 1);
++	
+ 
+ 	tracker->status = STATUS_INIT;
+ 
+  	tracker->is_running = FALSE;
+ 
+-	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
+-
+-	tracker->dbus_con = tracker_dbus_init ();
+-	
+-	add_local_dbus_connection_monitoring (tracker->dbus_con);
+-
+ 	/* Make a temporary directory for Tracker into g_get_tmp_dir() directory */
+ 	gchar *tmp_dir;
+ 
+@@ -2505,6 +2502,16 @@
+ 	tracker->config_dir = g_strdup (g_get_user_config_dir ());
+ 	tracker->user_data_dir = g_build_filename (tracker->root_dir, "data", NULL);
+ 
++	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
++
++	/* reset log file */
++	tracker_unlink (tracker->log_file);
++
++	tracker_log ("starting log");
++
++	
++
++
+ 	g_free (tmp_dir);
+ 
+ 	/* remove an existing one */
+@@ -2636,9 +2643,7 @@
+ 	ioprio ();
+ #endif
+ 
+-	/* reset log file */
+-	tracker_unlink (tracker->log_file);
+-
++	
+ 	/* deal with config options with defaults, config file and option params */
+ 	set_defaults ();
+ 

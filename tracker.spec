@@ -1,12 +1,12 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.4
-Release:	4%{?dist}
+Release:	5%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
-Patch0:		tracker-post_0.6.4_fixes.patch
+Patch0:		tracker-assorted_fixes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-devel, gettext
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
@@ -52,7 +52,7 @@ GNOME libraries
 
 %prep
 %setup -q
-#%patch0 -p0 -b .fix
+%patch0 -p0 -b .fix
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
@@ -137,6 +137,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Thu Jan 24 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.4-5
+- Backport assorted fixes from upstream svn (Fix Fedora bug 426060)
+
 * Mon Jan 21 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.4-4
 - Now require the externally packaged o3read to provide o3totxt
 
