@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.4
-Release:	5%{?dist}
+Release:	6%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -137,6 +137,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Sun Feb 10 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.4-6
+- Rebuild for gcc43
+
 * Thu Jan 24 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.4-5
 - Backport assorted fixes from upstream svn (Fix Fedora bug 426060)
 
