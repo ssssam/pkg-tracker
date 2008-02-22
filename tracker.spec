@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.4
-Release:	6%{?dist}
+Release:	7%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -108,6 +108,7 @@ fi
 %defattr(-, root, root, -)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/tracker*
+%exclude %{_bindir}/tracker-applet
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_bindir}/tracker-search-tool
 %exclude %{_bindir}/tracker-thumbnailer
@@ -128,6 +129,7 @@ fi
 
 %files search-tool
 %defattr(-, root, root, -)
+%{_bindir}/tracker-applet
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-search-tool
 %{_bindir}/tracker-thumbnailer
@@ -137,6 +139,10 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Fri Feb 22 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.4-7
+- Ship the tracker-applet program in the tracker-search-tool subpackage
+  (Bug #434551)
+
 * Sun Feb 10 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.4-6
 - Rebuild for gcc43
 
