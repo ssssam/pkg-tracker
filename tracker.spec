@@ -1,12 +1,11 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.4
-Release:	7%{?dist}
+Version:	0.6.5
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
-Patch0:		tracker-assorted_fixes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-devel, gettext
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
@@ -52,7 +51,6 @@ GNOME libraries
 
 %prep
 %setup -q
-%patch0 -p0 -b .fix
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
@@ -139,6 +137,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Thu Feb 28 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.5-1
+- New release 0.6.5
+
 * Fri Feb 22 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.4-7
 - Ship the tracker-applet program in the tracker-search-tool subpackage
   (Bug #434551)
