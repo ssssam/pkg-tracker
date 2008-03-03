@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.5
+Version:	0.6.6
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -137,6 +137,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Sun Mar 02 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.6-1
+- New release 0.6.6
+
 * Thu Feb 28 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.5-1
 - New release 0.6.5
 
