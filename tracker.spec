@@ -1,13 +1,13 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.6
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:	gmime-devel, poppler-devel, gettext
+BuildRequires:	gmime-devel, poppler-glib-devel, gettext
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
 BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel, exempi-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
@@ -137,6 +137,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Fri Mar 14 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.6-2
+- BR poppler-glib-devel instead of poppler-devel for pdf extract module (Thanks to Karsten Hopp mass rebuild work for bringing this to light)
+
 * Sun Mar 02 2008 Deji Akingunola <dakingun@gmail.com> - 0.6.6-1
 - New release 0.6.6
 
