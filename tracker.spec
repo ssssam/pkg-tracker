@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.6
-Release:	5%{?dist}
+Release:	6%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -137,6 +137,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Wed Dec 10 2008 - Bastien Nocera <bnocera@redhat.com> - 0.6.6-6
+- Rebuild for gmime dependency
+
 * Mon Dec 01 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.6.6-5
 - Rebuild for Python 2.6
 
