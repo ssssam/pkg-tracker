@@ -14,7 +14,7 @@ BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
 BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel, exempi-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel
-BuildRequires:	autoconf automake
+BuildRequires:	autoconf automake libtool
 Requires:	o3read
 
 %description
