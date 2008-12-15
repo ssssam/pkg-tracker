@@ -1,17 +1,20 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.6
-Release:	6%{?dist}
+Release:	7%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
 Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
+# http://bugzilla.gnome.org/show_bug.cgi?id=564640
+Patch0:		tracker-gmime-2.4.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, gettext
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
 BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel, exempi-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel
+BuildRequires:	autoconf automake
 Requires:	o3read
 
 %description
@@ -51,6 +54,8 @@ GNOME libraries
 
 %prep
 %setup -q
+%patch0 -p0
+autoreconf
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
@@ -137,6 +142,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Mon Dec 15 2008 - Bastien Nocera <bnocera@redhat.com> - 0.6.6-7
+- Add patch to port to GMime 2.4
+
 * Wed Dec 10 2008 - Bastien Nocera <bnocera@redhat.com> - 0.6.6-6
 - Rebuild for gmime dependency
 

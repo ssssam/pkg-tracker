@@ -1,0 +1,348 @@
+Index: src/tracker-indexer/modules/evolution-pop.c
+===================================================================
+--- src/tracker-indexer/modules/evolution-pop.c	(revision 2704)
++++ src/tracker-indexer/modules/evolution-pop.c	(working copy)
+@@ -171,7 +171,7 @@
+ 	gchar *number;
+ 	gint id;
+ 
+-	header = g_mime_message_get_header (message, "X-Evolution");
++	header = g_mime_object_get_header (GMIME_OBJECT (message), "X-Evolution");
+ 
+         if (!header) {
+                 return -1;
+@@ -245,10 +245,134 @@
+         return message_uri;
+ }
+ 
++static GMimeObject *
++handle_multipart_alternative (GMimeMultipart *multipart, gboolean want_plain, gboolean *is_html)
++{
++	GMimeObject *mime_part, *text_part = NULL;
++	GMimeContentType *type;
++	GList *subpart;
++	int count, i;
++
++	count = g_mime_multipart_get_count (multipart);
++	for (i = 0; i < count ; i++) {
++		mime_part = g_mime_multipart_get_part (multipart, i);
++
++		type = g_mime_object_get_content_type (GMIME_OBJECT (mime_part));
++		if (g_mime_content_type_is_type (type, "text", "*")) {
++			if (!text_part || !g_ascii_strcasecmp (type->subtype, want_plain ? "plain" : "html")) {
++				*is_html = !g_ascii_strcasecmp (type->subtype, "html");
++				text_part = mime_part;
++			}
++		}
++	}
++
++	return text_part;
++}
++
++static GMimeObject *
++handle_multipart_mixed (GMimeMultipart *multipart, gboolean want_plain, gboolean *is_html)
++{
++	GMimeObject *mime_part, *text_part = NULL;
++	GMimeContentType *type, *first_type = NULL;
++	GList *subpart;
++	int count, i;
++
++	count = g_mime_multipart_get_count (multipart);
++	for (i = 0; i < count ; i++) {
++		mime_part = g_mime_multipart_get_part (multipart, i);
++
++		type = g_mime_object_get_content_type (mime_part);
++		if (GMIME_IS_MULTIPART (mime_part)) {
++			multipart = GMIME_MULTIPART (mime_part);
++			if (g_mime_content_type_is_type (type, "multipart", "alternative")) {
++				mime_part = handle_multipart_alternative (multipart, want_plain, is_html);
++				if (mime_part)
++					return mime_part;
++			} else {
++				mime_part = handle_multipart_mixed (multipart, want_plain, is_html);
++				if (mime_part && !text_part)
++					text_part = mime_part;
++			}
++		} else if (g_mime_content_type_is_type (type, "text", "*")) {
++			if (!g_ascii_strcasecmp (type->subtype, want_plain ? "plain" : "html")) {
++				/* we got what we came for */
++				*is_html = !g_ascii_strcasecmp (type->subtype, "html");
++				return mime_part;
++			}
++
++			/* if we haven't yet found a text part or if it is a type we can
++			   1514 	* understand and it is the first of that type, save it */
++			if (!text_part || (!g_ascii_strcasecmp (type->subtype, "plain") && (first_type &&
++											    g_ascii_strcasecmp (type->subtype, first_type->subtype) != 0))) {
++				*is_html = !g_ascii_strcasecmp (type->subtype, "html");
++				text_part = mime_part;
++				first_type = type;
++			}
++		}
++
++		subpart = subpart->next;
++	}
++
++	return text_part;
++}
++
++static char *
++tracker_mime_message_get_body (const GMimeMessage *message, gboolean want_plain, gboolean *is_html)
++{
++	GMimeObject *mime_part = NULL;
++	GMimeContentType *type;
++	GMimeMultipart *multipart;
++	const char *content;
++	char *body = NULL;
++	gint64 len = 0;
++
++	g_return_val_if_fail (GMIME_IS_MESSAGE (message), NULL);
++	g_return_val_if_fail (is_html != NULL, NULL);
++
++	type = g_mime_object_get_content_type (message->mime_part);
++	if (GMIME_IS_MULTIPART (message->mime_part)) {
++		/* let's see if we can find a body in the multipart */
++		multipart = GMIME_MULTIPART (message->mime_part);
++		if (g_mime_content_type_is_type (type, "multipart", "alternative"))
++			mime_part = handle_multipart_alternative (multipart, want_plain, is_html);
++		else
++			mime_part = handle_multipart_mixed (multipart, want_plain, is_html);
++	} else if (g_mime_content_type_is_type (type, "text", "*")) {
++		/* this *has* to be the message body */
++		if (g_mime_content_type_is_type (type, "text", "html"))
++			*is_html = TRUE;
++		else
++			*is_html = FALSE;
++
++		mime_part = message->mime_part;
++	}
++
++	if (mime_part != NULL) {
++		GMimeDataWrapper *data_wrapper;
++		GMimeStream *mime_stream;
++		gint64 len;
++
++		data_wrapper = g_mime_part_get_content_object (GMIME_PART (mime_part));
++		
++		mime_stream = g_mime_data_wrapper_get_stream (data_wrapper);
++		len = g_mime_stream_length (mime_stream);
++		body = g_malloc0 (len + 1);
++		g_mime_stream_read (mime_stream, body, len);
++		g_object_unref (mime_stream);
++		g_object_unref (data_wrapper);
++
++//		content = g_mime_part_get_content (GMIME_PART (mime_part), &len);
++//		body = g_strndup (content, len);
++	}
++
++	return body;
++}
++
+ static gchar *
+ tracker_evolution_pop_file_get_text (TrackerModuleFile *file)
+ {
+         TrackerEvolutionPopFile *self;
++        GMimeObject *part;
+         gchar *text, *encoding, *utf8_text;
+         gboolean is_html;
+ 
+@@ -259,7 +383,7 @@
+ 		return NULL;
+ 	}
+ 
+-        text = g_mime_message_get_body (self->message, TRUE, &is_html);
++        text = tracker_mime_message_get_body (self->message, TRUE, &is_html);
+ 
+         if (!text) {
+                 return NULL;
+@@ -287,7 +411,7 @@
+ {
+ 	const gchar *header, *pos;
+ 
+-	header = g_mime_message_get_header (message, "X-Evolution");
++	header = g_mime_object_get_header (GMIME_OBJECT (message), "X-Evolution");
+ 	pos = strchr (header, '-');
+ 
+ 	return (guint) strtoul (pos + 1, NULL, 16);
+@@ -295,34 +419,25 @@
+ 
+ static GList *
+ get_message_recipients (GMimeMessage *message,
+-                        const gchar  *type)
++                        GMimeRecipientType type)
+ {
+ 	GList *list = NULL;
+-	const InternetAddressList *addresses;
++	int i, count;
++	InternetAddressList *addresses;
+ 
+ 	addresses = g_mime_message_get_recipients (message, type);
++	count = internet_address_list_length (addresses);
+ 
+-	while (addresses) {
++	for (i = 0; i < count; i++) {
+ 		InternetAddress *address;
+ 		gchar *str;
+ 
+-		address = addresses->address;
++		address = internet_address_list_get_address (addresses, i);
++		str = internet_address_to_string (address, FALSE);
+ 
+-		if (address->name && address->value.addr) {
+-			str = g_strdup_printf ("%s %s", address->name, address->value.addr);
+-		} else if (address->value.addr) {
+-			str = g_strdup (address->value.addr);
+-		} else if (address->name) {
+-			str = g_strdup (address->name);
+-		} else {
+-			str = NULL;
+-		}
+-
+ 		if (str) {
+ 			list = g_list_prepend (list, str);
+ 		}
+-
+-		addresses = addresses->next;
+ 	}
+ 
+ 	return g_list_reverse (list);
+@@ -410,7 +525,8 @@
+ }
+ 
+ static void
+-extract_mime_parts (GMimeObject *object,
++extract_mime_parts (GMimeObject *parent,
++		    GMimeObject *object,
+                     gpointer     user_data)
+ {
+ 	GList **list = (GList **) user_data;
+@@ -433,8 +549,7 @@
+ 		return;
+ 	}
+ 
+-	part = GMIME_PART (object);
+-	disposition = g_mime_part_get_content_disposition (part);
++	disposition = g_mime_object_get_disposition (object);
+ 
+ 	if (!disposition ||
+ 	    (strcmp (disposition, GMIME_DISPOSITION_ATTACHMENT) != 0 &&
+Index: src/tracker-indexer/modules/evolution-imap.c
+===================================================================
+--- src/tracker-indexer/modules/evolution-imap.c	(revision 2704)
++++ src/tracker-indexer/modules/evolution-imap.c	(working copy)
+@@ -548,7 +548,7 @@
+ static gboolean
+ get_attachment_info (const gchar            *mime_file,
+                      gchar                 **name,
+-                     GMimePartEncodingType  *encoding)
++                     GMimeContentEncoding  *encoding)
+ {
+ 	GMimeContentType *mime;
+ 	gchar *tmp, *mime_content;
+@@ -559,7 +559,7 @@
+ 	}
+ 
+ 	if (encoding) {
+-		*encoding = GMIME_PART_ENCODING_DEFAULT;
++		*encoding = GMIME_CONTENT_ENCODING_DEFAULT;
+ 	}
+ 
+ 	if (!g_file_get_contents (mime_file, &tmp, NULL, NULL)) {
+@@ -606,7 +606,7 @@
+ 			*name = g_strdup (g_mime_content_type_get_parameter (mime, "name"));
+ 		}
+ 
+-		g_mime_content_type_destroy (mime);
++		g_object_unref (mime);
+ 	}
+ 
+ 	if (name && !*name) {
+@@ -628,17 +628,17 @@
+ 		gchar *encoding_str = g_strndup (pos_encoding, pos_end_encoding - pos_encoding);
+ 
+ 		if (strcmp (encoding_str, "7bit") == 0) {
+-			*encoding = GMIME_PART_ENCODING_7BIT;
++			*encoding = GMIME_CONTENT_ENCODING_7BIT;
+ 		} else if (strcmp (encoding_str, "8bit") == 0) {
+-			*encoding = GMIME_PART_ENCODING_7BIT;
++			*encoding = GMIME_CONTENT_ENCODING_7BIT;
+ 		} else if (strcmp (encoding_str, "binary") == 0) {
+-			*encoding = GMIME_PART_ENCODING_BINARY;
++			*encoding = GMIME_CONTENT_ENCODING_BINARY;
+ 		} else if (strcmp (encoding_str, "base64") == 0) {
+-			*encoding = GMIME_PART_ENCODING_BASE64;
++			*encoding = GMIME_CONTENT_ENCODING_BASE64;
+ 		} else if (strcmp (encoding_str, "quoted-printable") == 0) {
+-			*encoding = GMIME_PART_ENCODING_QUOTEDPRINTABLE;
++			*encoding = GMIME_CONTENT_ENCODING_QUOTEDPRINTABLE;
+ 		} else if (strcmp (encoding_str, "x-uuencode") == 0) {
+-			*encoding = GMIME_PART_ENCODING_UUENCODE;
++			*encoding = GMIME_CONTENT_ENCODING_UUENCODE;
+ 		}
+ 
+ 		g_free (encoding_str);
+@@ -729,7 +729,7 @@
+                       gpointer     user_data)
+ {
+         GString *body = (GString *) user_data;
+-        GMimePartEncodingType part_encoding;
++        GMimeContentEncoding part_encoding;
+         GMimePart *part;
+         const gchar *content, *disposition, *filename;
+         gchar *encoding, *part_body;
+@@ -753,12 +753,12 @@
+ 
+ 	part = GMIME_PART (object);
+         filename = g_mime_part_get_filename (part);
+-	disposition = g_mime_part_get_content_disposition (part);
+-        part_encoding = g_mime_part_get_encoding (part);
++	disposition = g_mime_object_get_disposition (part);
++        part_encoding = g_mime_part_get_content_encoding (part);
+ 
+-        if (part_encoding == GMIME_PART_ENCODING_BINARY ||
+-            part_encoding == GMIME_PART_ENCODING_BASE64 ||
+-            part_encoding == GMIME_PART_ENCODING_UUENCODE) {
++        if (part_encoding == GMIME_CONTENT_ENCODING_BINARY ||
++            part_encoding == GMIME_CONTENT_ENCODING_BASE64 ||
++            part_encoding == GMIME_CONTENT_ENCODING_UUENCODE) {
+                 return;
+         }
+ 
+@@ -1022,7 +1022,7 @@
+ 	TrackerModuleMetadata *metadata;
+ 	GMimeStream *stream;
+ 	GMimeDataWrapper *wrapper;
+-	GMimePartEncodingType encoding;
++	GMimeContentEncoding encoding;
+ 	gchar *path, *name;
+ 
+ 	if (!get_attachment_info (mime_file, &name, &encoding)) {
+Index: src/tracker-indexer/modules/evolution-common.c
+===================================================================
+--- src/tracker-indexer/modules/evolution-common.c	(revision 2704)
++++ src/tracker-indexer/modules/evolution-common.c	(working copy)
+@@ -94,9 +94,9 @@
+         const gchar *content_type = NULL;
+ 
+         if (GMIME_IS_MESSAGE (object)) {
+-                content_type = g_mime_message_get_header (GMIME_MESSAGE (object), "Content-Type");
++                content_type = g_mime_object_get_header (GMIME_MESSAGE (object), "Content-Type");
+         } else if (GMIME_IS_PART (object)) {
+-                content_type = g_mime_part_get_content_header (GMIME_PART (object), "Content-Type");
++                content_type = g_mime_object_get_header (GMIME_PART (object), "Content-Type");
+         }
+ 
+         if (!content_type) {
+Index: configure.ac
+===================================================================
+--- configure.ac	(revision 2704)
++++ configure.ac	(working copy)
+@@ -149,7 +149,7 @@
+ AC_SUBST(PANGO_LIBS)
+ 
+ # Check for GMime
+-PKG_CHECK_MODULES(GMIME, [gmime-2.0 >= $GMIME_REQUIRED])
++PKG_CHECK_MODULES(GMIME, [gmime-2.4 >= $GMIME_REQUIRED])
+ AC_SUBST(GMIME_CFLAGS)
+ AC_SUBST(GMIME_LIBS)
+ 
