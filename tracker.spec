@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.6
-Release:	7%{?dist}
+Release:	8%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -54,7 +54,7 @@ GNOME libraries
 
 %prep
 %setup -q
-%patch0 -p0
+%patch0 -p1
 autoreconf
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
@@ -142,6 +142,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Mon Dec 15 2008 - Bastien Nocera <bnocera@redhat.com> - 0.6.6-8
+- Update patch to actually apply, way to do releases often
+
 * Mon Dec 15 2008 - Bastien Nocera <bnocera@redhat.com> - 0.6.6-7
 - Add patch to port to GMime 2.4
 
