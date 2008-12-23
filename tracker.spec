@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.6
-Release:	9%{?dist}
+Release:	10%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://www.gnome.org/~jamiemcc/tracker/
@@ -14,7 +14,7 @@ BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
 BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel, exempi-devel
 BuildRequires:	desktop-file-utils, intltool, deskbar-applet
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel
-BuildRequires:	autoconf automake libtool
+BuildRequires:	autoconf, automake, libtool
 Requires:	o3read
 
 %description
@@ -55,7 +55,7 @@ GNOME libraries
 %prep
 %setup -q
 %patch0 -p1
-autoreconf
+autoreconf -f -i
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
@@ -142,6 +142,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Tue Dec 23 2008 - Caolán McNamara <caolanm@redhat.com> - 0.6.6-10
+- make build
+
 * Mon Dec 15 2008 - Bastien Nocera <bnocera@redhat.com> - 0.6.6-9
 - Add libtool BR
 
