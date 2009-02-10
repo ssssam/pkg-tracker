@@ -1,21 +1,22 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.6
-Release:	10%{?dist}
+Version:	0.6.90
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
-URL:		http://www.gnome.org/~jamiemcc/tracker/
-Source0:	http://www.gnome.org/~jamiemcc/tracker/%{name}-%{version}.tar.bz2
+URL:		http://projects.gnome.org/tracker/
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
 # http://bugzilla.gnome.org/show_bug.cgi?id=564640
 Patch0:		tracker-gmime-2.4.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:	gmime-devel, poppler-glib-devel, gettext
+BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
-BuildRequires:	libexif-devel, libgsf-devel, gstreamer-devel, exempi-devel
-BuildRequires:	desktop-file-utils, intltool, deskbar-applet
-BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel
+BuildRequires:	totem-pl-parser-devel, libgsf-devel, gstreamer-devel
+BuildRequires:  gstreamer-plugins-base-devel
+BuildRequires:	libjpeg-devel, libexif-devel, exempi-devel, raptor-devel
+BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet
+BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel, libtiff-devel
 BuildRequires:	autoconf, automake, libtool
-Requires:	o3read
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -54,7 +55,7 @@ GNOME libraries
 
 %prep
 %setup -q
-%patch0 -p1
+%patch0 -p0
 autoreconf -f -i
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
@@ -114,14 +115,15 @@ fi
 %exclude %{_bindir}/tracker-applet
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_bindir}/tracker-search-tool
-%exclude %{_bindir}/tracker-thumbnailer
-%exclude %{_bindir}/o3totxt
+%{_libexecdir}/tracker*
 %{_datadir}/tracker/
-%{_datadir}/dbus-1/services/tracker.service
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker.*
 %{_libdir}/*.so.*
 %{_libdir}/tracker/
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
+%doc %{_datadir}/gtk-doc/html/libtracker-common/
+%doc %{_datadir}/gtk-doc/html/libtracker-module/
 
 %files devel
 %defattr(-, root, root, -)
@@ -135,13 +137,15 @@ fi
 %{_bindir}/tracker-applet
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-search-tool
-%{_bindir}/tracker-thumbnailer
 %{deskbar_applet_dir}/tracker*.py*
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Mon Feb 09 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.90-1
+- New release, with tons of changes
+
 * Tue Dec 23 2008 - Caolán McNamara <caolanm@redhat.com> - 0.6.6-10
 - make build
 
