@@ -1,0 +1,11 @@
+--- tracker-0.6.6/python/deskbar-handler/tracker-module.py.fix-deskbar	2008-01-14 23:04:47.000000000 -0500
++++ tracker-0.6.6/python/deskbar-handler/tracker-module.py	2009-02-12 19:21:37.538647319 -0500
+@@ -11,7 +11,7 @@
+ import os.path
+ import deskbar
+ import deskbar.core.Utils
+-import deskbar.core.gnomedesktop
++import gnomedesktop
+ import deskbar.interfaces.Module
+ import deskbar.interfaces.Match
+ import deskbar.interfaces.Action

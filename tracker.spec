@@ -1,13 +1,15 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.90
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
 # http://bugzilla.gnome.org/show_bug.cgi?id=564640
 Patch0:		tracker-gmime-2.4.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=571573
+Patch1:         tracker-0.6.6-fix-deskbar.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
@@ -56,6 +58,7 @@ GNOME libraries
 %prep
 %setup -q
 %patch0 -p0
+%patch1 -p1 -b .fix-deskbar
 autoreconf -f -i
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
@@ -143,6 +146,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Thu Feb 12 2009 Michel Salim <salimma@fedoraproject.org> - 0.6.90-2
+- Fix incorrect import in Tracker's deskbar module
+
 * Mon Feb 09 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.90-1
 - New release, with tons of changes
 
