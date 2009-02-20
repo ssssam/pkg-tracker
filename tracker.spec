@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.90
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -83,6 +83,10 @@ make %{?_smp_mflags}
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
+mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
+echo "%{_libdir}/tracker"       \
+        > %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
+
 desktop-file-install --delete-original			\
 	--vendor="fedora"				\
 	--dir=%{buildroot}%{_datadir}/applications	\
@@ -125,6 +129,7 @@ fi
 %{_libdir}/tracker/
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
+%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %doc %{_datadir}/gtk-doc/html/libtracker-common/
 %doc %{_datadir}/gtk-doc/html/libtracker-module/
 
@@ -146,6 +151,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Thu Feb 19 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.90-3
+- Add %libdir/tracker to linker path to solve RH #486479
+
 * Thu Feb 12 2009 Michel Salim <salimma@fedoraproject.org> - 0.6.90-2
 - Fix incorrect import in Tracker's deskbar module
 
