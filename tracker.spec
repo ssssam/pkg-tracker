@@ -1,15 +1,14 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.90
-Release:	4%{?dist}
+Version:	0.6.91
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
 # http://bugzilla.gnome.org/show_bug.cgi?id=564640
 Patch0:		tracker-gmime-2.4.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=571573
-Patch1:         tracker-0.6.6-fix-deskbar.patch
+Patch1:		tracker-deskbar_dir.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
@@ -58,7 +57,7 @@ GNOME libraries
 %prep
 %setup -q
 %patch0 -p0
-%patch1 -p1 -b .fix-deskbar
+%patch1 -p0
 autoreconf -f -i
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
@@ -84,8 +83,8 @@ rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker"       \
-        > %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
+echo "%{_libdir}/tracker"	\
+	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 desktop-file-install --delete-original			\
 	--vendor="fedora"				\
@@ -151,14 +150,8 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
-* Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.6.90-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
-
-* Thu Feb 19 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.90-3
-- Add %libdir/tracker to linker path to solve RH #486479
-
-* Thu Feb 12 2009 Michel Salim <salimma@fedoraproject.org> - 0.6.90-2
-- Fix incorrect import in Tracker's deskbar module
+* Fri Mar 13 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.91-1
+- Update to 0.6.91 release
 
 * Mon Feb 09 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.90-1
 - New release, with tons of changes

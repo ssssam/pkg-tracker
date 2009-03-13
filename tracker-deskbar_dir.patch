@@ -1,0 +1,22 @@
+--- configure.ac	2009-03-13 10:55:58.000000000 -0400
++++ configure.ac.new	2009-03-13 13:28:43.370976746 -0400
+@@ -654,7 +654,7 @@
+    fi
+ 
+    if test -z "$deskbar_applet_dir"; then
+-      deskbar_applet_dir="\$(exec_prefix)/lib/deskbar-applet/handlers"
++      deskbar_applet_dir="\$(libdir)/deskbar-applet/handlers"
+    fi
+ fi
+ 
+@@ -665,8 +665,8 @@
+        deskbar_applet_dir="$with_deskbar_applet_dir"
+    fi
+ 
+-   if test -z "$module_dir"; then
+-      deskbar_applet_dir="\$(exec_prefix)/lib/deskbar-applet/modules-2.20-compatible"
++   if test -z "$deskbar_applet_dir"; then
++      deskbar_applet_dir="\$(libdir)/deskbar-applet/modules-2.20-compatible"
+    fi
+ fi
+ 
