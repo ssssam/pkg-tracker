@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.91
+Version:	0.6.92
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -8,13 +8,13 @@ URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
 # http://bugzilla.gnome.org/show_bug.cgi?id=564640
 Patch0:		tracker-gmime-2.4.patch
-Patch1:		tracker-deskbar_dir.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
 BuildRequires:	totem-pl-parser-devel, libgsf-devel, gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel
 BuildRequires:	libjpeg-devel, libexif-devel, exempi-devel, raptor-devel
+BuildRequires:	libiptcdata-devel
 BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel, libtiff-devel
 BuildRequires:	autoconf, automake, libtool
@@ -57,7 +57,6 @@ GNOME libraries
 %prep
 %setup -q
 %patch0 -p0
-%patch1 -p0
 autoreconf -f -i
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
@@ -68,6 +67,8 @@ autoreconf -f -i
  %define deskbar_applet_dir %(pkg-config --variable handlersdir deskbar-applet)
  %define deskbar_type handler
 %endif
+
+%define evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
 %build
 %configure --disable-static --enable-deskbar-applet=%{deskbar_type}	\
@@ -92,6 +93,7 @@ desktop-file-install --delete-original			\
 	%{buildroot}%{_datadir}/applications/%{name}-search-tool.desktop
 
 rm -rf %{buildroot}%{_libdir}/*.la
+rm -rf %{buildroot}/%{evo_plugins_dir}/*.la
 
 %find_lang %{name}
 
@@ -126,6 +128,8 @@ fi
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker.*
 %{_libdir}/*.so.*
 %{_libdir}/tracker/
+%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
+%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
@@ -150,6 +154,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Fri Mar 28 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.92-1
+- Update to 0.6.92 release
+
 * Fri Mar 13 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.91-1
 - Update to 0.6.91 release
 
