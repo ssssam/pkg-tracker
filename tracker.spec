@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.92
+Version:	0.6.93
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -12,7 +12,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
 BuildRequires:	totem-pl-parser-devel, libgsf-devel, gstreamer-devel
-BuildRequires:  gstreamer-plugins-base-devel
+BuildRequires:  gstreamer-plugins-base-devel libvorbis-devel
 BuildRequires:	libjpeg-devel, libexif-devel, exempi-devel, raptor-devel
 BuildRequires:	libiptcdata-devel
 BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet
@@ -72,7 +72,7 @@ autoreconf -f -i
 
 %build
 %configure --disable-static --enable-deskbar-applet=%{deskbar_type}	\
-		--enable-external-qdbm
+		--enable-external-qdbm --enable-libvorbis
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
@@ -154,6 +154,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Thu Apr 09 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.93-1
+- Update to 0.6.93 release
+
 * Fri Mar 28 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.92-1
 - Update to 0.6.92 release
 
