@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.94
+Version:	0.6.95
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -93,7 +93,7 @@ desktop-file-install --delete-original			\
 	%{buildroot}%{_datadir}/applications/%{name}-search-tool.desktop
 
 rm -rf %{buildroot}%{_libdir}/*.la
-rm -rf %{buildroot}/%{evo_plugins_dir}/*.la
+#rm -rf %{buildroot}/%{evo_plugins_dir}/*.la
 
 %find_lang %{name}
 
@@ -128,8 +128,8 @@ fi
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker.*
 %{_libdir}/*.so.*
 %{_libdir}/tracker/
-%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
-%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
+#%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
+#%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
@@ -154,6 +154,9 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
 
 %changelog
+* Fri May 22 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.95-1
+- Update to 0.6.95 release
+
 * Fri May 01 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.94-1
 - Update to 0.6.94 release
 
