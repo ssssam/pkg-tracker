@@ -130,9 +130,9 @@ fi
 #%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
 #%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 %{_mandir}/*/tracker*.gz
-%exclude %{_mandir}/man1/tracker-applet
-%exclude %{_mandir}/man1/tracker-preferences
-%exclude %{_mandir}/man1/tracker-search-tool
+%exclude %{_mandir}/man1/tracker-applet.1.gz
+%exclude %{_mandir}/man1/tracker-preferences.1.gz
+%exclude %{_mandir}/man1/tracker-search-tool.1.gz
 %{_sysconfdir}/xdg/autostart/trackerd.desktop
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %doc %{_datadir}/gtk-doc/html/libtracker-common/
@@ -154,9 +154,9 @@ fi
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
 %{_sysconfdir}/xdg/autostart/tracker-applet.desktop
-%{_mandir}/man1/tracker-applet
-%{_mandir}/man1/tracker-preferences
-%{_mandir}/man1/tracker-search-tool
+%{_mandir}/man1/tracker-applet.1.gz
+%{_mandir}/man1/tracker-preferences.1.gz
+%{_mandir}/man1/tracker-search-tool.1.gz
 
 %changelog
 * Thu Jun 04 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.95-2
