@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.95
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -159,6 +159,9 @@ fi
 %{_mandir}/man1/tracker-search-tool.1.gz
 
 %changelog
+* Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.6.95-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
 * Thu Jun 04 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.95-2
 - Ship the manpages in the appropriate sub-packages (Fedora bug #479278)
 
