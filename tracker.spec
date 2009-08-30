@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.95
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -18,6 +18,8 @@ BuildRequires:	libiptcdata-devel
 BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel, libtiff-devel
 BuildRequires:	autoconf, automake, libtool
+
+Requires:	w3m, wv, odt2txt
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -159,6 +161,9 @@ fi
 %{_mandir}/man1/tracker-search-tool.1.gz
 
 %changelog
+* Sat Aug 29 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.95-4
+- Explicitly require apps needed in the text filters of common documents (Fedora bug #517930)
+
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.6.95-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
