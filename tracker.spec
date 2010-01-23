@@ -15,7 +15,7 @@ BuildRequires:	totem-pl-parser-devel, libgsf-devel, gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel libvorbis-devel
 BuildRequires:	libjpeg-devel, libexif-devel, exempi-devel, raptor-devel
 BuildRequires:	libiptcdata-devel
-BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet
+BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet-devel
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel, libtiff-devel
 BuildRequires:	autoconf, automake, libtool
 
@@ -163,6 +163,7 @@ fi
 %changelog
 * Thu Jan 21 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.95-5
 - Rebuilt for libgnome-desktop soname change.
+- BR deskbar-applet-devel
 
 * Sat Aug 29 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.95-4
 - Explicitly require apps needed in the text filters of common documents (Fedora bug #517930)
