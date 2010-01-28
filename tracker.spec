@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.95
-Release:	5%{?dist}
+Release:	6%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -161,6 +161,9 @@ fi
 %{_mandir}/man1/tracker-search-tool.1.gz
 
 %changelog
+* Thu Jan 28 2010 - Caolán McNamara <caolanm@redhat.com> - 0.6.95-6
+- rebuild for dependencies
+
 * Thu Jan 21 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.95-5
 - Rebuilt for libgnome-desktop soname change.
 - BR deskbar-applet-devel
