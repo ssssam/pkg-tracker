@@ -15,7 +15,6 @@ BuildRequires:	libjpeg-devel, libexif-devel, exempi-devel, raptor-devel
 BuildRequires:	libiptcdata-devel
 BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet-devel
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel, libtiff-devel
-BuildRequires:	autoconf, automake, libtool
 
 Requires:	w3m, wv, odt2txt
 
@@ -70,10 +69,7 @@ GNOME libraries
 
 %build
 %configure --disable-static --enable-deskbar-applet=%{deskbar_type}	\
-		--enable-external-qdbm --enable-libvorbis
-# Disable rpath
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+	--enable-external-qdbm --enable-libvorbis --disable-rpath
 
 make %{?_smp_mflags}
 
