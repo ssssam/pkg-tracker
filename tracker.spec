@@ -1,13 +1,11 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.95
-Release:	6%{?dist}
+Version:	0.6.96
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
-# http://bugzilla.gnome.org/show_bug.cgi?id=564640
-Patch0:		tracker-gmime-2.4.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
@@ -58,8 +56,6 @@ GNOME libraries
 
 %prep
 %setup -q
-%patch0 -p0
-autoreconf -f -i
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
@@ -161,6 +157,9 @@ fi
 %{_mandir}/man1/tracker-search-tool.1.gz
 
 %changelog
+* Thu Feb 04 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-1
+- Update to 0.6.96 release (Hope it fix the many abrt bugs).
+
 * Thu Jan 28 2010 - Caolán McNamara <caolanm@redhat.com> - 0.6.95-6
 - rebuild for dependencies
 
