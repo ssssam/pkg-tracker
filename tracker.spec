@@ -1,22 +1,24 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.96
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
+# The wvText utility used in msword_filter is bad, use abiword instead
+Patch0:		tracker-msword_filter.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
 BuildRequires:	totem-pl-parser-devel, libgsf-devel, gstreamer-devel
-BuildRequires:  gstreamer-plugins-base-devel libvorbis-devel
+BuildRequires:  gstreamer-plugins-base-devel
 BuildRequires:	libjpeg-devel, libexif-devel, exempi-devel, raptor-devel
 BuildRequires:	libiptcdata-devel
 BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet-devel
 BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel, libtiff-devel
 
-Requires:	w3m, wv, odt2txt
+Requires:	w3m, odt2txt
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -31,7 +33,10 @@ It provides additional features for file based objects including context
 linking and audit trails for a file object.
 
 It has the ability to index, store, harvest metadata. retrieve and search  
-all types of files and other first class objects
+all types of files and other first class objects.
+
+NOTE: This package REQUIRES 'abiword' to be installed, in order to properly
+index MS Word files.
 
 %package devel
 Summary:	Headers for developing programs that will use %{name}
@@ -55,6 +60,7 @@ GNOME libraries
 
 %prep
 %setup -q
+%patch0 -p0 -b .wv
 
 %define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
@@ -69,7 +75,7 @@ GNOME libraries
 
 %build
 %configure --disable-static --enable-deskbar-applet=%{deskbar_type}	\
-	--enable-external-qdbm --enable-libvorbis --disable-rpath
+	--enable-external-qdbm --disable-rpath
 
 make %{?_smp_mflags}
 
@@ -153,6 +159,10 @@ fi
 %{_mandir}/man1/tracker-search-tool.1.gz
 
 %changelog
+* Mon Feb 08 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-2
+- Patch to not use deprecated wvText utility as MSWord filter
+- Remove libvorbis dependency, it is not necessary where gstreamer is present.
+
 * Thu Feb 04 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-1
 - Update to 0.6.96 release (Hope it fix the many abrt bugs).
 
