@@ -1,13 +1,14 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.96
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
 # The wvText utility used in msword_filter is bad, use abiword instead
 Patch0:		tracker-msword_filter.patch
+Patch1:		tracker-ldfind.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
@@ -61,21 +62,26 @@ GNOME libraries
 %prep
 %setup -q
 %patch0 -p0 -b .wv
+%patch1 -p0 -b .ld
 
-%define deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
+%global deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
- %define deskbar_applet_dir %(pkg-config --variable modulesdir deskbar-applet)
- %define deskbar_type module
+ %global deskbar_applet_dir %(pkg-config --variable modulesdir deskbar-applet)
+ %global deskbar_type module
 %else
- %define deskbar_applet_dir %(pkg-config --variable handlersdir deskbar-applet)
- %define deskbar_type handler
+ %global deskbar_applet_dir %(pkg-config --variable handlersdir deskbar-applet)
+ %global deskbar_type handler
 %endif
 
-%define evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
+%global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
 %build
 %configure --disable-static --enable-deskbar-applet=%{deskbar_type}	\
-	--enable-external-qdbm --disable-rpath
+	--enable-external-qdbm
+
+# Disable rpath
+sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool 
 
 make %{?_smp_mflags}
 
@@ -159,6 +165,9 @@ fi
 %{_mandir}/man1/tracker-search-tool.1.gz
 
 %changelog
+* Wed Feb 10 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-3
+- Add patch to explicitly list some missing libs for the linker
+
 * Mon Feb 08 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-2
 - Patch to not use deprecated wvText utility as MSWord filter
 - Remove libvorbis dependency, it is not necessary where gstreamer is present.

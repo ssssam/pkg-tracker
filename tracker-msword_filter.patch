@@ -1,20 +1,24 @@
 --- filters/application/msword_filter	2010-02-04 05:25:44.000000000 -0500
-+++ filters/application/msword_filter.new	2010-02-08 08:18:57.117202359 -0500
-@@ -2,7 +2,7 @@
++++ filters/application/msword_filter.new	2010-02-10 09:52:42.768895298 -0500
+@@ -1,8 +1,7 @@
+ #!/bin/sh
  
  tmpdir=`mktemp -td tracker.msword_filter.XXXXXXXXXX` || exit 1
- tmpfile="$tmpdir"/tmpfile
+-tmpfile="$tmpdir"/tmpfile
 -tmptxtfile="$tmpdir"/tmptxtfile
-+tmptxtfile="$tmpdir"/tmpfile.text
++tmpfile="$tmpdir"/tmpfil
  
  cp "$1" "$tmpfile"
  
-@@ -12,7 +12,7 @@
+@@ -12,9 +11,9 @@
  
  cd "$tmpdir"
  
 -nice -n19 wvText "$tmpfile" "$tmptxtfile" > /dev/null 2>&1
-+nice -n19 abiword --to=text > /dev/null 2>&1
++nice -n19 abiword --to=text tmpfil > /dev/null 2>&1
  
- cat "$tmptxtfile"
+-cat "$tmptxtfile"
++cat tmpfil.text
+ 
+ rm -rf "$tmpdir"
  
