@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.6.96
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -9,6 +9,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.t
 # The wvText utility used in msword_filter is bad, use abiword instead
 Patch0:		tracker-msword_filter.patch
 Patch1:		tracker-ldfind.patch
+Patch2:		tracker-gmime26.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
 BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
@@ -63,6 +64,8 @@ GNOME libraries
 %setup -q
 %patch0 -p0 -b .wv
 %patch1 -p0 -b .ld
+%patch2 -p1 -b .gmime26
+touch -r aclocal.m4 configure.ac
 
 %global deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
 %if "%deskbar_applet_ver" >= "2.19.4"
@@ -165,6 +168,9 @@ fi
 %{_mandir}/man1/tracker-search-tool.1.gz
 
 %changelog
+* Sat Feb 13 2010 Caolán McNamara <caolanm@redhat.com> - 0.6.96-4
+- rebuild for dependencies
+
 * Wed Feb 10 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-3
 - Add patch to explicitly list some missing libs for the linker
 
