@@ -1,26 +1,24 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.6.96
-Release:	4%{?dist}
+Version:	0.7.23
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.6/%{name}-%{version}.tar.bz2
-# The wvText utility used in msword_filter is bad, use abiword instead
-Patch0:		tracker-msword_filter.patch
-Patch1:		tracker-ldfind.patch
-Patch2:		tracker-gmime26.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.7/%{name}-%{version}.tar.bz2
+Patch0:		tracker-0.7-doc-build.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:	gmime-devel, poppler-glib-devel, evolution-devel
-BuildRequires:	gnome-desktop-devel, gamin-devel, libnotify-devel
-BuildRequires:	totem-pl-parser-devel, libgsf-devel, gstreamer-devel
-BuildRequires:  gstreamer-plugins-base-devel
-BuildRequires:	libjpeg-devel, libexif-devel, exempi-devel, raptor-devel
-BuildRequires:	libiptcdata-devel
-BuildRequires:	desktop-file-utils, intltool, gettext, deskbar-applet-devel
-BuildRequires:	sqlite-devel, qdbm-devel, pygtk2-devel, libtiff-devel
-
-Requires:	w3m, odt2txt
+BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
+BuildRequires:	libuuid-devel libnotify-devel dbus-devel
+BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
+BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
+BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel 
+BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
+BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
+BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
+BuildRequires:	DeviceKit-power-devel
+BuildRequires:	desktop-file-utils intltool gettext graphviz
+#BuildRequires:	deskbar-applet
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -35,10 +33,7 @@ It provides additional features for file based objects including context
 linking and audit trails for a file object.
 
 It has the ability to index, store, harvest metadata. retrieve and search  
-all types of files and other first class objects.
-
-NOTE: This package REQUIRES 'abiword' to be installed, in order to properly
-index MS Word files.
+all types of files and other first class objects
 
 %package devel
 Summary:	Headers for developing programs that will use %{name}
@@ -60,40 +55,44 @@ Requires:	%{name} = %{version}-%{release}
 Graphical frontend to tracker search facilities. This has dependencies on
 GNOME libraries
 
+%package docs
+Summary:	Documentations for tracker
+Group:		Documentation
+BuildArch:      noarch
+
+%description docs
+This package contains the documentation for tracker
+
 %prep
 %setup -q
-%patch0 -p0 -b .wv
-%patch1 -p0 -b .ld
-%patch2 -p1 -b .gmime26
-touch -r aclocal.m4 configure.ac
+%patch0 -p0 -b .fix
 
-%global deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
-%if "%deskbar_applet_ver" >= "2.19.4"
- %global deskbar_applet_dir %(pkg-config --variable modulesdir deskbar-applet)
- %global deskbar_type module
-%else
- %global deskbar_applet_dir %(pkg-config --variable handlersdir deskbar-applet)
- %global deskbar_type handler
-%endif
+#%global deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
+#%if "%deskbar_applet_ver" >= "2.19.4"
+# %global deskbar_applet_dir %(pkg-config --variable modulesdir deskbar-applet)
+# %global deskbar_type module
+#%else
+# %global deskbar_applet_dir %(pkg-config --variable handlersdir deskbar-applet)
+# %global deskbar_type handler
+#%endif
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
 %build
-%configure --disable-static --enable-deskbar-applet=%{deskbar_type}	\
-	--enable-external-qdbm
+%configure --disable-static --enable-gtk-doc --enable-tracker-search-bar
 
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool 
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags}
+make V=1 %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker"	\
+echo "%{_libdir}/tracker-0.7"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 desktop-file-install --delete-original			\
@@ -128,65 +127,52 @@ fi
 %defattr(-, root, root, -)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/tracker*
-%exclude %{_bindir}/tracker-applet
-%exclude %{_bindir}/tracker-preferences
-%exclude %{_bindir}/tracker-search-tool
 %{_libexecdir}/tracker*
 %{_datadir}/tracker/
-%{_datadir}/dbus-1/services/org.freedesktop.Tracker.*
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
-%{_libdir}/tracker/
-#%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
-#%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
+%{_libdir}/tracker-0.7/
+%{_libdir}/nautilus/extensions-2.0/libnautilus-tracker-tags.so
+%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
+%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
+%{_libdir}/bonobo/servers/GNOME_Search_Bar_Applet.server
 %{_mandir}/*/tracker*.gz
-%exclude %{_mandir}/man1/tracker-applet.1.gz
+%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
+%{_sysconfdir}/xdg/autostart/tracker*.desktop
+%exclude %{_bindir}/tracker-preferences
+%exclude %{_bindir}/tracker-search-tool
+%exclude %{_mandir}/man1/tracker-search-bar.1.gz
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-search-tool.1.gz
-%{_sysconfdir}/xdg/autostart/trackerd.desktop
-%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
-%doc %{_datadir}/gtk-doc/html/libtracker-common/
-%doc %{_datadir}/gtk-doc/html/libtracker-module/
 
 %files devel
 %defattr(-, root, root, -)
-%{_includedir}/tracker*
-%{_includedir}/libtracker-gtk/
+%{_includedir}/tracker-0.7/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 
 %files search-tool
 %defattr(-, root, root, -)
-%{_bindir}/tracker-applet
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-search-tool
-%{deskbar_applet_dir}/tracker*.py*
+#%{deskbar_applet_dir}/tracker*.py*
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
-%{_sysconfdir}/xdg/autostart/tracker-applet.desktop
-%{_mandir}/man1/tracker-applet.1.gz
+%{_mandir}/man1/tracker-search-bar.1.gz
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-search-tool.1.gz
 
+%files docs
+%defattr(-, root, root, -)
+%{_datadir}/gtk-doc/html/libtracker-common/
+%{_datadir}/gtk-doc/html/libtracker-miner/
+%{_datadir}/gtk-doc/html/libtracker-client/
+%{_datadir}/gtk-doc/html/libtracker-extract/
+%{_datadir}/gtk-doc/html/ontology/
+
 %changelog
-* Sat Feb 13 2010 Caolán McNamara <caolanm@redhat.com> - 0.6.96-4
-- rebuild for dependencies
-
-* Wed Feb 10 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-3
-- Add patch to explicitly list some missing libs for the linker
-
-* Mon Feb 08 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-2
-- Patch to not use deprecated wvText utility as MSWord filter
-- Remove libvorbis dependency, it is not necessary where gstreamer is present.
-
-* Thu Feb 04 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.96-1
-- Update to 0.6.96 release (Hope it fix the many abrt bugs).
-
-* Thu Jan 28 2010 - Caolán McNamara <caolanm@redhat.com> - 0.6.95-6
-- rebuild for dependencies
-
-* Thu Jan 21 2010 Deji Akingunola <dakingun@gmail.com> - 0.6.95-5
-- Rebuilt for libgnome-desktop soname change.
-- BR deskbar-applet-devel
+* Tue Mar 02 2010 Deji Akingunola <dakingun@gmail.com> - 0.7.23-1
+- Update to 0.7.23 release
 
 * Sat Aug 29 2009 Deji Akingunola <dakingun@gmail.com> - 0.6.95-4
 - Explicitly require apps needed in the text filters of common documents (Fedora bug #517930)
