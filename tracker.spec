@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.7.25
+Version:	0.7.28
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -16,9 +16,10 @@ BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel
 BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
-BuildRequires:	DeviceKit-power-devel
+BuildRequires:	DeviceKit-power-devel gnome-keyring-devel
 BuildRequires:	desktop-file-utils intltool gettext graphviz
-#BuildRequires:	deskbar-applet
+
+Requires:	odt2txt
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -52,8 +53,8 @@ Group:		User Interface/Desktops
 Requires:	%{name} = %{version}-%{release}
 
 %description search-tool
-Graphical frontend to tracker search facilities. This has dependencies on
-GNOME libraries
+Graphical frontend to tracker search and tagging facilities. This has
+dependencies on GNOME libraries
 
 %package docs
 Summary:	Documentations for tracker
@@ -66,15 +67,6 @@ This package contains the documentation for tracker
 %prep
 %setup -q
 %patch0 -p0 -b .fix
-
-#%global deskbar_applet_ver %(pkg-config --modversion deskbar-applet)
-#%if "%deskbar_applet_ver" >= "2.19.4"
-# %global deskbar_applet_dir %(pkg-config --variable modulesdir deskbar-applet)
-# %global deskbar_type module
-#%else
-# %global deskbar_applet_dir %(pkg-config --variable handlersdir deskbar-applet)
-# %global deskbar_type handler
-#%endif
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
@@ -132,10 +124,6 @@ fi
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
 %{_libdir}/tracker-0.7/
-%{_libdir}/nautilus/extensions-2.0/libnautilus-tracker-tags.so
-%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
-%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
-%{_libdir}/bonobo/servers/GNOME_Search_Bar_Applet.server
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
@@ -150,12 +138,16 @@ fi
 %{_includedir}/tracker-0.7/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
+%{_datadir}/vala/vapi/tracker*.vapi
 
 %files search-tool
 %defattr(-, root, root, -)
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-search-tool
-#%{deskbar_applet_dir}/tracker*.py*
+%{_libdir}/nautilus/extensions-2.0/libnautilus-tracker-tags.so
+%{_libdir}/bonobo/servers/GNOME_Search_Bar_Applet.server
+%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
+%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
 %{_mandir}/man1/tracker-search-bar.1.gz
@@ -171,6 +163,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Mar 25 2010 Deji Akingunola <dakingun@gmail.com> - 0.7.28-1
+- Update to 0.7.28 release
+
 * Thu Mar 11 2010 Deji Akingunola <dakingun@gmail.com> - 0.7.25-1
 - Update to 0.7.25 release
 
