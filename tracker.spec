@@ -1,11 +1,11 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.7.28
+Version:	0.8.0
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.7/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
 Patch0:		tracker-0.7-doc-build.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
@@ -84,7 +84,7 @@ rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker-0.7"	\
+echo "%{_libdir}/tracker-0.8"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 desktop-file-install --delete-original			\
@@ -123,7 +123,7 @@ fi
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
-%{_libdir}/tracker-0.7/
+%{_libdir}/tracker-0.8/
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
@@ -135,7 +135,7 @@ fi
 
 %files devel
 %defattr(-, root, root, -)
-%{_includedir}/tracker-0.7/
+%{_includedir}/tracker-0.8/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.vapi
@@ -163,6 +163,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Apr 01 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.0-1
+- Update to 0.8.0 release
+
 * Thu Mar 25 2010 Deji Akingunola <dakingun@gmail.com> - 0.7.28-1
 - Update to 0.7.28 release
 
