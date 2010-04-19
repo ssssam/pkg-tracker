@@ -1,12 +1,12 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.8.0
+Version:	0.8.2
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
-Patch0:		tracker-0.7-doc-build.patch
+Patch0:		tracker-0.8-doc-build.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
@@ -71,7 +71,8 @@ This package contains the documentation for tracker
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
 %build
-%configure --disable-static --enable-gtk-doc --enable-tracker-search-bar
+%configure --disable-static --enable-tracker-search-bar		\
+	--enable-gtk-doc --disable-functional-tests
 
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -93,6 +94,7 @@ desktop-file-install --delete-original			\
 	%{buildroot}%{_datadir}/applications/%{name}-search-tool.desktop
 
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
+rm -rf %{buildroot}%{_datadir}/tracker-tests
 
 %find_lang %{name}
 
@@ -163,6 +165,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Apr 19 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.2-1
+- Update to 0.8.2 release
+
 * Thu Apr 01 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.0-1
 - Update to 0.8.0 release
 
