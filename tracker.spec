@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.8.2
+Version:	0.8.4
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -165,6 +165,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Apr 29 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.4-1
+- Update to 0.8.4 release
+
 * Mon Apr 19 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.2-1
 - Update to 0.8.2 release
 
