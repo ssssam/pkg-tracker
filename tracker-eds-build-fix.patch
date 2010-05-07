@@ -1,0 +1,31 @@
+--- src/plugins/evolution/tracker-evolution-plugin.c	2010-04-29 13:20:00.000000000 -0400
++++ src/plugins/evolution/tracker-evolution-plugin.c.new	2010-05-07 10:08:55.892873454 -0400
+@@ -39,27 +39,7 @@
+ 
+ #include <sqlite3.h>
+ 
+-#include <camel/camel-mime-message.h>
+-#include <camel/camel-i18n.h>
+-#include <camel/camel-store.h>
+-#include <camel/camel-folder.h>
+-#include <camel/camel-db.h>
+-#include <camel/camel-offline-store.h>
+-#include <camel/camel-session.h>
+-#include <camel/camel-url.h>
+-#include <camel/camel-stream.h>
+-#include <camel/camel-stream-mem.h>
+-#include <camel/camel-multipart.h>
+-#include <camel/camel-multipart-encrypted.h>
+-#include <camel/camel-multipart-signed.h>
+-#include <camel/camel-medium.h>
+-#include <camel/camel-gpg-context.h>
+-#include <camel/camel-smime-context.h>
+-#include <camel/camel-string-utils.h>
+-#include <camel/camel-stream-filter.h>
+-#include <camel/camel-stream-null.h>
+-#include <camel/camel-mime-filter-charset.h>
+-#include <camel/camel-mime-filter-windows.h>
++#include <camel/camel.h>
+ 
+ #include <mail/mail-config.h>
+ #include <mail/mail-session.h>

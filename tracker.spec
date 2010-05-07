@@ -7,6 +7,7 @@ Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
 Patch0:		tracker-0.8-doc-build.patch
+Patch1:		tracker-eds-build-fix.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
@@ -76,6 +77,7 @@ This package contains the documentation for tracker
 %prep
 %setup -q
 %patch0 -p0 -b .fix
+%patch1 -p0 -b .fix
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
@@ -182,6 +184,7 @@ fi
 * Thu May 06 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.5-1
 - Update to 0.8.5 release
 - Provide an upgrade path for paperbox (make ~-search-tool obsolete it) on F-13.
+- Patch to build with eds-2.31.1
 
 * Thu Apr 29 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.4-1
 - Update to 0.8.4 release
