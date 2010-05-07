@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.8.4
+Version:	0.8.5
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -51,10 +51,19 @@ developing with tracker
 Summary:	Tracker search tool(s)
 Group:		User Interface/Desktops
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	paperbox <= 0.4.4
 
 %description search-tool
 Graphical frontend to tracker search and tagging facilities. This has
 dependencies on GNOME libraries
+
+%package evolution-plugin
+Summary:	Tracker's evolution plugin
+Group:		User Interface/Desktops
+Requires:	%{name} = %{version}-%{release}
+
+%description evolution-plugin
+Tracker's evolution plugin
 
 %package docs
 Summary:	Documentations for tracker
@@ -131,6 +140,7 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_bindir}/tracker-search-tool
+%exclude %{_libexecdir}/tracker-search-bar
 %exclude %{_mandir}/man1/tracker-search-bar.1.gz
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-search-tool.1.gz
@@ -140,21 +150,25 @@ fi
 %{_includedir}/tracker-0.8/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
-%{_datadir}/vala/vapi/tracker*.vapi
+%{_datadir}/vala/vapi/tracker*.*
 
 %files search-tool
 %defattr(-, root, root, -)
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-search-tool
+%{_libexecdir}/tracker-search-bar
 %{_libdir}/nautilus/extensions-2.0/libnautilus-tracker-tags.so
 %{_libdir}/bonobo/servers/GNOME_Search_Bar_Applet.server
-%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
-%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
 %{_mandir}/man1/tracker-search-bar.1.gz
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-search-tool.1.gz
+
+%files evolution-plugin
+%defattr(-, root, root, -)
+%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
+%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 
 %files docs
 %defattr(-, root, root, -)
@@ -165,6 +179,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu May 06 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.5-1
+- Update to 0.8.5 release
+- Provide an upgrade path for paperbox (make ~-search-tool obsolete it) on F-13.
+
 * Thu Apr 29 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.4-1
 - Update to 0.8.4 release
 
