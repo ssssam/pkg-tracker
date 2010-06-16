@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.8.5
+Version:	0.8.11
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -181,6 +181,13 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Jun 15 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.11-1
+- Update to 0.8.11 release
+- Adapt to EDS Camel API changes (patch not tested yet).
+
+* Thu May 27 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.9-1
+- Update to 0.8.9 release
+
 * Thu May 06 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.5-1
 - Update to 0.8.5 release
 - Provide an upgrade path for paperbox (make ~-search-tool obsolete it) on F-13.

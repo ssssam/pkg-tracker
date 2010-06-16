@@ -1,5 +1,5 @@
 --- src/plugins/evolution/tracker-evolution-plugin.c	2010-04-29 13:20:00.000000000 -0400
-+++ src/plugins/evolution/tracker-evolution-plugin.c.new	2010-05-07 10:08:55.892873454 -0400
++++ src/plugins/evolution/tracker-evolution-plugin.c.new	2010-06-16 18:21:39.776821965 -0400
 @@ -39,27 +39,7 @@
  
  #include <sqlite3.h>
@@ -29,3 +29,85 @@
  
  #include <mail/mail-config.h>
  #include <mail/mail-session.h>
+@@ -303,8 +283,8 @@
+ static void
+ folder_registry_free (FolderRegistry *registry)
+ {
+-	camel_object_remove_event (registry->folder, registry->hook_info->hook_id);
+-	camel_object_unref (registry->folder);
++	g_signal_handler_disconnect (registry->folder, registry->hook_info->hook_id);
++	g_object_unref (registry->folder);
+ 	g_free (registry->hook_info->account_uri);
+ 	g_slice_free (OnSummaryChangedInfo, registry->hook_info);
+ 	g_slice_free (FolderRegistry, registry);
+@@ -321,7 +301,7 @@
+ 	registry->hook_info->account_uri = g_strdup (account_uri);
+ 	registry->hook_info->self = self; /* weak */
+ 	registry->hook_info->hook_id = 0;
+-	camel_object_ref (folder);
++	g_object_ref (folder);
+ 	registry->folder = folder;
+ 
+ 	return registry;
+@@ -1340,8 +1320,8 @@
+ 		goto not_ready;
+ 	}
+ 
+-	hook_id = camel_object_hook_event (folder, "folder_changed",
+-	                                   CAMEL_CALLBACK (on_folder_summary_changed),
++	hook_id = g_signal_connect (folder, "folder_changed",
++	                                   G_CALLBACK (on_folder_summary_changed),
+ 	                                   registry->hook_info);
+ 	registry->hook_info->hook_id = hook_id;
+ 
+@@ -1816,7 +1796,7 @@
+ 
+ static void
+ on_folder_renamed (CamelStore *store,
+-                   CamelRenameInfo *info,
++                   CamelFolderInfo *info,
+                    StoreRegistry *registry)
+ {
+ 	unregister_account (registry->self, registry->account);
+@@ -1842,7 +1822,7 @@
+ static void
+ store_registry_free (StoreRegistry *registry)
+ {
+-	camel_object_remove_event (registry->store, registry->hook_id);
++	g_signal_handler_disconnect (registry->store, registry->hook_id);
+ 	camel_object_unref (registry->store);
+ 	g_slice_free (StoreRegistry, registry);
+ }
+@@ -1871,8 +1851,8 @@
+ 
+ 	/* Hook up catching folder changes in the store */
+ 	registry = store_registry_new (store, account, self);
+-	hook_id = camel_object_hook_event (store, "folder_created",
+-	                                   CAMEL_CALLBACK (on_folder_created),
++	hook_id = g_signal_connect (store, "folder_created",
++	                                   G_CALLBACK (on_folder_created),
+ 	                                   registry);
+ 	registry->hook_id = hook_id;
+ 	g_hash_table_replace (priv->registered_stores,
+@@ -1880,8 +1860,8 @@
+ 	                      registry);
+ 
+ 	registry = store_registry_new (store, account, self);
+-	hook_id = camel_object_hook_event (store, "folder_renamed",
+-	                                   CAMEL_CALLBACK (on_folder_renamed),
++	hook_id = g_signal_connect (store, "folder_renamed",
++	                                   G_CALLBACK (on_folder_renamed),
+ 	                                   registry);
+ 	registry->hook_id = hook_id;
+ 	g_hash_table_replace (priv->registered_stores,
+@@ -1889,8 +1869,8 @@
+ 	                      registry);
+ 
+ 	registry = store_registry_new (store, account, self);
+-	hook_id = camel_object_hook_event (store, "folder_deleted",
+-	                                   CAMEL_CALLBACK (on_folder_deleted),
++	hook_id = g_signal_connect (store, "folder_deleted",
++	                                   G_CALLBACK (on_folder_deleted),
+ 	                                   registry);
+ 	registry->hook_id = hook_id;
+ 	g_hash_table_replace (priv->registered_stores,
