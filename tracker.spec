@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.8.11
-Release:	2%{?dist}
+Version:	0.8.13
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -181,6 +181,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Jun 28 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.13-1
+- Update to 0.8.13 release
+
 * Tue Jun 22 2010 Matthias Clasen <mclasen@redhat.com> - 0.8.11-2
 - Rebuild against new poppler
 
