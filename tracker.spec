@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.8.13
+Version:	0.8.15
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -8,6 +8,7 @@ URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
 Patch0:		tracker-0.8-doc-build.patch
 Patch1:		tracker-eds-build-fix.patch
+Patch2:		tracker-memleak-fix.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
@@ -78,6 +79,7 @@ This package contains the documentation for tracker
 %setup -q
 %patch0 -p0 -b .fix
 %patch1 -p0 -b .fix
+%patch2 -p0 -b .mem
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
@@ -174,6 +176,7 @@ fi
 
 %files docs
 %defattr(-, root, root, -)
+%doc docs/reference/COPYING
 %{_datadir}/gtk-doc/html/libtracker-common/
 %{_datadir}/gtk-doc/html/libtracker-miner/
 %{_datadir}/gtk-doc/html/libtracker-client/
@@ -181,6 +184,12 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Jul 16 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.15-1
+- Update to 0.8.15 release
+- Package the docs licensing file
+- Patch for EDS API changes (Migrate from CamelException to GError)
+- Backport a memory leak fix
+
 * Mon Jun 28 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.13-1
 - Update to 0.8.13 release
 
@@ -189,7 +198,7 @@ fi
 
 * Tue Jun 15 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.11-1
 - Update to 0.8.11 release
-- Adapt to EDS Camel API changes (patch not tested yet).
+- Adapt to EDS Camel API changes (Convert CamelObject events to GObject signals), patch not tested yet.
 
 * Thu May 27 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.9-1
 - Update to 0.8.9 release
@@ -197,7 +206,7 @@ fi
 * Thu May 06 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.5-1
 - Update to 0.8.5 release
 - Provide an upgrade path for paperbox (make ~-search-tool obsolete it) on F-13.
-- Patch to build with eds-2.31.1
+- Patch to build with eds-2.31.1 (Camel headers locked down)
 
 * Thu Apr 29 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.4-1
 - Update to 0.8.4 release

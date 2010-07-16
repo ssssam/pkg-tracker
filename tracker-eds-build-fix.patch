@@ -1,5 +1,5 @@
---- src/plugins/evolution/tracker-evolution-plugin.c	2010-04-29 13:20:00.000000000 -0400
-+++ src/plugins/evolution/tracker-evolution-plugin.c.new	2010-06-16 18:21:39.776821965 -0400
+--- src/plugins/evolution/tracker-evolution-plugin.c	2010-07-02 03:49:03.000000000 -0400
++++ src/plugins/evolution/tracker-evolution-plugin.c.new	2010-07-16 12:44:44.335347946 -0400
 @@ -39,27 +39,7 @@
  
  #include <sqlite3.h>
@@ -49,7 +49,42 @@
  	registry->folder = folder;
  
  	return registry;
-@@ -1340,8 +1320,8 @@
+@@ -1267,7 +1247,7 @@
+ 			EAccount *account = (EAccount *) e_iterator_get (it);
+ 			CamelProvider *provider;
+ 			CamelStore *store;
+-			CamelException ex;
++			GError *error = NULL;
+ 			char *uri;
+ 			CamelDB *cdb_r;
+ 			sqlite3_stmt *stmt = NULL;
+@@ -1275,13 +1255,11 @@
+ 			guint ret = SQLITE_OK;
+ 			guint64 latest = smallest;
+ 
+-			camel_exception_init (&ex);
+-
+ 			if (!account->enabled || !(uri = account->source->url))
+ 				continue;
+ 
+ 			if (!(provider = camel_provider_get(uri, NULL))) {
+-				camel_exception_clear (&ex);
++				g_error_free (error);
+ 				continue;
+ 			}
+ 
+@@ -1289,8 +1267,8 @@
+ 				continue;
+ 			}
+ 
+-			if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, &ex))) {
+-				camel_exception_clear (&ex);
++			if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, &error))) {
++				g_error_free (error);
+ 				continue;
+ 			}
+ 
+@@ -1345,8 +1323,8 @@
  		goto not_ready;
  	}
  
@@ -60,7 +95,64 @@
  	                                   registry->hook_info);
  	registry->hook_info->hook_id = hook_id;
  
-@@ -1816,7 +1796,7 @@
+@@ -1524,7 +1502,7 @@
+ 	/* Ownership was transfered to us in try_again */
+ 	free_introduction_info (winfo->intro_info);
+ 	camel_db_close (winfo->cdb_r);
+-	camel_object_unref (winfo->store);
++	g_object_unref (winfo->store);
+ 	camel_folder_info_free (winfo->iter);
+ 	g_free (winfo);
+ }
+@@ -1579,7 +1557,7 @@
+ 
+ 	/* Ownership of these is transfered in try_again */
+ 
+-	camel_object_ref (store);
++	g_object_ref (store);
+ 	info->store = store;
+ 	/* This apparently creates a thread */
+ 	info->cdb_r = camel_db_clone (store->cdb_r, NULL);
+@@ -1622,24 +1600,23 @@
+ {
+ 	CamelProvider *provider;
+ 	CamelStore *store;
+-	CamelException ex;
++	GError *error = NULL;
+ 	char *uri, *account_uri, *ptr;
+ 	IntroductionInfo *intro_info;
+ 
+ 	if (!account->enabled || !(uri = account->source->url))
+ 		return;
+ 
+-	camel_exception_init (&ex);
+-	if (!(provider = camel_provider_get(uri, &ex))) {
+-		camel_exception_clear (&ex);
++	if (!(provider = camel_provider_get(uri, &error))) {
++		g_error_free (error);
+ 		return;
+ 	}
+ 
+ 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
+ 		return;
+ 
+-	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, &ex))) {
+-		camel_exception_clear (&ex);
++	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, &error))) {
++		g_error_free (error);
+ 		return;
+ 	}
+ 
+@@ -1660,7 +1637,7 @@
+ 
+ 	mail_get_folderinfo (store, NULL, on_got_folderinfo_introduce, intro_info);
+ 
+-	camel_object_unref (store);
++	g_object_unref (store);
+ 
+ }
+ 
+@@ -1821,7 +1798,7 @@
  
  static void
  on_folder_renamed (CamelStore *store,
@@ -69,16 +161,27 @@
                     StoreRegistry *registry)
  {
  	unregister_account (registry->self, registry->account);
-@@ -1842,7 +1822,7 @@
+@@ -1839,7 +1816,7 @@
+ 	registry->store = co;
+ 	registry->account = account; /* weak */
+ 	registry->self = self; /* weak */
+-	camel_object_ref (co);
++	g_object_ref (co);
+ 
+ 	return registry;
+ }
+@@ -1847,8 +1824,8 @@
  static void
  store_registry_free (StoreRegistry *registry)
  {
 -	camel_object_remove_event (registry->store, registry->hook_id);
+-	camel_object_unref (registry->store);
 +	g_signal_handler_disconnect (registry->store, registry->hook_id);
- 	camel_object_unref (registry->store);
++	g_object_unref (registry->store);
  	g_slice_free (StoreRegistry, registry);
  }
-@@ -1871,8 +1851,8 @@
+ 
+@@ -1876,8 +1853,8 @@
  
  	/* Hook up catching folder changes in the store */
  	registry = store_registry_new (store, account, self);
@@ -89,7 +192,7 @@
  	                                   registry);
  	registry->hook_id = hook_id;
  	g_hash_table_replace (priv->registered_stores,
-@@ -1880,8 +1860,8 @@
+@@ -1885,8 +1862,8 @@
  	                      registry);
  
  	registry = store_registry_new (store, account, self);
@@ -100,7 +203,7 @@
  	                                   registry);
  	registry->hook_id = hook_id;
  	g_hash_table_replace (priv->registered_stores,
-@@ -1889,8 +1869,8 @@
+@@ -1894,8 +1871,8 @@
  	                      registry);
  
  	registry = store_registry_new (store, account, self);
@@ -111,3 +214,79 @@
  	                                   registry);
  	registry->hook_id = hook_id;
  	g_hash_table_replace (priv->registered_stores,
+@@ -1921,24 +1898,23 @@
+ {
+ 	CamelProvider *provider;
+ 	CamelStore *store;
+-	CamelException ex;
++	GError *error = NULL;
+ 	char *uri;
+ 	RegisterInfo *reg_info;
+ 
+ 	if (!account->enabled || !(uri = account->source->url))
+ 		return;
+ 
+-	camel_exception_init (&ex);
+-	if (!(provider = camel_provider_get(uri, &ex))) {
+-		camel_exception_clear (&ex);
++	if (!(provider = camel_provider_get(uri, &error))) {
++		g_error_free (error);
+ 		return;
+ 	}
+ 
+ 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
+ 		return;
+ 
+-	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, &ex))) {
+-		camel_exception_clear (&ex);
++	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, &error))) {
++		g_error_free (error);
+ 		return;
+ 	}
+ 
+@@ -1953,7 +1929,7 @@
+ 	/* Get the account's folder-info and register it asynchronously */
+ 	mail_get_folderinfo (store, NULL, on_got_folderinfo_register, reg_info);
+ 
+-	camel_object_unref (store);
++	g_object_unref (store);
+ }
+ 
+ static gboolean
+@@ -1992,22 +1968,21 @@
+ {
+ 	CamelProvider *provider;
+ 	CamelStore *store;
+-	CamelException ex;
++	GError *error = NULL;
+ 	char *uri = account->source->url;
+ 	RegisterInfo *reg_info;
+ 
+ 
+-	camel_exception_init (&ex);
+-	if (!(provider = camel_provider_get(uri, &ex))) {
+-		camel_exception_clear (&ex);
++	if (!(provider = camel_provider_get(uri, &error))) {
++		g_error_free (error);
+ 		return;
+ 	}
+ 
+ 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
+ 		return;
+ 
+-	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, &ex))) {
+-		camel_exception_clear (&ex);
++	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, &error))) {
++		g_error_free (error);
+ 		return;
+ 	}
+ 
+@@ -2020,7 +1995,7 @@
+ 	/* Get the account's folder-info and unregister asynchronously */
+ 	mail_get_folderinfo (store, NULL, on_got_folderinfo_unregister, reg_info);
+ 
+-	camel_object_unref (store);
++	g_object_unref (store);
+ }
+ 
+ static void
