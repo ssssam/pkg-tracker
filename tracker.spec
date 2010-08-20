@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.8.15
+Version:	0.8.16
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -8,7 +8,6 @@ URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
 Patch0:		tracker-0.8-doc-build.patch
 Patch1:		tracker-eds-build-fix.patch
-Patch2:		tracker-memleak-fix.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
@@ -77,9 +76,8 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
-%patch0 -p0 -b .fix
-%patch1 -p0 -b .fix
-%patch2 -p0 -b .mem
+%patch0 -p0
+%patch1 -p0
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
@@ -184,6 +182,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Aug 20 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.16-1
+- Update to 0.8.16 release
+
 * Fri Jul 16 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.15-1
 - Update to 0.8.15 release
 - Package the docs licensing file
