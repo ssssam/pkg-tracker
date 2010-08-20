@@ -185,6 +185,9 @@ fi
 * Fri Aug 20 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.16-1
 - Update to 0.8.16 release
 
+* Thu Aug 19 2010 Rex Dieter <rdieter@fedoraproject.org> - 0.8.15-2
+- rebuild (poppler)
+
 * Fri Jul 16 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.15-1
 - Update to 0.8.15 release
 - Package the docs licensing file
