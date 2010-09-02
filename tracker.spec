@@ -17,7 +17,7 @@ BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel
 BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
-BuildRequires:	upower-devel gnome-keyring-devel evolution-data-server-devel
+BuildRequires:	upower-devel gnome-keyring-devel evolution-devel
 BuildRequires:	desktop-file-utils intltool gettext graphviz
 
 Requires:	odt2txt
