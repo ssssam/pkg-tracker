@@ -1,6 +1,6 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
-Version:	0.8.16
+Version:	0.8.17
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -9,7 +9,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.t
 Patch0:		tracker-0.8-doc-build.patch
 Patch1:		tracker-eds-build-fix.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
+BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
 BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
@@ -17,7 +17,7 @@ BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel
 BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
-BuildRequires:	DeviceKit-power-devel gnome-keyring-devel
+BuildRequires:	upower-devel gnome-keyring-devel evolution-data-server-devel
 BuildRequires:	desktop-file-utils intltool gettext graphviz
 
 Requires:	odt2txt
@@ -182,6 +182,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Sep 02 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.17-1
+- Update to 0.8.17 release
+
 * Fri Aug 20 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.16-1
 - Update to 0.8.16 release
 
