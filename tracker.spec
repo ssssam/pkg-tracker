@@ -186,6 +186,7 @@ fi
 %changelog
 * Tue Sep 28 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.17-2
 - Rebuild for evolution (camel) update.
+- Apply patch to build with gtk >= 2.90.7
 
 * Thu Sep 02 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.17-1
 - Update to 0.8.17 release
