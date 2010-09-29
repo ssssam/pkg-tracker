@@ -8,6 +8,7 @@ URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
 Patch0:		tracker-0.8-doc-build.patch
 Patch1:		tracker-eds-build-fix.patch
+Patch2:		tracker-gtk-2.90.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
@@ -78,6 +79,7 @@ This package contains the documentation for tracker
 %setup -q
 %patch0 -p0
 %patch1 -p0
+%patch2 -p0
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
