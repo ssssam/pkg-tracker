@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.8.17
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -182,6 +182,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Sep 28 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.17-2
+- Rebuild for evolution (camel) update.
+
 * Thu Sep 02 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.17-1
 - Update to 0.8.17 release
 
