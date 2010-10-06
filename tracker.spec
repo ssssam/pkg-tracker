@@ -1,7 +1,7 @@
 Summary:	An object database, tag/metadata database, search tool and indexer
 Name:		tracker
 Version:	0.8.17
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -9,6 +9,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.t
 Patch0:		tracker-0.8-doc-build.patch
 Patch1:		tracker-eds-build-fix.patch
 Patch2:		tracker-gtk-2.90.patch
+Patch3:		tracker-0.8.17-poppler-0.15.0-fix.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
@@ -80,6 +81,7 @@ This package contains the documentation for tracker
 %patch0 -p0
 %patch1 -p0
 %patch2 -p0
+%patch3 -p1 -b .poppler15
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
@@ -184,6 +186,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Oct  6 2010 Tom "spot" Callaway <tcallawa@redhat.com> - 0.8.17-4
+- fix code for poppler-0.15
+
 * Thu Sep 28 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.17-3
 - Rebuild for poppler-0.15.
 
