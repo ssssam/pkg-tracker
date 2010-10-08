@@ -1,0 +1,116 @@
+--- src/tracker-store/Makefile.am	2010-08-19 12:12:34.000000000 -0400
++++ src/tracker-store/Makefile.am.new	2010-08-27 10:50:06.330393972 -0400
+@@ -67,6 +67,7 @@
+ 	$(plugin_libs)							\
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(SQLITE3_LIBS)							\
+ 	$(DBUS_LIBS)							\
+ 	$(GIO_LIBS)							\
+--- src/tracker-store/Makefile.in	2010-08-26 12:11:20.000000000 -0400
++++ src/tracker-store/Makefile.in.new	2010-08-27 10:49:58.636167543 -0400
+@@ -432,6 +432,7 @@
+ 	$(plugin_libs)							\
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(SQLITE3_LIBS)							\
+ 	$(DBUS_LIBS)							\
+ 	$(GIO_LIBS)							\
+--- src/tracker-status-icon/Makefile.am	2010-08-19 12:12:34.000000000 -0400
++++ src/tracker-status-icon/Makefile.am.new	2010-08-27 11:49:55.511265601 -0400
+@@ -18,6 +18,7 @@
+ # Note: the -lX11 is needed for XGetModifierMapping() and other X11 calls
+ tracker_status_icon_LDADD = 						\
+ 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la 	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+ 	$(TRACKER_APPS_LIBS)						\
+ 	$(PANGO_LIBS)							\
+--- src/tracker-status-icon/Makefile.in	2010-08-26 12:11:20.000000000 -0400
++++ src/tracker-status-icon/Makefile.in.new	2010-08-27 11:50:22.409182561 -0400
+@@ -411,6 +411,7 @@
+ # Note: the -lX11 is needed for XGetModifierMapping() and other X11 calls
+ tracker_status_icon_LDADD = \
+ 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la 	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+ 	$(TRACKER_APPS_LIBS)						\
+ 	$(PANGO_LIBS)							\
+--- src/tracker-search-bar/Makefile.am	2010-08-18 11:24:42.000000000 -0400
++++ src/tracker-search-bar/Makefile.am.new	2010-08-27 12:37:22.262163283 -0400
+@@ -26,6 +26,7 @@
+ 
+ tracker_search_bar_LDADD = 					\
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
++	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+ 	$(TRACKER_APPS_LIBS)					\
+ 	$(TRACKER_APPLETS_LIBS)					\
+ 	$(GDKPIXBUF_LIBS)					\
+--- src/tracker-search-bar/Makefile.in	2010-08-26 12:11:20.000000000 -0400
++++ src/tracker-search-bar/Makefile.in.new	2010-08-27 12:39:13.383515566 -0400
+@@ -423,6 +423,7 @@
+ 
+ tracker_search_bar_LDADD = \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
++	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+ 	$(TRACKER_APPS_LIBS)					\
+ 	$(TRACKER_APPLETS_LIBS)					\
+ 	$(GDKPIXBUF_LIBS)					\
+--- utils/services/Makefile.am	2010-09-09 06:37:07.000000000 -0400
++++ utils/services/Makefile.am.new	2010-09-09 13:04:54.568431854 -0400
+@@ -22,6 +22,7 @@
+ ontology_validator_LDADD =						\
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(DBUS_LIBS)							\
+ 	$(GIO_LIBS)							\
+ 	$(GLIB2_LIBS)
+@@ -32,6 +33,7 @@
+ data_validator_LDADD =							\
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(DBUS_LIBS)							\
+ 	$(GLIB2_LIBS)							\
+ 	$(GIO_LIBS)
+--- utils/services/Makefile.in	2010-09-09 10:19:51.000000000 -0400
++++ utils/services/Makefile.in.new	2010-09-09 13:05:28.104243559 -0400
+@@ -394,6 +394,7 @@
+ ontology_validator_LDADD = \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(DBUS_LIBS)							\
+ 	$(GIO_LIBS)							\
+ 	$(GLIB2_LIBS)
+@@ -404,6 +405,7 @@
+ data_validator_LDADD = \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(DBUS_LIBS)							\
+ 	$(GLIB2_LIBS)							\
+ 	$(GIO_LIBS)
+--- examples/libtracker-miner/Makefile.am	2010-08-18 11:24:42.000000000 -0400
++++ examples/libtracker-miner/Makefile.am.new	2010-09-09 13:48:33.440304951 -0400
+@@ -23,6 +23,7 @@
+ tracker_miner_test_LDADD =                             		\
+        $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+        $(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
++       $(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+        $(top_builddir)/src/libtracker-common/libtracker-common.la \
+        $(DBUS_LIBS)                                    		\
+        $(GMODULE_LIBS)                                 		\
+--- examples/libtracker-miner/Makefile.in	2010-09-09 10:19:43.000000000 -0400
++++ examples/libtracker-miner/Makefile.in.new	2010-09-09 13:49:15.929180352 -0400
+@@ -388,6 +388,7 @@
+ tracker_miner_test_LDADD = \
+        $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+        $(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
++       $(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+        $(top_builddir)/src/libtracker-common/libtracker-common.la \
+        $(DBUS_LIBS)                                    		\
+        $(GMODULE_LIBS)                                 		\

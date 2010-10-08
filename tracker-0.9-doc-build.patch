@@ -1,7 +1,10 @@
---- docs/tools/Makefile.am	2010-05-20 13:14:53.000000000 -0400
-+++ docs/tools/Makefile.am.new	2010-05-27 13:47:46.082189121 -0400
-@@ -23,7 +23,9 @@
+--- docs/tools/Makefile.am	2010-09-09 06:37:06.000000000 -0400
++++ docs/tools/Makefile.am.new	2010-09-09 10:44:10.022458044 -0400
+@@ -23,9 +23,12 @@
+ ontology_graph_LDADD =							\
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
  	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
  	$(DBUS_LIBS)							\
  	$(GIO_LIBS)							\
 -	$(GLIB2_LIBS)
@@ -11,8 +14,11 @@
  
  ttl2sgml_SOURCES =							\
  	ttl2sgml.c							\
-@@ -41,6 +43,8 @@
+@@ -41,8 +44,11 @@
+ ttl2sgml_LDADD = 							\
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
  	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
  	$(DBUS_LIBS)							\
  	$(GLIB2_LIBS)							\
 -	$(GIO_LIBS)
@@ -21,10 +27,13 @@
 +	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
  
  EXTRA_DIST = gen-doc.sh
---- docs/tools/Makefile.in	2010-05-27 09:48:15.000000000 -0400
-+++ docs/tools/Makefile.in.new	2010-05-27 13:49:52.845946280 -0400
-@@ -385,7 +385,9 @@
+--- docs/tools/Makefile.in	2010-09-09 10:19:42.000000000 -0400
++++ docs/tools/Makefile.in.new	2010-09-09 10:44:10.023458812 -0400
+@@ -394,9 +394,12 @@
+ ontology_graph_LDADD = \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
  	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
  	$(DBUS_LIBS)							\
  	$(GIO_LIBS)							\
 -	$(GLIB2_LIBS)
@@ -34,8 +43,11 @@
  
  ttl2sgml_SOURCES = \
  	ttl2sgml.c							\
-@@ -403,7 +405,9 @@
+@@ -412,9 +415,12 @@
+ ttl2sgml_LDADD = \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
  	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
  	$(DBUS_LIBS)							\
  	$(GLIB2_LIBS)							\
 -	$(GIO_LIBS)
@@ -67,30 +79,6 @@
 -	$(GLIB2_LIBS)
 +	$(GLIB2_LIBS)							\
 +	-Wl,-rpath,$(top_builddir)/src/libtracker-client/.libs		\
-+	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
- 
- 
- # Extra options to supply to gtkdoc-mkdb
---- docs/reference/libtracker-common/Makefile.am	2010-04-15 06:14:08.000000000 -0400
-+++ docs/reference/libtracker-common/Makefile.am.new	2010-04-19 09:59:04.634098797 -0400
-@@ -37,7 +37,8 @@
- 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
- 	$(DBUS_LIBS)							\
- 	$(GIO_LIBS)							\
--	$(GLIB2_LIBS)
-+	$(GLIB2_LIBS)							\
-+	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
- 
- 
- # Extra options to supply to gtkdoc-mkdb
---- docs/reference/libtracker-common/Makefile.in	2010-04-15 11:51:12.000000000 -0400
-+++ docs/reference/libtracker-common/Makefile.in.new	2010-04-19 10:01:08.364095170 -0400
-@@ -360,7 +360,8 @@
- 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
- 	$(DBUS_LIBS)							\
- 	$(GIO_LIBS)							\
--	$(GLIB2_LIBS)
-+	$(GLIB2_LIBS)							\
 +	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
  
  
@@ -130,7 +118,7 @@
 -	$(GLIB2_LIBS)
 +	$(GLIB2_LIBS)							\
 +	-Wl,-rpath,$(top_builddir)/src/libtracker-miner/.libs		\
-+	-Wl,-rpath,$(top_builddir)/src/libtracker-client/.libs		\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs		\
 +	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
  
  
@@ -144,7 +132,33 @@
 -	$(GLIB2_LIBS)
 +	$(GLIB2_LIBS)							\
 +	-Wl,-rpath,$(top_builddir)/src/libtracker-miner/.libs		\
-+	-Wl,-rpath,$(top_builddir)/src/libtracker-client/.libs		\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs		\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ 
+ # Extra options to supply to gtkdoc-mkdb
+--- docs/reference/libtracker-sparql/Makefile.am	2010-09-09 06:37:06.000000000 -0400
++++ docs/reference/libtracker-sparql/Makefile.am.new	2010-09-09 11:55:36.723180352 -0400
+@@ -38,7 +38,9 @@
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+ 	$(DBUS_LIBS)							\
+ 	$(GIO_LIBS)							\
+-	$(GLIB2_LIBS)
++	$(GLIB2_LIBS)							\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs		\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ 
+ # Extra options to supply to gtkdoc-mkdb
+--- docs/reference/libtracker-sparql/Makefile.in	2010-09-09 10:19:42.000000000 -0400
++++ docs/reference/libtracker-sparql/Makefile.in.new	2010-09-09 11:59:35.941180003 -0400
+@@ -374,7 +374,9 @@
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+ 	$(DBUS_LIBS)							\
+ 	$(GIO_LIBS)							\
+-	$(GLIB2_LIBS)
++	$(GLIB2_LIBS)							\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs		\
 +	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
  
  

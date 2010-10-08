@@ -1,28 +1,25 @@
-Summary:	An object database, tag/metadata database, search tool and indexer
+Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.8.17
-Release:	4%{?dist}
+Version:	0.9.24
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.8/%{name}-%{version}.tar.bz2
-Patch0:		tracker-0.8-doc-build.patch
-Patch1:		tracker-eds-build-fix.patch
-Patch2:		tracker-gtk-2.90.patch
-Patch3:		tracker-0.8.17-poppler-0.15.0-fix.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.9/%{name}-%{version}.tar.bz2
+Patch0:		tracker-0.9-doc-build.patch
+Patch1:		tracker-build-fix.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel 
+BuildRequires:	poppler-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
 BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
-BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel 
+BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
-BuildRequires:	upower-devel gnome-keyring-devel evolution-devel
+BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
+BuildRequires:	libunistring-devel
 BuildRequires:	desktop-file-utils intltool gettext graphviz
-
-Requires:	odt2txt
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -78,16 +75,15 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
-%patch0 -p0
-%patch1 -p0
-%patch2 -p0
-%patch3 -p1 -b .poppler15
+%patch0 -p0 -b .fix
+%patch1 -p0 -b .fix2
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
 %build
 %configure --disable-static --enable-tracker-search-bar		\
-	--enable-gtk-doc --disable-functional-tests
+	--enable-gtk-doc --disable-functional-tests --disable-unit-tests
+# Disable the unit tests for now, because of build issues.
 
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -100,7 +96,7 @@ rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker-0.8"	\
+echo "%{_libdir}/tracker-0.9"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 desktop-file-install --delete-original			\
@@ -140,7 +136,7 @@ fi
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
-%{_libdir}/tracker-0.8/
+%{_libdir}/tracker-0.9/
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
@@ -153,7 +149,7 @@ fi
 
 %files devel
 %defattr(-, root, root, -)
-%{_includedir}/tracker-0.8/
+%{_includedir}/tracker-0.9/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.*
@@ -179,15 +175,16 @@ fi
 %files docs
 %defattr(-, root, root, -)
 %doc docs/reference/COPYING
-%{_datadir}/gtk-doc/html/libtracker-common/
 %{_datadir}/gtk-doc/html/libtracker-miner/
 %{_datadir}/gtk-doc/html/libtracker-client/
 %{_datadir}/gtk-doc/html/libtracker-extract/
+%{_datadir}/gtk-doc/html/libtracker-sparql/
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
-* Wed Oct  6 2010 Tom "spot" Callaway <tcallawa@redhat.com> - 0.8.17-4
-- fix code for poppler-0.15
+* Fri Oct 08 2010 Deji Akingunola <dakingun@gmail.com> - 0.9.24-1
+- First update to 0.9.x series
+- Re-word the package summary (conformant to upstream wording).
 
 * Thu Sep 28 2010 Deji Akingunola <dakingun@gmail.com> - 0.8.17-3
 - Rebuild for poppler-0.15.
