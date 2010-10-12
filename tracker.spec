@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.9.24
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -18,7 +18,7 @@ BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
-BuildRequires:	libunistring-devel
+BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel
 BuildRequires:	desktop-file-utils intltool gettext graphviz
 
 %description
@@ -182,6 +182,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Oct 12 2010 Deji Akingunola <dakingun@gmail.com> - 0.9.24-2
+- Rebuild for evolution-data-server-2.91.0.
+
 * Fri Oct 08 2010 Deji Akingunola <dakingun@gmail.com> - 0.9.24-1
 - First update to 0.9.x series
 - Re-word the package summary (conformant to upstream wording).
