@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.9.24
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -182,6 +182,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sat Nov 06 2010 Rex Dieter <rdieter@fedoraproject.org> - 0.9.24-3
+- rebuilt (poppler)
+
 * Tue Oct 12 2010 Deji Akingunola <dakingun@gmail.com> - 0.9.24-2
 - Rebuild for evolution-data-server-2.91.0.
 
