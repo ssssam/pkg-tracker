@@ -1,0 +1,254 @@
+--- docs/tools/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ docs/tools/Makefile.am.new	2010-11-02 12:59:40.753879220 -0400
+@@ -11,7 +11,10 @@
+ 
+ LDADD =                                                \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+-	$(LIBTRACKER_DATA_LIBS)
++	$(LIBTRACKER_DATA_LIBS)					\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-data/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ ontology_graph_SOURCES =                               \
+ 	ontology-graph.c
+--- docs/tools/Makefile.in	2010-10-28 10:35:15.000000000 -0400
++++ docs/tools/Makefile.in.new	2010-11-02 13:00:04.102002771 -0400
+@@ -402,7 +402,10 @@
+ 
+ LDADD = \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+-	$(LIBTRACKER_DATA_LIBS)
++	$(LIBTRACKER_DATA_LIBS)					\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-data/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ ontology_graph_SOURCES = \
+ 	ontology-graph.c
+--- docs/reference/libtracker-client/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ docs/reference/libtracker-client/Makefile.am.new	2010-11-02 11:47:28.665908204 -0400
+@@ -36,7 +36,9 @@
+ GTKDOC_LIBS =                                          \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(LIBTRACKER_CLIENT_LIBS)
++	$(LIBTRACKER_CLIENT_LIBS)					\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-client/.libs		\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ # Extra options to supply to gtkdoc-mkdb
+ MKDB_OPTIONS = --sgml-mode --output-format=xml
+--- docs/reference/libtracker-client/Makefile.in	2010-10-28 10:35:14.000000000 -0400
++++ docs/reference/libtracker-client/Makefile.in.new	2010-11-02 11:48:15.534239605 -0400
+@@ -395,7 +395,9 @@
+ GTKDOC_LIBS = \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(LIBTRACKER_CLIENT_LIBS)
++	$(LIBTRACKER_CLIENT_LIBS)					\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-client/.libs		\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ 
+ # Extra options to supply to gtkdoc-mkdb
+--- docs/reference/libtracker-extract/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ docs/reference/libtracker-extract/Makefile.am.new	2010-11-02 11:50:05.955109071 -0400
+@@ -34,7 +34,9 @@
+ GTKDOC_LIBS =                                          \
+ 	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(LIBTRACKER_EXTRACT_LIBS)
++	$(LIBTRACKER_EXTRACT_LIBS)				\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-extract/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ # Extra options to supply to gtkdoc-mkdb
+ MKDB_OPTIONS = --sgml-mode --output-format=xml
+--- docs/reference/libtracker-extract/Makefile.in	2010-10-28 10:35:14.000000000 -0400
++++ docs/reference/libtracker-extract/Makefile.in.new	2010-11-02 11:50:37.982983703 -0400
+@@ -392,7 +392,9 @@
+ GTKDOC_LIBS = \
+ 	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(LIBTRACKER_EXTRACT_LIBS)
++	$(LIBTRACKER_EXTRACT_LIBS)				\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-extract/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ 
+ # Extra options to supply to gtkdoc-mkdb
+--- docs/reference/libtracker-miner/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ docs/reference/libtracker-miner/Makefile.am.new	2010-11-02 11:51:48.295232480 -0400
+@@ -46,7 +46,10 @@
+ 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(LIBTRACKER_MINER_LIBS)
++	$(LIBTRACKER_MINER_LIBS)				\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-miner/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ # Extra options to supply to gtkdoc-mkdb
+ MKDB_OPTIONS=--sgml-mode --output-format=xml
+--- docs/reference/libtracker-miner/Makefile.in	2010-10-28 10:35:15.000000000 -0400
++++ docs/reference/libtracker-miner/Makefile.in.new	2010-11-02 11:52:25.652985450 -0400
+@@ -405,7 +405,10 @@
+ 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(LIBTRACKER_MINER_LIBS)
++	$(LIBTRACKER_MINER_LIBS)				\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-miner/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ 
+ # Extra options to supply to gtkdoc-mkdb
+--- docs/reference/libtracker-sparql/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ docs/reference/libtracker-sparql/Makefile.am.new	2010-11-02 11:53:20.408982445 -0400
+@@ -34,7 +34,9 @@
+ GTKDOC_LIBS =                                          \
+ 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(LIBTRACKER_SPARQL_LIBS)
++	$(LIBTRACKER_SPARQL_LIBS)				\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ # Extra options to supply to gtkdoc-mkdb
+ MKDB_OPTIONS = --sgml-mode --output-format=xml
+--- docs/reference/libtracker-sparql/Makefile.in	2010-10-28 10:35:15.000000000 -0400
++++ docs/reference/libtracker-sparql/Makefile.in.new	2010-11-02 11:53:49.041887950 -0400
+@@ -392,7 +392,9 @@
+ GTKDOC_LIBS = \
+ 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(LIBTRACKER_SPARQL_LIBS)
++	$(LIBTRACKER_SPARQL_LIBS)				\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-sparql/.libs	\
++	-Wl,-rpath,$(top_builddir)/src/libtracker-common/.libs
+ 
+ 
+ # Extra options to supply to gtkdoc-mkdb
+--- utils/services/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ utils/services/Makefile.am.new	2010-11-02 13:42:30.907233528 -0400
+@@ -12,6 +12,7 @@
+ LDADD =                                                \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_DATA_LIBS)
+ 
+--- utils/services/Makefile.in	2010-10-28 10:35:24.000000000 -0400
++++ utils/services/Makefile.in.new	2010-11-02 13:42:54.921982795 -0400
+@@ -404,6 +404,7 @@
+ LDADD = \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_DATA_LIBS)
+ 
+--- tests/libtracker-client/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ tests/libtracker-client/Makefile.am.new	2010-11-02 13:56:19.094236462 -0400
+@@ -13,6 +13,7 @@
+ 
+ LDADD =                                                \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
++	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_CLIENT_LIBS)
+ 
+--- tests/libtracker-client/Makefile.in	2010-10-28 10:35:21.000000000 -0400
++++ tests/libtracker-client/Makefile.in.new	2010-11-02 13:56:43.708234437 -0400
+@@ -394,6 +394,7 @@
+ 
+ LDADD = \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
++	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_CLIENT_LIBS)
+ 
+--- tests/libtracker-data/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ tests/libtracker-data/Makefile.am.new	2010-11-02 13:59:25.166864064 -0400
+@@ -45,6 +45,7 @@
+ LDADD =                                                \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/tests/common/libtracker-testcommon.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_DATA_LIBS)
+--- tests/libtracker-data/Makefile.in	2010-10-28 10:35:21.000000000 -0400
++++ tests/libtracker-data/Makefile.in.new	2010-11-02 13:59:57.944983215 -0400
+@@ -522,6 +522,7 @@
+ LDADD = \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/tests/common/libtracker-testcommon.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_DATA_LIBS)
+--- tests/libtracker-fts/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ tests/libtracker-fts/Makefile.am.new	2010-11-02 14:02:54.721996904 -0400
+@@ -24,6 +24,7 @@
+ LDADD =                                                \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/tests/common/libtracker-testcommon.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_FTS_LIBS)
+--- tests/libtracker-fts/Makefile.in	2010-10-28 10:35:23.000000000 -0400
++++ tests/libtracker-fts/Makefile.in.new	2010-11-02 14:03:15.048983075 -0400
+@@ -461,6 +461,7 @@
+ LDADD = \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/tests/common/libtracker-testcommon.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_FTS_LIBS)
+--- tests/libtracker-extract/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ tests/libtracker-extract/Makefile.am.new	2010-11-02 14:31:14.829982167 -0400
+@@ -17,6 +17,7 @@
+ 	$(top_builddir)/tests/common/libtracker-testcommon.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_EXTRACT_LIBS)
+ 
+--- tests/libtracker-extract/Makefile.in	2010-10-28 10:35:23.000000000 -0400
++++ tests/libtracker-extract/Makefile.in.new	2010-11-02 14:31:45.803860572 -0400
+@@ -409,6 +409,7 @@
+ 	$(top_builddir)/tests/common/libtracker-testcommon.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_EXTRACT_LIBS)
+ 
+--- tests/functional-tests/ipc/Makefile.am	2010-10-28 07:27:34.000000000 -0400
++++ tests/functional-tests/ipc/Makefile.am.new	2010-11-02 17:08:41.752878801 -0400
+@@ -21,6 +21,7 @@
+ 	$(top_builddir)/src/libtracker-bus/libtracker-bus.la \
+ 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-$(TRACKER_API_VERSION).la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
++	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_SPARQL_LIBS)
+ 
+--- tests/functional-tests/ipc/Makefile.in	2010-10-28 10:35:19.000000000 -0400
++++ tests/functional-tests/ipc/Makefile.in.new	2010-11-02 17:09:12.009858547 -0400
+@@ -488,6 +488,7 @@
+ 	$(top_builddir)/src/libtracker-bus/libtracker-bus.la \
+ 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-$(TRACKER_API_VERSION).la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
++	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_SPARQL_LIBS)
+ 

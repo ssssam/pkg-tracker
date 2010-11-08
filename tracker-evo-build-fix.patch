@@ -1,0 +1,132 @@
+--- src/plugins/evolution/tracker-evolution-plugin.c	2010-10-11 08:23:14.000000000 -0400
++++ src/plugins/evolution/tracker-evolution-plugin.c.new	2010-10-22 15:52:48.327177285 -0400
+@@ -46,9 +46,10 @@
+ #endif
+ 
+ #include <mail/mail-config.h>
+-#include <mail/mail-session.h>
++#include <mail/e-mail-session.h>
+ #include <mail/em-utils.h>
+ #include <mail/mail-ops.h>
++#include <shell/e-shell.h>
+ 
+ #include <e-util/e-config.h>
+ 
+@@ -1271,6 +1272,7 @@
+ 
+ 		for (it = e_list_get_iterator (E_LIST (priv->accounts)); e_iterator_is_valid (it); e_iterator_next (it)) {
+ 			EAccount *account = (EAccount *) e_iterator_get (it);
++			EMailSession *session;
+ 			CamelProvider *provider;
+ 			CamelStore *store;
+ 			char *uri;
+@@ -1291,7 +1293,7 @@
+ 				continue;
+ 			}
+ 
+-			if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, NULL))) {
++			if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session), uri, CAMEL_PROVIDER_STORE, NULL))) {
+ 				continue;
+ 			}
+ 
+@@ -1382,6 +1384,14 @@
+                                  CamelStore *store,
+                                  gchar *account_uri)
+ {
++	EShell *shell;
++	EShellBackend *shell_backend;
++	EMailSession *session;
++
++	shell = e_shell_get_default ();
++	shell_backend = e_shell_get_backend_by_name (shell, "mail");
++	session = e_mail_backend_get_session (E_MAIL_BACKEND (shell_backend));
++
+ 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (self);
+ 
+ 	if (!priv->registered_folders) {
+@@ -1408,7 +1418,8 @@
+ 		/* This is asynchronous and hooked to the mail/ API, so nicely
+ 		 * integrated with the Evolution UI application */
+ 
+-		mail_get_folder (iter->uri, 0, register_on_get_folder, info,
++		mail_get_folder (session, iter->uri, 0,
++				 register_on_get_folder, info,
+ 		                 mail_msg_unordered_push);
+ 
+ 		if (iter->child) {
+@@ -1466,6 +1477,14 @@
+                                    CamelStore *store,
+                                    gchar *account_uri)
+ {
++	EShell *shell;
++	EShellBackend *shell_backend;
++	EMailSession *session;
++
++	shell = e_shell_get_default ();
++	shell_backend = e_shell_get_backend_by_name (shell, "mail");
++	session = e_mail_backend_get_session (E_MAIL_BACKEND (shell_backend));
++
+ 	/* Recursively walks all the folders in store */
+ 
+ 	while (titer) {
+@@ -1478,7 +1497,8 @@
+ 		/* This is asynchronous and hooked to the mail/ API, so nicely
+ 		 * integrated with the Evolution UI application */
+ 
+-		mail_get_folder (titer->uri, 0, unregister_on_get_folder, info,
++		mail_get_folder (session, titer->uri, 0,
++				 unregister_on_get_folder, info,
+ 		                 mail_msg_unordered_push);
+ 
+ 		if (titer->child) {
+@@ -1635,6 +1655,7 @@
+                       EAccount *account,
+                       ClientRegistry *info)
+ {
++	EMailSession *session;
+ 	CamelProvider *provider;
+ 	CamelStore *store;
+ 	char *uri, *account_uri, *ptr;
+@@ -1650,7 +1671,7 @@
+ 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
+ 		return;
+ 
+-	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, NULL))) {
++	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session), uri, CAMEL_PROVIDER_STORE, NULL))) {
+ 		return;
+ 	}
+ 
+@@ -1969,6 +1990,7 @@
+ register_account (TrackerEvolutionPlugin *self,
+                   EAccount *account)
+ {
++	EMailSession *session;
+ 	CamelProvider *provider;
+ 	CamelStore *store;
+ 	char *uri;
+@@ -1984,7 +2006,7 @@
+ 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
+ 		return;
+ 
+-	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, NULL))) {
++	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session), uri, CAMEL_PROVIDER_STORE, NULL))) {
+ 		return;
+ 	}
+ 
+@@ -2040,6 +2062,7 @@
+ unregister_account (TrackerEvolutionPlugin *self,
+                     EAccount *account)
+ {
++	EMailSession *session;
+ 	CamelProvider *provider;
+ 	CamelStore *store;
+ 	char *uri = account->source->url;
+@@ -2053,7 +2076,7 @@
+ 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
+ 		return;
+ 
+-	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, NULL))) {
++	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session), uri, CAMEL_PROVIDER_STORE, NULL))) {
+ 		return;
+ 	}
+ 

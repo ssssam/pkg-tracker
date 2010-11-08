@@ -1,20 +1,20 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.9.24
-Release:	2%{?dist}
+Version:	0.9.27
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.9/%{name}-%{version}.tar.bz2
-Patch0:		tracker-0.9-doc-build.patch
-Patch1:		tracker-build-fix.patch
+Patch0:		tracker-0.9-fedora-build-fixes.patch
+Patch1:		tracker-evo-build-fix.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
 BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
-BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
+BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel qt4-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
@@ -82,8 +82,8 @@ This package contains the documentation for tracker
 
 %build
 %configure --disable-static --enable-tracker-search-bar		\
-	--enable-gtk-doc --disable-functional-tests --disable-unit-tests
-# Disable the unit tests for now, because of build issues.
+	--enable-gtk-doc --disable-functional-tests
+# Disable the functional tests for now, they make use of python bytecodes.
 
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -182,6 +182,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sun Nov 07 2010 Deji Akingunola <dakingun@gmail.com> - 0.9.27-1
+- Update to 0.9.27
+
 * Tue Oct 12 2010 Deji Akingunola <dakingun@gmail.com> - 0.9.24-2
 - Rebuild for evolution-data-server-2.91.0.
 
