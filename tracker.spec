@@ -1,6 +1,6 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.9.27
+Version:	0.9.30
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -82,7 +82,7 @@ This package contains the documentation for tracker
 
 %build
 %configure --disable-static --enable-tracker-search-bar		\
-	--enable-gtk-doc --disable-functional-tests
+	--enable-miner-evolution --enable-gtk-doc --disable-functional-tests
 # Disable the functional tests for now, they make use of python bytecodes.
 
 # Disable rpath
@@ -182,6 +182,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Dec 04 2010 Deji Akingunola <dakingun@gmail.com> - 0.9.28-1
+- Update to 0.9.30
+
 * Sun Nov 07 2010 Deji Akingunola <dakingun@gmail.com> - 0.9.27-1
 - Update to 0.9.27
 
