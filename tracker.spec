@@ -1,25 +1,28 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.9.30
-Release:	3%{?dist}
+Version:	0.9.33
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.9/%{name}-%{version}.tar.bz2
 Patch0:		tracker-0.9-fedora-build-fixes.patch
 Patch1:		tracker-evo-build-fix.patch
+Patch2:		tracker-0.9-gtk3-build-fixes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
 BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
-BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel qt4-devel
+BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel
-BuildRequires:	desktop-file-utils intltool gettext graphviz
+BuildRequires:	gdk-pixbuf-devel
+BuildRequires:	desktop-file-utils intltool gettext graphviz dia
+BuildRequires:	autoconf automake libtool
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -65,6 +68,15 @@ Requires:	%{name} = %{version}-%{release}
 %description evolution-plugin
 Tracker's evolution plugin
 
+%package nautilus-plugin
+Summary:	Tracker's nautilus plugin
+Group:		User Interface/Desktops
+Requires:	%{name} = %{version}-%{release}
+
+%description nautilus-plugin
+Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
+search in nuautilus using tracker is built-in directly in the nautilus package.
+
 %package docs
 Summary:	Documentations for tracker
 Group:		Documentation
@@ -75,8 +87,11 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
-%patch0 -p0 -b .fix
 %patch1 -p0 -b .fix2
+%patch2 -p0 -b .fix3
+autopoint --force &&
+AUTOPOINT='intltoolize --automake --copy' autoreconf --verbose --force --install
+%patch0 -p0 -b .fix
 
 %global evo_plugins_dir %(pkg-config evolution-plugin --variable=plugindir)
 
@@ -96,13 +111,13 @@ rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker-0.9"	\
+echo "%{_libdir}/tracker-0.10"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 desktop-file-install --delete-original			\
 	--vendor="fedora"				\
 	--dir=%{buildroot}%{_datadir}/applications	\
-	%{buildroot}%{_datadir}/applications/%{name}-search-tool.desktop
+	%{buildroot}%{_datadir}/applications/%{name}-needle.desktop
 
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
@@ -136,20 +151,20 @@ fi
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
-%{_libdir}/tracker-0.9/
+%{_libdir}/tracker-0.10/
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %exclude %{_bindir}/tracker-preferences
-%exclude %{_bindir}/tracker-search-tool
+%exclude %{_bindir}/tracker-needle
 %exclude %{_libexecdir}/tracker-search-bar
 %exclude %{_mandir}/man1/tracker-search-bar.1.gz
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
-%exclude %{_mandir}/man1/tracker-search-tool.1.gz
+%exclude %{_mandir}/man1/tracker-needle.1.gz
 
 %files devel
 %defattr(-, root, root, -)
-%{_includedir}/tracker-0.9/
+%{_includedir}/tracker-0.10/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.*
@@ -157,20 +172,23 @@ fi
 %files search-tool
 %defattr(-, root, root, -)
 %{_bindir}/tracker-preferences
-%{_bindir}/tracker-search-tool
+%{_bindir}/tracker-needle
 %{_libexecdir}/tracker-search-bar
-%{_libdir}/nautilus/extensions-2.0/libnautilus-tracker-tags.so
 %{_libdir}/bonobo/servers/GNOME_Search_Bar_Applet.server
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
 %{_mandir}/man1/tracker-search-bar.1.gz
 %{_mandir}/man1/tracker-preferences.1.gz
-%{_mandir}/man1/tracker-search-tool.1.gz
+%{_mandir}/man1/tracker-needle.1.gz
 
 %files evolution-plugin
 %defattr(-, root, root, -)
 %{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
 %{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
+
+%files nautilus-plugin
+%defattr(-, root, root, -)
+%{_libdir}/nautilus/extensions-2.0/libnautilus-tracker-tags.so
 
 %files docs
 %defattr(-, root, root, -)
@@ -182,6 +200,11 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Jan 04 2011 Deji Akingunola <dakingun@gmail.com> - 0.9.33-1
+- Update to 0.9.33
+- Substitute gdk-pixbuf for qt4 as music album extractor
+- Split off nautilus-plugin into a sub-package
+
 * Sat Jan 01 2011 Rex Dieter <rdieter@fedoraproject.org> - 0.9.30-3
 - rebuild (poppler)
 

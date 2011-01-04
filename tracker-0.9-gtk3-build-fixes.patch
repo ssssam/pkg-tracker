@@ -1,0 +1,22 @@
+--- configure.ac	2010-12-16 08:24:58.000000000 -0500
++++ configure.ac.new	2010-12-22 11:43:35.761316716 -0500
+@@ -470,7 +470,7 @@
+ TRACKER_NAUTILUS_EXTENSION_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
+                                      gio-unix-2.0   >= $GLIB_REQUIRED
+                                      gthread-2.0    >= $GLIB_REQUIRED
+-                                     gtk+-2.0       >= $GTK_REQUIRED
++                                     gtk+-3.0       >= $GTK_REQUIRED
+                                      dbus-1         >= $DBUS_REQUIRED
+                                      dbus-glib-1    >= $DBUS_GLIB_REQUIRED
+                                      libnautilus-extension"
+--- configure	2010-12-16 08:25:32.000000000 -0500
++++ configure.new	2010-12-22 11:44:06.683304843 -0500
+@@ -18833,7 +18833,7 @@
+ TRACKER_NAUTILUS_EXTENSION_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
+                                      gio-unix-2.0   >= $GLIB_REQUIRED
+                                      gthread-2.0    >= $GLIB_REQUIRED
+-                                     gtk+-2.0       >= $GTK_REQUIRED
++                                     gtk+-3.0       >= $GTK_REQUIRED
+                                      dbus-1         >= $DBUS_REQUIRED
+                                      dbus-glib-1    >= $DBUS_GLIB_REQUIRED
+                                      libnautilus-extension"
