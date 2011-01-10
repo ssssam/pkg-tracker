@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.9.33
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -200,6 +200,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sun Jan  9 2011 Matthias Clasen <mclasen@redhat.com> - 0.9.33-2
+- Rebuild against newer gtk
+
 * Tue Jan 04 2011 Deji Akingunola <dakingun@gmail.com> - 0.9.33-1
 - Update to 0.9.33
 - Substitute gdk-pixbuf for qt4 as music album extractor
