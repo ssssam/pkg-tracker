@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.9.33
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -19,10 +19,11 @@ BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
-BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel
+BuildRequires:	libunistring-devel taglib-devel
 BuildRequires:	gdk-pixbuf-devel
 BuildRequires:	desktop-file-utils intltool gettext graphviz dia
 BuildRequires:	autoconf automake libtool
+#Temporarily disable building with gupnp-dlna 
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -200,6 +201,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Jan 11 2011 Deji Akingunola <dakingun@gmail.com> - 0.9.33-3
+- Temporarily disable gupnp-dlna.
+
 * Sun Jan  9 2011 Matthias Clasen <mclasen@redhat.com> - 0.9.33-2
 - Rebuild against newer gtk
 
