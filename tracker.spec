@@ -189,7 +189,7 @@ fi
 
 %files nautilus-plugin
 %defattr(-, root, root, -)
-%{_libdir}/nautilus/extensions-2.0/libnautilus-tracker-tags.so
+%{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
 
 %files docs
 %defattr(-, root, root, -)
@@ -203,6 +203,7 @@ fi
 %changelog
 * Tue Jan 11 2011 Deji Akingunola <dakingun@gmail.com> - 0.9.33-3
 - Temporarily disable gupnp-dlna.
+- Update nautilus extensions directory for nautilus-3.x.
 
 * Sun Jan  9 2011 Matthias Clasen <mclasen@redhat.com> - 0.9.33-2
 - Rebuild against newer gtk
