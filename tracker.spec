@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.9.36
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -200,6 +200,9 @@ fi
 #%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Feb  2 2011 Matthias Clasen <mclasen@redhat.com> - 0.9.36-2
+- Rebuild against newer gtk
+
 * Tue Feb 01 2011 Deji Akingunola <dakingun@gmail.com> - 0.9.36-1
 - Update to 0.9.36
 - Temporarily disable the docs subpackage
