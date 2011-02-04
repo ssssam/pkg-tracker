@@ -77,13 +77,13 @@ Requires:	%{name} = %{version}-%{release}
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
 search in nuautilus using tracker is built-in directly in the nautilus package.
 
-%package docs
-Summary:	Documentations for tracker
-Group:		Documentation
-BuildArch:      noarch
+#%package docs
+#Summary:	Documentations for tracker
+#Group:		Documentation
+#BuildArch:      noarch
 
-%description docs
-This package contains the documentation for tracker
+#%description docs
+#This package contains the documentation for tracker
 
 %prep
 %setup -q
@@ -189,14 +189,14 @@ fi
 %defattr(-, root, root, -)
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
 
-%files docs
-%defattr(-, root, root, -)
-%doc docs/reference/COPYING
-%{_datadir}/gtk-doc/html/libtracker-miner/
-%{_datadir}/gtk-doc/html/libtracker-client/
-%{_datadir}/gtk-doc/html/libtracker-extract/
-%{_datadir}/gtk-doc/html/libtracker-sparql/
-%{_datadir}/gtk-doc/html/ontology/
+#%files docs
+#%defattr(-, root, root, -)
+#%doc docs/reference/COPYING
+#%{_datadir}/gtk-doc/html/libtracker-miner/
+#%{_datadir}/gtk-doc/html/libtracker-client/
+#%{_datadir}/gtk-doc/html/libtracker-extract/
+#%{_datadir}/gtk-doc/html/libtracker-sparql/
+#%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
 * Fri Feb 04 2011 Deji Akingunola <dakingun@gmail.com> - 0.9.37-1
