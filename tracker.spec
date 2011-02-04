@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.9.36
-Release:	2%{?dist}
+Version:	0.9.37
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -77,13 +77,13 @@ Requires:	%{name} = %{version}-%{release}
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
 search in nuautilus using tracker is built-in directly in the nautilus package.
 
-#%package docs
-#Summary:	Documentations for tracker
-#Group:		Documentation
-#BuildArch:      noarch
+%package docs
+Summary:	Documentations for tracker
+Group:		Documentation
+BuildArch:      noarch
 
-#%description docs
-#This package contains the documentation for tracker
+%description docs
+This package contains the documentation for tracker
 
 %prep
 %setup -q
@@ -96,7 +96,7 @@ AUTOPOINT='intltoolize --automake --copy' autoreconf --verbose --force --install
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
 %build
-%configure --disable-static --enable-tracker-search-bar		\
+%configure --disable-static --disable-tracker-search-bar		\
 	--enable-miner-evolution --disable-gtk-doc --disable-functional-tests
 # Disable the functional tests for now, they make use of python bytecodes.
 
@@ -157,8 +157,8 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_bindir}/tracker-needle
-%exclude %{_libexecdir}/tracker-search-bar
-%exclude %{_mandir}/man1/tracker-search-bar.1.gz
+#%exclude %{_libexecdir}/tracker-search-bar
+#%exclude %{_mandir}/man1/tracker-search-bar.1.gz
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-needle.1.gz
 
@@ -173,11 +173,10 @@ fi
 %defattr(-, root, root, -)
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-needle
-%{_libexecdir}/tracker-search-bar
-%{_libdir}/bonobo/servers/GNOME_Search_Bar_Applet.server
+#%{_libexecdir}/tracker-search-bar
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
-%{_mandir}/man1/tracker-search-bar.1.gz
+#%{_mandir}/man1/tracker-search-bar.1.gz
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
 
@@ -190,16 +189,20 @@ fi
 %defattr(-, root, root, -)
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
 
-#%files docs
-#%defattr(-, root, root, -)
-#%doc docs/reference/COPYING
-#%{_datadir}/gtk-doc/html/libtracker-miner/
-#%{_datadir}/gtk-doc/html/libtracker-client/
-#%{_datadir}/gtk-doc/html/libtracker-extract/
-#%{_datadir}/gtk-doc/html/libtracker-sparql/
-#%{_datadir}/gtk-doc/html/ontology/
+%files docs
+%defattr(-, root, root, -)
+%doc docs/reference/COPYING
+%{_datadir}/gtk-doc/html/libtracker-miner/
+%{_datadir}/gtk-doc/html/libtracker-client/
+%{_datadir}/gtk-doc/html/libtracker-extract/
+%{_datadir}/gtk-doc/html/libtracker-sparql/
+%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Feb 04 2011 Deji Akingunola <dakingun@gmail.com> - 0.9.37-1
+- Update to 0.9.37
+- Disable tracker-search-bar - building it is currently failing with gtk3
+
 * Wed Feb  2 2011 Matthias Clasen <mclasen@redhat.com> - 0.9.36-2
 - Rebuild against newer gtk
 
