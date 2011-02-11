@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.9.37
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -199,6 +199,9 @@ fi
 #%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Feb 10 2011 Matthias Clasen <mclasen@redhat.com> 0.9.37-3
+- Rebuild against newer gtk
+
 * Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9.37-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
