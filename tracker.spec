@@ -157,8 +157,8 @@ fi
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_bindir}/tracker-needle
-#%exclude %{_libexecdir}/tracker-search-bar
-#%exclude %{_mandir}/man1/tracker-search-bar.1.gz
+%exclude %{_libexecdir}/tracker-search-bar
+%exclude %{_mandir}/man1/tracker-search-bar.1.gz
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-needle.1.gz
 
@@ -173,10 +173,12 @@ fi
 %defattr(-, root, root, -)
 %{_bindir}/tracker-preferences
 %{_bindir}/tracker-needle
-#%{_libexecdir}/tracker-search-bar
+%{_libexecdir}/tracker-search-bar
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
-#%{_mandir}/man1/tracker-search-bar.1.gz
+%{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
+%{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
+%{_mandir}/man1/tracker-search-bar.1.gz
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
 
