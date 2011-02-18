@@ -1,14 +1,14 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.9.37
-Release:	3%{?dist}
+Version:	0.10.0
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.9/%{name}-%{version}.tar.bz2
+Source1:	tracker-search-bar.1
 Patch0:		tracker-0.9-fedora-build-fixes.patch
-Patch1:		tracker-evo-build-fix.patch
-Patch2:		tracker-0.9-gtk3-build-fixes.patch
+Patch1:		tracker-0.10-gtk3-build-fixes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
@@ -87,16 +87,16 @@ search in nuautilus using tracker is built-in directly in the nautilus package.
 
 %prep
 %setup -q
-%patch1 -p0 -b .fix2
-%patch2 -p0 -b .fix3
+%patch1 -p0 -b .gtk3
 autopoint --force &&
 AUTOPOINT='intltoolize --automake --copy' autoreconf --verbose --force --install
 %patch0 -p0 -b .fix
+cp -pr %{SOURCE1} docs/manpages
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
 %build
-%configure --disable-static --disable-tracker-search-bar		\
+%configure --disable-static		\
 	--enable-miner-evolution --disable-gtk-doc --disable-functional-tests
 # Disable the functional tests for now, they make use of python bytecodes.
 
@@ -199,6 +199,10 @@ fi
 #%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Feb 17 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.0-1
+- Update to 0.10.0
+- Re-enable tracker-search-bar
+
 * Thu Feb 10 2011 Matthias Clasen <mclasen@redhat.com> 0.9.37-3
 - Rebuild against newer gtk
 

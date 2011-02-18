@@ -1,0 +1,26 @@
+--- configure.ac	2011-02-17 11:39:02.000000000 -0500
++++ configure.ac.new	2011-02-17 22:05:40.788691036 -0500
+@@ -186,10 +186,10 @@
+ LIBEXIF_REQUIRED=0.6
+ LIBGSF_REQUIRED=1.13
+ EXEMPI_REQUIRED=2.1.0
+-EVO_REQUIRED=2.91.90
+-EVO_SHELL_REQUIRED=2.91.90
+-EDS_REQUIRED=2.91.90
+-CAMEL_REQUIRED=2.91.90
++EVO_REQUIRED=2.91.6
++EVO_SHELL_REQUIRED=2.91.6
++EDS_REQUIRED=2.91.6
++CAMEL_REQUIRED=2.91.6
+ # Unlikely version for now, Nepomuk integration isn't finished in streamanalyzer atm
+ LIBSTREAMANALYZER_REQUIRED=0.7.0
+ GEE_REQUIRED=0.3
+@@ -440,7 +440,7 @@
+ TRACKER_NAUTILUS_EXTENSION_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
+                                      gio-unix-2.0   >= $GLIB_REQUIRED
+                                      gthread-2.0    >= $GLIB_REQUIRED
+-                                     gtk+-2.0       >= $GTK_REQUIRED
++                                     gtk+-3.0       >= $GTK_REQUIRED
+                                      libnautilus-extension"
+ 
+ PKG_CHECK_MODULES(TRACKER_NAUTILUS_EXTENSION, [$TRACKER_NAUTILUS_EXTENSION_REQUIRED],
