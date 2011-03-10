@@ -1,12 +1,11 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.10.0
+Version:	0.10.2
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.9/%{name}-%{version}.tar.bz2
-Source1:	tracker-search-bar.1
 Patch0:		tracker-0.9-fedora-build-fixes.patch
 Patch1:		tracker-0.10-gtk3-build-fixes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -91,14 +90,13 @@ search in nuautilus using tracker is built-in directly in the nautilus package.
 autopoint --force &&
 AUTOPOINT='intltoolize --automake --copy' autoreconf --verbose --force --install
 %patch0 -p0 -b .fix
-cp -pr %{SOURCE1} docs/manpages
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
 %build
 %configure --disable-static		\
 	--enable-miner-evolution --disable-gtk-doc --disable-functional-tests
-# Disable the functional tests for now, they make use of python bytecodes.
+# Disable the functional tests for now, they use python bytecodes.
 
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -201,6 +199,9 @@ fi
 #%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Mar 10 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.2-1
+- Update to 0.10.2
+
 * Fri Feb 17 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.0-1
 - Update to 0.10.0
 - Re-enable tracker-search-bar
