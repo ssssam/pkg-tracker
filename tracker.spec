@@ -1,6 +1,6 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.10.2
+Version:	0.10.3
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -199,6 +199,9 @@ fi
 #%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Mar 11 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.3-1
+- Update to 0.10.3
+
 * Thu Mar 10 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.2-1
 - Update to 0.10.2
 

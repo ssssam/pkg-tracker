@@ -1,6 +1,6 @@
 --- configure.ac	2011-02-17 11:39:02.000000000 -0500
 +++ configure.ac.new	2011-02-17 22:05:40.788691036 -0500
-@@ -440,7 +440,7 @@
+@@ -447,7 +447,7 @@
  TRACKER_NAUTILUS_EXTENSION_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
                                       gio-unix-2.0   >= $GLIB_REQUIRED
                                       gthread-2.0    >= $GLIB_REQUIRED
