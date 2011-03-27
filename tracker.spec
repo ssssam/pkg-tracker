@@ -7,7 +7,7 @@ Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.9/%{name}-%{version}.tar.bz2
 Patch0:		tracker-0.9-fedora-build-fixes.patch
-Patch1:		tracker-0.10-gtk3-build-fixes.patch
+Patch1:		tracker-0.10-gnome3-build-fixes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	poppler-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
