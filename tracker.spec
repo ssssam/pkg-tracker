@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.10.3
-Release:	2%{?dist}
+Version:	0.10.5
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -199,6 +199,9 @@ fi
 #%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sat Mar 26 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.5-1
+- Update to 0.10.5
+
 * Sun Mar 13 2011 Marek Kasik <mkasik@redhat.com> - 0.10.3-2
 - Rebuild (poppler-0.16.3)
 
