@@ -6,9 +6,7 @@ License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
-Patch0:		tracker-0.9-fedora-build-fixes.patch
-Patch1:		tracker-0.10-gnome3-build-fixes.patch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
 BuildRequires:	poppler-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
 BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
@@ -21,7 +19,7 @@ BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel
 BuildRequires:	gdk-pixbuf-devel
 BuildRequires:	desktop-file-utils intltool gettext graphviz dia
-BuildRequires:	autoconf automake libtool
+BuildRequires:	gobject-introspection
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -86,26 +84,21 @@ search in nuautilus using tracker is built-in directly in the nautilus package.
 
 %prep
 %setup -q
-#%patch1 -p0 -b .gtk3
-#autopoint --force &&
-#AUTOPOINT='intltoolize --automake --copy' autoreconf --verbose --force --install
-%patch0 -p0 -b .fix
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
+
+## nuke unwanted rpaths, see also 
+## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
+sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
 %configure --disable-static		\
 	--enable-miner-evolution --disable-gtk-doc --disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
-# Disable rpath
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-
 make V=1 %{?_smp_mflags}
 
 %install
-rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
@@ -121,9 +114,6 @@ find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
 
 %find_lang %{name}
-
-%clean
-rm -rf %{buildroot}
 
 %post -p /sbin/ldconfig
 
@@ -150,6 +140,8 @@ fi
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
 %{_libdir}/tracker-0.10/
+%{_libdir}/girepository-1.0/TrackerExtract-0.10.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-0.10.typelib
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
@@ -166,6 +158,9 @@ fi
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.*
+%{_datadir}/gir-1.0/Tracker-0.10.gir
+%{_datadir}/gir-1.0/TrackerExtract-0.10.gir
+%{_datadir}/gir-1.0/TrackerMiner-0.10.gir
 
 %files search-tool
 %defattr(-, root, root, -)
@@ -200,7 +195,7 @@ fi
 
 %changelog
 * Tue Apr 12 2011 Peter Robinson <pbrobinson@gmail.com> - 0.10.8-2
-- Rebuild against new gupnp-dlna
+- Rebuild against new gupnp-dlna, build introspection support
 
 * Sat Apr 09 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.8-1
 - Update to 0.10.8
