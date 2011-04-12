@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.10.8
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -199,6 +199,9 @@ fi
 #%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Apr 12 2011 Peter Robinson <pbrobinson@gmail.com> - 0.10.8-2
+- Rebuild against new gupnp-dlna
+
 * Sat Apr 09 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.8-1
 - Update to 0.10.8
 
