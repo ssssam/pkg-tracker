@@ -1,13 +1,14 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.10.8
-Release:	2%{?dist}
+Version:	0.10.10
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
+Patch0:		tracker-0.10-gnome3-build-fixes.patch
 
-BuildRequires:	poppler-devel evolution-devel libxml2-devel libgsf-devel 
+BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
 BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
@@ -16,9 +17,10 @@ BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
-BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel
+BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
 BuildRequires:	gdk-pixbuf-devel
-BuildRequires:	desktop-file-utils intltool gettext graphviz dia
+BuildRequires:	desktop-file-utils intltool gettext
+BuildRequires:	gtk-doc graphviz dia
 BuildRequires:	gobject-introspection
 
 %description
@@ -74,16 +76,17 @@ Requires:	%{name} = %{version}-%{release}
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
 search in nuautilus using tracker is built-in directly in the nautilus package.
 
-#%package docs
-#Summary:	Documentations for tracker
-#Group:		Documentation
-#BuildArch:      noarch
+%package docs
+Summary:	Documentations for tracker
+Group:		Documentation
+BuildArch:      noarch
 
-#%description docs
-#This package contains the documentation for tracker
+%description docs
+This package contains the documentation for tracker
 
 %prep
 %setup -q
+%patch0 -p0 -b .gtk3
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -93,7 +96,7 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
 %configure --disable-static		\
-	--enable-miner-evolution --disable-gtk-doc --disable-functional-tests
+	--enable-miner-evolution --enable-gtk-doc --disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
 make V=1 %{?_smp_mflags}
@@ -140,6 +143,7 @@ fi
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
 %{_libdir}/tracker-0.10/
+%{_libdir}/girepository-1.0/Tracker-0.10.typelib
 %{_libdir}/girepository-1.0/TrackerExtract-0.10.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-0.10.typelib
 %{_mandir}/*/tracker*.gz
@@ -184,16 +188,22 @@ fi
 %defattr(-, root, root, -)
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
 
-#%files docs
-#%defattr(-, root, root, -)
-#%doc docs/reference/COPYING
-#%{_datadir}/gtk-doc/html/libtracker-miner/
-#%{_datadir}/gtk-doc/html/libtracker-client/
-#%{_datadir}/gtk-doc/html/libtracker-extract/
-#%{_datadir}/gtk-doc/html/libtracker-sparql/
-#%{_datadir}/gtk-doc/html/ontology/
+%files docs
+%defattr(-, root, root, -)
+%doc docs/reference/COPYING
+%{_datadir}/gtk-doc/html/libtracker-miner/
+%{_datadir}/gtk-doc/html/libtracker-client/
+%{_datadir}/gtk-doc/html/libtracker-extract/
+%{_datadir}/gtk-doc/html/libtracker-sparql/
+%{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Apr 26 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.10-1
+- Update to 0.10.10
+
+* Thu Apr 14 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.9-1
+- Update to 0.10.9
+
 * Tue Apr 12 2011 Peter Robinson <pbrobinson@gmail.com> - 0.10.8-2
 - Rebuild against new gupnp-dlna, build introspection support
 
