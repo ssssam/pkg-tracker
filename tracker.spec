@@ -1,6 +1,6 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.10.21
+Version:	0.10.24
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -59,13 +59,13 @@ Obsoletes:	paperbox <= 0.4.4
 Graphical frontend to tracker search and tagging facilities. This has
 dependencies on GNOME libraries
 
-#%package evolution-plugin
-#Summary:	Tracker's evolution plugin
-#Group:		User Interface/Desktops
-#Requires:	%{name} = %{version}-%{release}
+%package evolution-plugin
+Summary:	Tracker's evolution plugin
+Group:		User Interface/Desktops
+Requires:	%{name} = %{version}-%{release}
 
-#%description evolution-plugin
-#Tracker's evolution plugin
+%description evolution-plugin
+Tracker's evolution plugin
 
 %package nautilus-plugin
 Summary:	Tracker's nautilus plugin
@@ -88,7 +88,7 @@ This package contains the documentation for tracker
 %setup -q
 %patch0 -p0 -b .gtk3
 
-#%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
+%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
 ## nuke unwanted rpaths, see also 
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -96,7 +96,7 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
 %configure --disable-static		\
-	--enable-gtk-doc --disable-functional-tests
+	--enable-miner-evolution --enable-gtk-doc --disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
 make V=1 %{?_smp_mflags}
@@ -179,10 +179,10 @@ fi
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
 
-#%files evolution-plugin
-#%defattr(-, root, root, -)
-#%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
-#%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
+%files evolution-plugin
+%defattr(-, root, root, -)
+%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
+%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 
 %files nautilus-plugin
 %defattr(-, root, root, -)
@@ -198,6 +198,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Aug 25 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.24-1
+- Update to 0.10.24
+- Re-enable the evolution plugin
+
 * Tue Jul 26 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.21-1
 - Update to 0.10.21
 - Temporarily disable the evolution plugin
