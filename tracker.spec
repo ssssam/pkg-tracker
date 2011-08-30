@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.10.24
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -198,6 +198,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Aug 30 2011 Milan Crha <mcrha@redhat.com> - 0.10.24-2
+- Rebuild against newer evolution-data-server
+
 * Thu Aug 25 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.24-1
 - Update to 0.10.24
 - Re-enable the evolution plugin
