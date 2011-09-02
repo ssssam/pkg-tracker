@@ -1,14 +1,13 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.10.24
-Release:	2%{?dist}
+Version:	0.11.2
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.10/%{name}-%{version}.tar.bz2
-Patch0:		tracker-0.10-gnome3-build-fixes.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.11/%{name}-%{version}.tar.xz
 
-BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel 
+BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
 BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
@@ -23,9 +22,12 @@ BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz dia
 BuildRequires:	gobject-introspection
 
+# doesn't build with current evolution
+Obsoletes: tracker-evolution-plugin < 0.10.24-3.fc16
+
 %description
 Tracker is a powerful desktop-neutral first class object database,
-tag/metadata database, search tool and indexer. 
+tag/metadata database, search tool and indexer.
 
 It consists of a common object database that allows entities to have an
 almost infinte number of properties, metadata (both embedded/harvested as
@@ -35,7 +37,7 @@ links to other entities.
 It provides additional features for file based objects including context
 linking and audit trails for a file object.
 
-It has the ability to index, store, harvest metadata. retrieve and search  
+It has the ability to index, store, harvest metadata. retrieve and search
 all types of files and other first class objects
 
 %package devel
@@ -59,6 +61,7 @@ Obsoletes:	paperbox <= 0.4.4
 Graphical frontend to tracker search and tagging facilities. This has
 dependencies on GNOME libraries
 
+%if 0
 %package evolution-plugin
 Summary:	Tracker's evolution plugin
 Group:		User Interface/Desktops
@@ -66,6 +69,7 @@ Requires:	%{name} = %{version}-%{release}
 
 %description evolution-plugin
 Tracker's evolution plugin
+%endif
 
 %package nautilus-plugin
 Summary:	Tracker's nautilus plugin
@@ -86,17 +90,19 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
-%patch0 -p0 -b .gtk3
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
-## nuke unwanted rpaths, see also 
+## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
-%configure --disable-static		\
-	--enable-miner-evolution --enable-gtk-doc --disable-functional-tests
+%configure --disable-static             \
+        --disable-miner-evolution       \
+        --disable-miner-firefox         \
+        --enable-gtk-doc                \
+        --disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
 make V=1 %{?_smp_mflags}
@@ -126,13 +132,20 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
+if [ $1 -eq 0 ]; then
+  glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
+fi
 
 %postun search-tool
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
+
+%posttrans
+glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 
 %files -f %{name}.lang
 %defattr(-, root, root, -)
@@ -142,13 +155,14 @@ fi
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
-%{_libdir}/tracker-0.10/
-%{_libdir}/girepository-1.0/Tracker-0.10.typelib
-%{_libdir}/girepository-1.0/TrackerExtract-0.10.typelib
-%{_libdir}/girepository-1.0/TrackerMiner-0.10.typelib
+%{_libdir}/tracker-0.12/
+%{_libdir}/girepository-1.0/Tracker-0.12.typelib
+%{_libdir}/girepository-1.0/TrackerExtract-0.12.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-0.12.typelib
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
+%{_datadir}/glib-2.0/schemas/*
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_bindir}/tracker-needle
 %exclude %{_libexecdir}/tracker-search-bar
@@ -158,13 +172,13 @@ fi
 
 %files devel
 %defattr(-, root, root, -)
-%{_includedir}/tracker-0.10/
+%{_includedir}/tracker-0.12/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.*
-%{_datadir}/gir-1.0/Tracker-0.10.gir
-%{_datadir}/gir-1.0/TrackerExtract-0.10.gir
-%{_datadir}/gir-1.0/TrackerMiner-0.10.gir
+%{_datadir}/gir-1.0/Tracker-0.12.gir
+%{_datadir}/gir-1.0/TrackerExtract-0.12.gir
+%{_datadir}/gir-1.0/TrackerMiner-0.12.gir
 
 %files search-tool
 %defattr(-, root, root, -)
@@ -179,10 +193,12 @@ fi
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
 
+%if 0
 %files evolution-plugin
 %defattr(-, root, root, -)
 %{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
 %{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
+%endif
 
 %files nautilus-plugin
 %defattr(-, root, root, -)
@@ -192,12 +208,15 @@ fi
 %defattr(-, root, root, -)
 %doc docs/reference/COPYING
 %{_datadir}/gtk-doc/html/libtracker-miner/
-%{_datadir}/gtk-doc/html/libtracker-client/
 %{_datadir}/gtk-doc/html/libtracker-extract/
 %{_datadir}/gtk-doc/html/libtracker-sparql/
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Sep  1 2011 Matthias Clasen <mclasen@redhat.com> - 0.11.2-1
+- Update to 0.11.2
+- Drop the evolution miner temporarily
+
 * Tue Aug 30 2011 Milan Crha <mcrha@redhat.com> - 0.10.24-2
 - Rebuild against newer evolution-data-server
 
@@ -205,7 +224,13 @@ fi
 - Update to 0.10.24
 - Re-enable the evolution plugin
 
-* Tue Jul 26 2011 Deji Akingunola <dakingun@gmail.com> - 0.10.21-1
+* Thu Aug 04 2011 Adam Williamson <awilliam@redhat.com> - 0.10.21-2
+- obsolete the evo plugin as well so upgrades work
+
+* Wed Aug 03 2011 Adam Williamson <awilliam@redhat.com> - 0.10.21-1
+- complete disabling the evolution plugin
+
+* Tue Jul 26 2011 Deji Akingunola <dakingun@gmail.com>
 - Update to 0.10.21
 - Temporarily disable the evolution plugin
 
