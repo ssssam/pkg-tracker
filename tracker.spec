@@ -17,7 +17,8 @@ BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
-BuildRequires:	gdk-pixbuf-devel
+BuildRequires:	gdk-pixbuf2-devel
+BuildRequires:  libgee-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz dia
 BuildRequires:	gobject-introspection
