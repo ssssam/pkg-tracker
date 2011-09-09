@@ -1,11 +1,11 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.11.2
+Version:	0.12.0
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.11/%{name}-%{version}.tar.xz
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/%{name}-%{version}.tar.xz
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel libnotify-devel dbus-devel
@@ -23,8 +23,6 @@ BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz dia
 BuildRequires:	gobject-introspection
 
-# doesn't build with current evolution
-Obsoletes: tracker-evolution-plugin < 0.10.24-3.fc16
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -62,7 +60,6 @@ Obsoletes:	paperbox <= 0.4.4
 Graphical frontend to tracker search and tagging facilities. This has
 dependencies on GNOME libraries
 
-%if 0
 %package evolution-plugin
 Summary:	Tracker's evolution plugin
 Group:		User Interface/Desktops
@@ -70,7 +67,6 @@ Requires:	%{name} = %{version}-%{release}
 
 %description evolution-plugin
 Tracker's evolution plugin
-%endif
 
 %package nautilus-plugin
 Summary:	Tracker's nautilus plugin
@@ -112,7 +108,7 @@ make V=1 %{?_smp_mflags}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker-0.10"	\
+echo "%{_libdir}/tracker-0.12"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 desktop-file-install --delete-original			\
@@ -194,12 +190,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
 
-%if 0
 %files evolution-plugin
 %defattr(-, root, root, -)
 %{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
 %{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
-%endif
 
 %files nautilus-plugin
 %defattr(-, root, root, -)
@@ -214,6 +208,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Sep 09 2011 Deji Akingunola <dakingun@gmail.com> - 0.12.0-1
+- Update to 0.12.0 stable release
+- Re-enable the evolution plugin
+
 * Thu Sep  1 2011 Matthias Clasen <mclasen@redhat.com> - 0.11.2-1
 - Update to 0.11.2
 - Drop the evolution miner temporarily
