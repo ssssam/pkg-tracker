@@ -1,29 +1,23 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.12.0
-Release:	3%{?dist}
+Version:	0.12.2
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/%{name}-%{version}.tar.xz
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
-BuildRequires:	libuuid-devel libnotify-devel dbus-devel
-BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
+BuildRequires:	libuuid-devel dbus-glib-devel
+BuildRequires:	nautilus-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
-BuildRequires:	sqlite-devel vala-devel pygtk2-devel
-%if 0%{?fedora} > 16
-BuildRequires: libgee06-devel
-%else
-BuildRequires: libgee-devel
-%endif
+BuildRequires:	sqlite-devel vala-devel libgee06-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
 BuildRequires:	gdk-pixbuf2-devel
-BuildRequires:  libgee-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz dia
 BuildRequires:	gobject-introspection
@@ -55,15 +49,17 @@ Requires:	dbus-glib-devel gtk2-devel
 This package contains the static libraries and header files needed for
 developing with tracker
 
-%package search-tool
+%package ui-tools
 Summary:	Tracker search tool(s)
 Group:		User Interface/Desktops
 Requires:	%{name} = %{version}-%{release}
 Obsoletes:	paperbox <= 0.4.4
+Obsoletes:	tracker-search-tool <= 0.12.0
 
-%description search-tool
-Graphical frontend to tracker search and tagging facilities. This has
-dependencies on GNOME libraries
+%description ui-tools
+Graphical frontend to tracker search (tracker-needle) and configuration
+(tracker-preferences) facilities. This also contains A test tool to navigate
+around objects in the database based on their relationships (tracker-explorer)
 
 %package evolution-plugin
 Summary:	Tracker's evolution plugin
@@ -100,11 +96,12 @@ This package contains the documentation for tracker
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
-%configure --disable-static             \
-        --enable-miner-evolution       \
-        --disable-miner-firefox         \
-        --enable-gtk-doc                \
-        --disable-functional-tests
+%configure --disable-static		\
+	--disable-tracker-search-bar	\
+	--disable-miner-thunderbird	\
+	--disable-miner-firefox		\
+	--enable-gtk-doc		\
+	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
 make V=1 %{?_smp_mflags}
@@ -128,7 +125,7 @@ rm -rf %{buildroot}%{_datadir}/tracker-tests
 
 %post -p /sbin/ldconfig
 
-%post search-tool
+%post ui-tools
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
@@ -140,7 +137,7 @@ if [ $1 -eq 0 ]; then
   glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 fi
 
-%postun search-tool
+%postun ui-tools
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
@@ -165,10 +162,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %{_datadir}/glib-2.0/schemas/*
-%exclude %{_bindir}/tracker-preferences
+%exclude %{_bindir}/tracker-explorer
 %exclude %{_bindir}/tracker-needle
-%exclude %{_libexecdir}/tracker-search-bar
-%exclude %{_mandir}/man1/tracker-search-bar.1.gz
+%exclude %{_bindir}/tracker-preferences
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-needle.1.gz
 
@@ -182,16 +178,13 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gir-1.0/TrackerExtract-0.12.gir
 %{_datadir}/gir-1.0/TrackerMiner-0.12.gir
 
-%files search-tool
+%files ui-tools
 %defattr(-, root, root, -)
-%{_bindir}/tracker-preferences
+%{_bindir}/tracker-explorer
 %{_bindir}/tracker-needle
-%{_libexecdir}/tracker-search-bar
+%{_bindir}/tracker-preferences
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
-%{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
-%{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
-%{_mandir}/man1/tracker-search-bar.1.gz
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
 
@@ -213,6 +206,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Sep 23 2011 Deji Akingunola <dakingun@gmail.com> - 0.12.2-1
+- Update to 0.12.2 stable release
+- Replace the search-tool sub-package with more appropriately named ui-tools
+- Disable the search-bar until upstream redo it for GNOME 3
+
 * Fri Sep 23 2011 Michael Schwendt <mschwendt@fedoraproject.org> - 0.12.0-3
 - Rebuild (poppler-0.17.3)
 - Readd --enable-miner-evolution as forgotten in 0.12.0-1
