@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.12.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -12,7 +12,12 @@ BuildRequires:	libuuid-devel libnotify-devel dbus-devel
 BuildRequires:	gnome-desktop-devel nautilus-devel gnome-panel-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
-BuildRequires:	sqlite-devel vala-devel libgee-devel pygtk2-devel
+BuildRequires:	sqlite-devel vala-devel pygtk2-devel
+%if 0%{?fedora} > 16
+BuildRequires: libgee06-devel
+%else
+BuildRequires: libgee-devel
+%endif
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
@@ -96,7 +101,7 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
 %configure --disable-static             \
-        --disable-miner-evolution       \
+        --enable-miner-evolution       \
         --disable-miner-firefox         \
         --enable-gtk-doc                \
         --disable-functional-tests
@@ -208,6 +213,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Sep 23 2011 Michael Schwendt <mschwendt@fedoraproject.org> - 0.12.0-3
+- Rebuild (poppler-0.17.3)
+- Readd --enable-miner-evolution as forgotten in 0.12.0-1
+- Conditionally BR libgee06-devel instead of libgee-devel for Fedora > 16
+
 * Mon Sep 19 2011 Marek Kasik <mkasik@redhat.com> - 0.12.0-2
 - Rebuild (poppler-0.17.3)
 
