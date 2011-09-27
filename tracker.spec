@@ -1,6 +1,6 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.12.3
+Version:	0.10.29
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -206,6 +206,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Sep 27 2011 Ray <rstrode@redhat.com> - 0.10.29-1
+- Update to 0.10.29
+
 * Tue Sep 27 2011 Deji Akingunola <dakingun@gmail.com> - 0.12.3-1
 - Update to 0.12.3 stable release
 
