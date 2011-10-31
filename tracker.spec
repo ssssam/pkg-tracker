@@ -6,6 +6,7 @@ License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://download.gnome.org/sources/tracker/0.12/%{name}-%{version}.tar.xz
+Patch0:		tracker-fixdso.patch
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -88,6 +89,7 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
+%patch0 -p1 -b .fixdso
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
