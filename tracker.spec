@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.12.7
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -208,6 +208,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Nov 22 2011 Peter Robinson <pbrobinson@fedoraproject.org> - 0.12.7-2
+- Rebuild for new e-d-s
+
 * Mon Oct 31 2011 Peter Robinson <pbrobinson@fedoraproject.org> - 0.12.7-1
 - Update to 0.12.7
 - http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/tracker-0.12.6.news
