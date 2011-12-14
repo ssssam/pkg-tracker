@@ -1,6 +1,6 @@
---- tracker-0.12.7/tests/libtracker-common/Makefile.in.orig	2011-10-31 18:49:24.625342415 +0000
-+++ tracker-0.12.7/tests/libtracker-common/Makefile.in	2011-10-31 18:50:09.725340614 +0000
-@@ -248,7 +248,7 @@
+--- src/libtracker-common/Makefile.in	2011-11-25 10:46:08.000000000 -0500
++++ src/libtracker-common/Makefile.in.new	2011-12-13 23:49:30.957656410 -0500
+@@ -263,7 +263,7 @@
  INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
  INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
  LD = @LD@
