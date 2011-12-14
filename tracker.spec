@@ -1,12 +1,13 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.12.8
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://download.gnome.org/sources/tracker/0.12/%{name}-%{version}.tar.xz
 Patch0:		tracker-fixdso.patch
+Patch1:		tracker-extract-pdf-crash-fix.patch
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -90,6 +91,7 @@ This package contains the documentation for tracker
 %prep
 %setup -q
 %patch0 -p1 -b .fixdso
+%patch0 -p0
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -208,6 +210,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Dec 13 2011 Deji Akingunola <dakingun@gmail.com> - 0.12.8-2
+- Apply patch to fix crash in indexing pdf (Fix by Marek Kašík; Bug #751922)
+
 * Sun Nov 27 2011 Peter Robinson <pbrobinson@fedoraproject.org> - 0.12.8-1
 - 0.12.8 Release
 - http://ftp.gnome.org/pub/GNOME/sources/tracker/0.12/tracker-0.12.8.news
