@@ -91,7 +91,7 @@ This package contains the documentation for tracker
 %prep
 %setup -q
 %patch0 -p0 -b .fixdso
-%patch0 -p0
+%patch1 -p0
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
