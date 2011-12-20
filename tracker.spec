@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.12.8
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -210,6 +210,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Dec 20 2011 Milan Crha <mcrha@redhat.com> - 0.12.8-3
+- Rebuild against newer evolution-data-server
+
 * Tue Dec 13 2011 Deji Akingunola <dakingun@gmail.com> - 0.12.8-2
 - Apply patch to fix crash in indexing pdf (Fix by Marek Kašík; Bug #751922)
 
