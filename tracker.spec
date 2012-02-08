@@ -1,13 +1,15 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.12.9
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://download.gnome.org/sources/tracker/0.12/%{name}-%{version}.tar.xz
 Patch0:		tracker-fixdso.patch
 Patch1:		tracker-extract-pdf-crash-fix.patch
+Patch2:		tracker-libemail.patch
+Patch3:		tracker-g-thread-init.patch
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -92,6 +94,8 @@ This package contains the documentation for tracker
 %setup -q
 %patch0 -p0 -b .fixdso
 %patch1 -p0
+%patch2 -p1 -b .libemail
+%patch3 -p1 -b .g-thread-init
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -210,6 +214,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Feb 08 2012 Milan Crha <mcrha@redhat.com> - 0.12.9-2
+- Rebuild against newer evolution-data-server
+- Add patch to build with evolution-3.3.5's libemail
+- Add patch to remove g_thread_init() calls
+
 * Fri Jan 27 2012 Deji Akingunola <dakingun@gmail.com> - 0.12.9-1
 - Update to 0.12.9
 
