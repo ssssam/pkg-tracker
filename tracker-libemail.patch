@@ -1,34 +1,139 @@
-diff --git a/configure.ac b/configure.ac
-index ff15e98..202a7d2 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -331,6 +331,9 @@ TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS -lz -lm"
- TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
-                                   evolution-shell-3.0       >= 3.1
-                                   evolution-plugin-3.0
-+                                  libemail-utils
-+                                  libemail-engine
-+                                  evolution-plugin-3.0
-                                   evolution-data-server-1.2 >= $EDS_REQUIRED
-                                   camel-1.2                 >= $CAMEL_REQUIRED"
+diff -up tracker-0.12.10/configure.ac.libemail tracker-0.12.10/configure.ac
+--- tracker-0.12.10/configure.ac.libemail	2012-02-15 15:59:14.000000000 +0100
++++ tracker-0.12.10/configure.ac	2012-02-22 11:15:28.737903315 +0100
+@@ -331,51 +331,76 @@ PKG_CHECK_MODULES(TRACKER_MINER_FS, [$TR
+ TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS -lz -lm"
  
-@@ -343,6 +346,7 @@ if test "x$have_tracker_miner_evolution" = "xyes"; then
+ # Check requirements for tracker-miner-evolution
+-TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
+-                                  evolution-shell-3.0       >= 3.1
+-                                  evolution-plugin-3.0
+-                                  evolution-data-server-1.2 >= $EDS_REQUIRED
+-                                  camel-1.2                 >= $CAMEL_REQUIRED"
++evolution_plugin_name=""
  
+-PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
++# First test for 3_3_5
++TRACKER_MINER_EVOLUTION_3_3_5_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
++                                        evolution-shell-3.0       >= 3.1
++                                        evolution-plugin-3.0
++                                        libemail-utils
++                                        libemail-engine
++                                        evolution-data-server-1.2 >= $EDS_REQUIRED
++                                        camel-1.2                 >= $CAMEL_REQUIRED"
++
++PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_3_3_5_REQUIRED],
+                   [have_tracker_miner_evolution=yes],
+                   [have_tracker_miner_evolution=no])
+ 
+-if test "x$have_tracker_miner_evolution" = "xyes"; then
++if test -z "$evolution_plugin_name" && test "x$have_tracker_miner_evolution" = "xyes"; then
+    evolution_plugin_name="evolution-plugin-3.0"
+ 
++   AC_DEFINE(EVOLUTION_SHELL_3_3_5, 1, [Use new evolution-shell API])
     AC_DEFINE(EVOLUTION_SHELL_3_2, 1, [Use new evolution-shell API])
     AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
-+   AC_DEFINE(EVOLUTION_SHELL_3_3_5, 1, [Use new evolution-shell API])
- else
-    TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
-                                      evolution-shell-3.0
-diff --git a/src/plugins/evolution/tracker-evolution-plugin.c b/src/plugins/evolution/tracker-evolution-plugin.c
-index fc9923a..15a3977 100644
---- a/src/plugins/evolution/tracker-evolution-plugin.c
-+++ b/src/plugins/evolution/tracker-evolution-plugin.c
-@@ -40,27 +40,37 @@
+-else
+-   TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
+-                                     evolution-shell-3.0
+-                                     evolution-plugin-3.0
+-                                     evolution-data-server-1.2 >= $EDS_REQUIRED
+-                                     camel-1.2                 >= $CAMEL_REQUIRED"
+-
+-   PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
+-                     [have_tracker_miner_evolution=yes],
+-                     [have_tracker_miner_evolution=no])
++fi
+ 
+-   if test "x$have_tracker_miner_evolution" = "xyes"; then
+-      evolution_plugin_name="evolution-plugin-3.0"
++# Second test for 3_2
++TRACKER_MINER_EVOLUTION_3_2_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
++                                      evolution-shell-3.0       >= 3.1
++                                      evolution-plugin-3.0
++                                      evolution-data-server-1.2 >= $EDS_REQUIRED
++                                      camel-1.2                 >= $CAMEL_REQUIRED"
+ 
+-      AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
+-   else
+-      evolution_plugin_name="evolution-plugin"
++PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_3_2_REQUIRED],
++                  [have_tracker_miner_evolution=yes],
++                  [have_tracker_miner_evolution=no])
+ 
++if test -z "$evolution_plugin_name" && test "x$have_tracker_miner_evolution" = "xyes"; then
++   evolution_plugin_name="evolution-plugin-3.0"
+ 
+-      TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
+-                                        evolution-shell           >= $EVO_SHELL_REQUIRED
+-                                        evolution-plugin          >= $EVO_REQUIRED
+-                                        evolution-data-server-1.2 >= $EDS_REQUIRED
+-                                        camel-1.2                 >= $CAMEL_REQUIRED"
++   AC_DEFINE(EVOLUTION_SHELL_3_2, 1, [Use new evolution-shell API])
++   AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
++fi
+ 
+-      PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
+-                        [have_tracker_miner_evolution=yes],
+-                        [have_tracker_miner_evolution=no])
++# Third test for 2_91
++TRACKER_MINER_EVOLUTION_2_91_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
++                                       evolution-shell-3.0
++                                       evolution-plugin-3.0
++                                       evolution-data-server-1.2 >= $EDS_REQUIRED
++                                       camel-1.2                 >= $CAMEL_REQUIRED"
+ 
+-   fi
++PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_2_91_REQUIRED],
++                  [have_tracker_miner_evolution=yes],
++                  [have_tracker_miner_evolution=no])
++
++if test -z "$evolution_plugin_name" && test "x$have_tracker_miner_evolution" = "xyes"; then
++   evolution_plugin_name="evolution-plugin-3.0"
++   AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
++fi
++
++# Fourth test others (do we really want support for anything < 3.2)?
++TRACKER_MINER_EVOLUTION_LAST_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
++                                       evolution-shell           >= $EVO_SHELL_REQUIRED
++                                       evolution-plugin          >= $EVO_REQUIRED
++                                       evolution-data-server-1.2 >= $EDS_REQUIRED
++                                       camel-1.2                 >= $CAMEL_REQUIRED"
++
++PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_LAST_REQUIRED],
++                  [have_tracker_miner_evolution=yes],
++                  [have_tracker_miner_evolution=no])
++
++if test -z "$evolution_plugin_name" && test "x$have_tracker_miner_evolution" = "xyes"; then
++   evolution_plugin_name="evolution-plugin"
+ fi
+ 
+ # Check requirements for tracker-miner-thunderbird
+@@ -1173,7 +1198,6 @@ else
+ fi
+ 
+ if test "x$have_tracker_miner_evolution" = "xyes"; then
+-
+    AC_ARG_WITH([evolution_plugin_dir],
+                AS_HELP_STRING([--with-evolution-plugin-dir],
+                               [path to Evolution plugin directory]))
+diff -up tracker-0.12.10/src/plugins/evolution/tracker-evolution-plugin.c.libemail tracker-0.12.10/src/plugins/evolution/tracker-evolution-plugin.c
+--- tracker-0.12.10/src/plugins/evolution/tracker-evolution-plugin.c.libemail	2012-02-15 11:41:48.000000000 +0100
++++ tracker-0.12.10/src/plugins/evolution/tracker-evolution-plugin.c	2012-02-22 11:22:12.705892062 +0100
+@@ -18,6 +18,7 @@
+  *
+  * Authors:
+  *  Philip Van Hoof <philip@codeminded.be>
++ *  Martyn Russell <martyn@lanedo.com>
+  */
+ 
+ #include "config.h"
+@@ -40,27 +41,39 @@
  
  #include <sqlite3.h>
  
 +#include <libedataserver/eds-version.h>
++
  #include <camel/camel.h>
  
 -#include <mail/mail-config.h>
@@ -36,8 +141,10 @@ index fc9923a..15a3977 100644
 -#include <mail/mail-ops.h>
  
  #ifdef EVOLUTION_SHELL_3_2
++#include <mail/em-utils.h>
  #include <mail/e-mail.h>
- #endif
+-#endif
++#endif  /* EVOLUTION_SHELL_3_2 */
  
 +#ifdef EVOLUTION_SHELL_3_3_5
 +#include <libemail-engine/e-mail-folder-utils.h>
@@ -45,17 +152,19 @@ index fc9923a..15a3977 100644
 +#include <libemail-engine/mail-config.h>
 +#include <libemail-engine/mail-ops.h>
 +#include <libemail-utils/e-account-utils.h>
-+#else
++#else  /* EVOLUTION_SHELL_3_3_5 */
 +#include <mail/e-mail-folder-utils.h>
 +#include <mail/mail-config.h>
 +#include <mail/mail-ops.h>
 +#include <e-util/e-account-utils.h>
  #ifdef EVOLUTION_SHELL_2_91
  #include <mail/e-mail-session.h>
- #else
+-#else
++#else  /* EVOLUTION_SHELL_2_91 */
  #include <mail/mail-session.h>
- #endif
-+#endif
+-#endif
++#endif /* EVOLUTION_SHELL_2_91 */
++#endif /* EVOLUTION_SHELL_3_3_5 */
  
  #include <mail/e-mail-backend.h>
  #include <shell/e-shell.h>
@@ -65,15 +174,316 @@ index fc9923a..15a3977 100644
  
  #include <libedataserver/e-account.h>
  #include <libedataserver/e-account-list.h>
-@@ -671,7 +681,11 @@ on_folder_summary_changed (CamelFolder           *folder,
+@@ -587,7 +600,7 @@ message_uri_build (CamelFolder *folder,
+ 	g_free (folder_uri);
+ 
+ 	return uri;
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 	CamelURL *a_url, *url;
+ 	const gchar *path;
+ 	gchar *uri, *qry, *ppath;
+@@ -620,7 +633,7 @@ message_uri_build (CamelFolder *folder,
+ 	camel_url_free (url);
+ 
+ 	return uri;
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ }
+ 
+ /* When new messages arrive to- or got deleted from the summary, called in
+@@ -686,7 +699,11 @@ on_folder_summary_changed (CamelFolder
  		const CamelFlag *cflags;
  		gchar *full_sparql;
  
-+		#if EDS_CHECK_VERSION(3,3,1)
++#if EDS_CHECK_VERSION(3,3,1)
 +		linfo = camel_folder_summary_get (summary, merged->pdata[i]);
-+		#else
++#else
  		linfo = camel_folder_summary_uid (summary, merged->pdata[i]);
-+		#endif
++#endif
  
  		if (linfo) {
  			uid = (gchar *) camel_message_info_uid (linfo);
+@@ -792,9 +809,9 @@ on_folder_summary_changed (CamelFolder
+ 
+ #ifdef EVOLUTION_SHELL_3_2
+ 			folder_name = camel_folder_get_display_name (folder);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 			folder_name = camel_folder_get_name (folder);
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 
+ 			if (folder_name && *folder_name) {
+ 				str = g_strdup_printf ("Updating E-mails for %s",
+@@ -917,9 +934,9 @@ introduce_walk_folders_in_folder (Tracke
+ 
+ #ifdef EVOLUTION_SHELL_3_2
+ 		status = g_strdup_printf ("Processing folder %s", iter->display_name);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 		status = g_strdup_printf ("Processing folder %s", iter->name);
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 		g_object_set (self,  "progress", 0.01, "status", status, NULL);
+ 
+ 		ret = sqlite3_prepare_v2 (cdb_r->db, query, -1, &stmt, NULL);
+@@ -1302,11 +1319,11 @@ get_last_deleted_time (TrackerMinerEvolu
+ 			if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session),
+ #ifdef EVOLUTION_SHELL_3_2
+ 			                                                        account->uid))) {
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 			                                                        uri,
+ 			                                                        CAMEL_PROVIDER_STORE,
+ 			                                                        NULL))) {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 				continue;
+ 			}
+ 
+@@ -1347,13 +1364,13 @@ register_on_get_folder (GObject      *so
+                         gpointer      user_data)
+ {
+ 	CamelFolder *folder = camel_store_get_folder_finish (CAMEL_STORE (source_object), res, NULL);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ static void
+ register_on_get_folder (gchar       *uri,
+                         CamelFolder *folder,
+                         gpointer     user_data)
+ {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 	GetFolderInfo *info = user_data;
+ 	gchar *account_uri = info->account_uri;
+ 	CamelFolderInfo *iter = info->iter;
+@@ -1436,17 +1453,17 @@ register_walk_folders_in_folder (Tracker
+ 		                        NULL,
+ 		                        register_on_get_folder,
+ 		                        info);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 		mail_get_folder (
+ #ifdef EVOLUTION_SHELL_2_91
+ 		                 session,
+-#endif
++#endif /* EVOLUTION_SHELL_2_91 */
+ 		                 iter->uri,
+ 		                 0,
+ 		                 register_on_get_folder,
+ 		                 info,
+ 		                 mail_msg_unordered_push);
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 
+ 		if (iter->child) {
+ 			register_walk_folders_in_folder (self, iter->child,
+@@ -1465,13 +1482,13 @@ unregister_on_get_folder (GObject      *
+                           gpointer      user_data)
+ {
+ 	CamelFolder *folder = camel_store_get_folder_finish (CAMEL_STORE (source_object), res, NULL);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ static void
+ unregister_on_get_folder (gchar       *uri,
+                           CamelFolder *folder,
+                           gpointer     user_data)
+ {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 	GetFolderInfo *info = user_data;
+ 	CamelFolderInfo *titer = info->iter;
+ 	TrackerMinerEvolution *self = info->self;
+@@ -1533,17 +1550,17 @@ unregister_walk_folders_in_folder (Track
+ 		                        NULL,
+ 		                        unregister_on_get_folder,
+ 		                        info);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 		mail_get_folder (
+ #ifdef EVOLUTION_SHELL_2_91
+ 		                 session,
+-#endif
++#endif /* EVOLUTION_SHELL_2_91 */
+ 		                 titer->uri,
+ 		                 0,
+ 		                 unregister_on_get_folder,
+ 		                 info,
+ 		                 mail_msg_unordered_push);
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 
+ 		if (titer->child) {
+ 			unregister_walk_folders_in_folder (self, titer->child,
+@@ -1643,13 +1660,13 @@ on_got_folderinfo_introduce (GObject
+ {
+ 	CamelStore *store = CAMEL_STORE (source_object);
+ 	CamelFolderInfo *iter = camel_store_get_folder_info_finish (store, res, NULL);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ static gboolean
+ on_got_folderinfo_introduce (CamelStore      *store,
+                              CamelFolderInfo *iter,
+                              void            *data)
+ {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 	TryAgainInfo *info = g_new0 (TryAgainInfo, 1);
+ 
+ 	/* Ownership of these is transfered in try_again */
+@@ -1688,9 +1705,9 @@ on_got_folderinfo_introduce (CamelStore
+ 
+ #ifdef EVOLUTION_SHELL_3_2
+ 	camel_store_free_folder_info (store, iter);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 	return TRUE;
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ }
+ 
+ static void
+@@ -1716,11 +1733,11 @@ introduce_account_to (TrackerMinerEvolut
+ 	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session),
+ #ifdef EVOLUTION_SHELL_3_2
+ 	                                                        account->uid))) {
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 	                                                        uri,
+ 	                                                        CAMEL_PROVIDER_STORE,
+ 	                                                        NULL))) {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 		return;
+ 	}
+ 
+@@ -1749,11 +1766,13 @@ introduce_account_to (TrackerMinerEvolut
+ 	                             NULL,
+ 	                             on_got_folderinfo_introduce,
+ 	                             intro_info);
+-#else
++#else /* EVOLUTION_SHELL_3_2 */
+ 	mail_get_folderinfo (store, NULL, on_got_folderinfo_introduce, intro_info);
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 
++#ifndef EVOLUTION_SHELL_3_2
+ 	g_object_unref (store);
++#endif /* EVOLUTION_SHELL_3_2 */
+ 
+ }
+ 
+@@ -1960,13 +1979,13 @@ on_got_folderinfo_register (GObject
+ {
+ 	CamelStore *store = CAMEL_STORE (source_object);
+ 	CamelFolderInfo *iter = camel_store_get_folder_info_finish (store, res, NULL);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ static gboolean
+ on_got_folderinfo_register (CamelStore      *store,
+                             CamelFolderInfo *iter,
+                             void            *data)
+ {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 	RegisterInfo *reg_info = data;
+ 	TrackerMinerEvolution *self = reg_info->self;
+ 	TrackerMinerEvolutionPrivate *priv;
+@@ -2025,9 +2044,9 @@ on_got_folderinfo_register (CamelStore
+ 
+ #ifdef EVOLUTION_SHELL_3_2
+ 	camel_store_free_folder_info (store, iter);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 	return TRUE;
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ }
+ 
+ static void
+@@ -2054,11 +2073,11 @@ register_account (TrackerMinerEvolution
+ 	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session),
+ #ifdef EVOLUTION_SHELL_3_2
+ 	                                                        account->uid))) {
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 	                                                        uri,
+ 	                                                        CAMEL_PROVIDER_STORE,
+ 	                                                        NULL))) {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 		return;
+ 	}
+ 
+@@ -2085,7 +2104,9 @@ register_account (TrackerMinerEvolution
+ 	mail_get_folderinfo (store, NULL, on_got_folderinfo_register, reg_info);
+ #endif
+ 
++#ifndef EVOLUTION_SHELL_3_2
+ 	g_object_unref (store);
++#endif
+ }
+ 
+ #ifdef EVOLUTION_SHELL_3_2
+@@ -2096,13 +2117,13 @@ on_got_folderinfo_unregister (GObject
+ {
+ 	CamelStore *store = CAMEL_STORE (source_object);
+ 	CamelFolderInfo *titer = camel_store_get_folder_info_finish (store, res, NULL);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ static gboolean
+ on_got_folderinfo_unregister (CamelStore      *store,
+                               CamelFolderInfo *titer,
+                               void            *data)
+ {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 	RegisterInfo *reg_info = data;
+ 	TrackerMinerEvolution *self = reg_info->self;
+ 	TrackerMinerEvolutionPrivate *priv;
+@@ -2128,9 +2149,9 @@ on_got_folderinfo_unregister (CamelStore
+ 
+ #ifdef EVOLUTION_SHELL_3_2
+ 	camel_store_free_folder_info (store, titer);
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 	return TRUE;
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ }
+ 
+ static void
+@@ -2152,11 +2173,11 @@ unregister_account (TrackerMinerEvolutio
+ 	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session),
+ #ifdef EVOLUTION_SHELL_3_2
+ 	                                                        account->uid))) {
+-#else
++#else  /* EVOLUTION_SHELL_3_2 */
+ 	                                                        uri,
+ 	                                                        CAMEL_PROVIDER_STORE,
+ 	                                                        NULL))) {
+-#endif
++#endif /* EVOLUTION_SHELL_3_2 */
+ 		return;
+ 	}
+ 
+@@ -2181,7 +2202,9 @@ unregister_account (TrackerMinerEvolutio
+ 	mail_get_folderinfo (store, NULL, on_got_folderinfo_unregister, reg_info);
+ #endif
+ 
++#ifndef EVOLUTION_SHELL_3_2
+ 	g_object_unref (store);
++#endif
+ }
+ 
+ static void
+@@ -2420,7 +2443,7 @@ tracker_miner_evolution_init (TrackerMin
+ 		shell_backend = e_shell_get_backend_by_name (shell, "mail");
+ 		session = e_mail_backend_get_session (E_MAIL_BACKEND (shell_backend));
+ 	}
+-#endif
++#endif /* EVOLUTION_SHELL_2_91 */
+ 
+ 	priv->sparql_cancel = g_cancellable_new ();
+ 
