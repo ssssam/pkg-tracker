@@ -103,8 +103,6 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 %build
 %configure --disable-static		\
 	--disable-tracker-search-bar	\
-	--disable-miner-thunderbird	\
-	--disable-miner-firefox		\
 	--enable-gtk-doc		\
 	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
