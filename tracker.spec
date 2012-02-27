@@ -1,14 +1,13 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.12.10
+Version:	0.13.1
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://download.gnome.org/sources/tracker/0.12/%{name}-%{version}.tar.xz
-Patch0:		tracker-fixdso.patch
-Patch1:		tracker-extract-pdf-crash-fix.patch
-Patch2:		tracker-libemail.patch
+Source0:	http://download.gnome.org/sources/tracker/0.13/%{name}-%{version}.tar.xz
+Patch0:		tracker-extract-pdf-crash-fix.patch
+Patch1:		tracker-0.13.1-libemail.patch
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -20,6 +19,7 @@ BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
+BuildRequires:	libosinfo-devel libcue-devel
 BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz dia
@@ -91,9 +91,8 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
-%patch0 -p0 -b .fixdso
-%patch1 -p0
-%patch2 -p1 -b .libemail
+%patch0 -p0
+%patch1 -p1 -b .libemail
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -160,10 +159,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
-%{_libdir}/tracker-0.12/
-%{_libdir}/girepository-1.0/Tracker-0.12.typelib
-%{_libdir}/girepository-1.0/TrackerExtract-0.12.typelib
-%{_libdir}/girepository-1.0/TrackerMiner-0.12.typelib
+%{_libdir}/tracker-0.14/
+%{_libdir}/girepository-1.0/Tracker-0.14.typelib
+%{_libdir}/girepository-1.0/TrackerExtract-0.14.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-0.14.typelib
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %{_sysconfdir}/xdg/autostart/tracker*.desktop
@@ -176,13 +175,13 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 
 %files devel
 %defattr(-, root, root, -)
-%{_includedir}/tracker-0.12/
+%{_includedir}/tracker-0.14/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.*
-%{_datadir}/gir-1.0/Tracker-0.12.gir
-%{_datadir}/gir-1.0/TrackerExtract-0.12.gir
-%{_datadir}/gir-1.0/TrackerMiner-0.12.gir
+%{_datadir}/gir-1.0/Tracker-0.14.gir
+%{_datadir}/gir-1.0/TrackerExtract-0.14.gir
+%{_datadir}/gir-1.0/TrackerMiner-0.14.gir
 
 %files ui-tools
 %defattr(-, root, root, -)
@@ -212,6 +211,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Feb 27 2012 Deji Akingunola <dakingun@gmail.com> - 0.13.1-1
+- Update to 0.13.1
+
 * Wed Feb 22 2012 Milan Crha <mcrha@redhat.com> - 0.12.10-1
 - Update to 0.12.10
 - Remove patch to remove g_thread_init() calls (fixed upstream)
