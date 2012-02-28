@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.13.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -20,6 +20,7 @@ BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
 BuildRequires:	libosinfo-devel libcue-devel
+BuildRequires:	firefox thunderbird
 BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz dia
@@ -72,6 +73,15 @@ Requires:	%{name} = %{version}-%{release}
 %description evolution-plugin
 Tracker's evolution plugin
 
+%package firefox-plugin
+Summary:	A simple bookmark exporter for Tracker
+Group:		User Interface/Desktops
+Requires:	%{name} = %{version}-%{release}
+
+%description firefox-plugin
+This Firefox addon exports your bookmarks to Tracker, so that you can search
+for them for example using tracker-needle.
+
 %package nautilus-plugin
 Summary:	Tracker's nautilus plugin
 Group:		User Interface/Desktops
@@ -80,6 +90,22 @@ Requires:	%{name} = %{version}-%{release}
 %description nautilus-plugin
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
 search in nuautilus using tracker is built-in directly in the nautilus package.
+
+%package miner-flickr
+Summary:	Tracker's Flickr data miner
+Group:		User Interface/Desktops
+Requires:	%{name} = %{version}-%{release}
+
+%description miner-flickr
+Tracker's Flickr data miner.
+
+%package thunderbird-plugin
+Summary:	Thunderbird extension to export mails to Tracker
+Group:		User Interface/Desktops
+Requires:	%{name} = %{version}-%{release}
+
+%description thunderbird-plugin
+A simple Thunderbird extension to export mails to Tracker.
 
 %package docs
 Summary:	Documentations for tracker
@@ -104,6 +130,8 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 %configure --disable-static		\
 	--disable-tracker-search-bar	\
 	--enable-gtk-doc		\
+	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
+	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
 	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
@@ -113,7 +141,7 @@ make V=1 %{?_smp_mflags}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker-0.12"	\
+echo "%{_libdir}/tracker-0.14"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 desktop-file-install --delete-original			\
@@ -170,6 +198,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-needle.1.gz
+%exclude %{_libexecdir}/tracker-miner-flickr
 
 %files devel
 %defattr(-, root, root, -)
@@ -190,15 +219,31 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/applications/*.desktop
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
+%exclude %{_datadir}/applications/trackerbird-launcher.desktop
 
 %files evolution-plugin
 %defattr(-, root, root, -)
 %{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
 %{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 
+%files firefox-plugin
+%defattr(-, root, root, -)
+%{_datadir}/xul-ext/trackerfox/
+%{_libdir}/firefox/extensions/trackerfox@bustany.org
+
 %files nautilus-plugin
 %defattr(-, root, root, -)
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
+
+%files miner-flickr
+%defattr(-, root, root, -)
+%{_libexecdir}/tracker-miner-flickr
+
+%files thunderbird-plugin
+%defattr(-, root, root, -)
+%{_datadir}/xul-ext/trackerbird/
+%{_libdir}/thunderbird/extensions/trackerbird@bustany.org
+%{_datadir}/applications/trackerbird-launcher.desktop
 
 %files docs
 %defattr(-, root, root, -)
@@ -209,6 +254,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Feb 27 2012 Deji Akingunola <dakingun@gmail.com> - 0.13.1-2
+- Enable Firefox and thunderbird plugins.
+- Split flickr data miner into its subpackage.
+
 * Mon Feb 27 2012 Deji Akingunola <dakingun@gmail.com> - 0.13.1-1
 - Update to 0.13.1
 
