@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.13.1
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -127,6 +127,7 @@ This package contains the documentation for tracker
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
+autoreconf -f
 %configure --disable-static		\
 	--disable-tracker-search-bar	\
 	--enable-gtk-doc		\
@@ -254,6 +255,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Mar 05 2012 Dan Horák <dan[at]danny.cz> - 0.13.1-3
+- Must call autoreconf because configure.ac is patched
+
 * Mon Feb 27 2012 Deji Akingunola <dakingun@gmail.com> - 0.13.1-2
 - Enable Firefox and thunderbird plugins.
 - Split flickr data miner into its subpackage.
