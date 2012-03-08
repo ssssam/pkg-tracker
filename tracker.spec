@@ -1,13 +1,12 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.13.1
-Release:	3%{?dist}
+Version:	0.14.0
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://download.gnome.org/sources/tracker/0.13/%{name}-%{version}.tar.xz
+Source0:	http://download.gnome.org/sources/tracker/0.14/%{name}-%{version}.tar.xz
 Patch0:		tracker-extract-pdf-crash-fix.patch
-Patch1:		tracker-0.13.1-libemail.patch
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -118,7 +117,6 @@ This package contains the documentation for tracker
 %prep
 %setup -q
 %patch0 -p0
-%patch1 -p1 -b .libemail
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -127,7 +125,6 @@ This package contains the documentation for tracker
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
-autoreconf -f
 %configure --disable-static		\
 	--disable-tracker-search-bar	\
 	--enable-gtk-doc		\
@@ -255,6 +252,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Mar 08 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.0-1
+- Update to 0.14.0
+
 * Mon Mar 05 2012 Dan Horák <dan[at]danny.cz> - 0.13.1-3
 - Must call autoreconf because configure.ac is patched
 
