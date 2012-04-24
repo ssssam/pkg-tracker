@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.14.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -163,7 +163,7 @@ fi
 %postun
 /sbin/ldconfig
 if [ $1 -eq 0 ]; then
-  glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
+  glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 fi
 
 %postun ui-tools
@@ -173,7 +173,7 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
 fi
 
 %posttrans
-glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %files -f %{name}.lang
 %defattr(-, root, root, -)
@@ -252,6 +252,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Apr 24 2012 Kalev Lember <kalevlember@gmail.com> - 0.14.0-2
+- Silence glib-compile-schemas output in rpm scripts
+
 * Thu Mar 08 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.0-1
 - Update to 0.14.0
 
