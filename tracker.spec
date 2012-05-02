@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.14.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -252,6 +252,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed May 02 2012 Milan Crha <mcrha@redhat.com> - 0.14.0-3
+- Rebuild against newer evolution-data-server
+
 * Tue Apr 24 2012 Kalev Lember <kalevlember@gmail.com> - 0.14.0-2
 - Silence glib-compile-schemas output in rpm scripts
 
