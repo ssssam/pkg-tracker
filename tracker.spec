@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.14.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -11,7 +11,7 @@ Patch0:		tracker-extract-pdf-crash-fix.patch
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
 BuildRequires:	nautilus-devel
-BuildRequires:	libjpeg-devel libexif-devel exempi-devel raptor-devel
+BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee06-devel
 BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
@@ -252,6 +252,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Jul 10 2012 Matthias Clasen <mclasen@redhat.com> - 0.14.1-2
+- Drop the raptor-devel BR
+
 * Sun May 20 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.1-1
 - Update to 0.14.1 (http://download.gnome.org/sources/tracker/0.14/tracker-0.14.1.changes)
 
