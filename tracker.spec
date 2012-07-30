@@ -1,12 +1,12 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.14.1
-Release:	3%{?dist}
+Version:	0.14.2
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://download.gnome.org/sources/tracker/0.14/%{name}-%{version}.tar.xz
-Patch0:		tracker-extract-pdf-crash-fix.patch
+#Patch0:		tracker-extract-pdf-crash-fix.patch
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -116,7 +116,7 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
-%patch0 -p0
+#%patch0 -p0
 
 %global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -252,6 +252,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Jul 30 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.2-1
+- Update to 0.14.2 (http://download.gnome.org/sources/tracker/0.14/tracker-0.14.2.changes)
+
 * Sun Jul 22 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.14.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
