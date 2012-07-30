@@ -7,7 +7,7 @@ Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://download.gnome.org/sources/tracker/0.14/%{name}-%{version}.tar.xz
 
-BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
+BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
 BuildRequires:	nautilus-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel
@@ -23,6 +23,7 @@ BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz dia
 BuildRequires:	gobject-introspection
+#BuildRequires:	evolution-devel
 
 
 %description
