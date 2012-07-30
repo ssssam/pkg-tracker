@@ -6,7 +6,6 @@ License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://download.gnome.org/sources/tracker/0.14/%{name}-%{version}.tar.xz
-#Patch0:		tracker-extract-pdf-crash-fix.patch
 
 BuildRequires:	poppler-glib-devel evolution-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -64,13 +63,13 @@ Graphical frontend to tracker search (tracker-needle) and configuration
 (tracker-preferences) facilities. This also contains A test tool to navigate
 around objects in the database based on their relationships (tracker-explorer)
 
-%package evolution-plugin
-Summary:	Tracker's evolution plugin
-Group:		User Interface/Desktops
-Requires:	%{name} = %{version}-%{release}
+#%package evolution-plugin
+#Summary:	Tracker's evolution plugin
+#Group:		User Interface/Desktops
+#Requires:	%{name} = %{version}-%{release}
 
-%description evolution-plugin
-Tracker's evolution plugin
+#%description evolution-plugin
+#Tracker's evolution plugin
 
 %package firefox-plugin
 Summary:	A simple bookmark exporter for Tracker
@@ -116,9 +115,8 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
-#%patch0 -p0
 
-%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
+#%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -219,10 +217,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 %{_mandir}/man1/tracker-needle.1.gz
 %exclude %{_datadir}/applications/trackerbird-launcher.desktop
 
-%files evolution-plugin
-%defattr(-, root, root, -)
-%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
-%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
+#%files evolution-plugin
+#%defattr(-, root, root, -)
+#%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
+#%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 
 %files firefox-plugin
 %defattr(-, root, root, -)
@@ -254,6 +252,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 %changelog
 * Mon Jul 30 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.2-1
 - Update to 0.14.2 (http://download.gnome.org/sources/tracker/0.14/tracker-0.14.2.changes)
+- Temporarily disable the evolution plugin, fails to build with evo-3.5
 
 * Sun Jul 22 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.14.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
