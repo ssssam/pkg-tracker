@@ -1,11 +1,15 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.14.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
 Source0:	http://download.gnome.org/sources/tracker/0.14/%{name}-%{version}.tar.xz
+
+# only autostart in Gnome, see also
+# https://bugzilla.redhat.com/show_bug.cgi?id=771601
+Patch1:  tracker-0.14.2-onlyshowin.patch
 
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -44,8 +48,7 @@ all types of files and other first class objects
 %package devel
 Summary:	Headers for developing programs that will use %{name}
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	pkgconfig
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 Requires:	dbus-glib-devel gtk2-devel
 
 %description devel
@@ -55,7 +58,7 @@ developing with tracker
 %package ui-tools
 Summary:	Tracker search tool(s)
 Group:		User Interface/Desktops
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 Obsoletes:	paperbox <= 0.4.4
 Obsoletes:	tracker-search-tool <= 0.12.0
 
@@ -67,7 +70,7 @@ around objects in the database based on their relationships (tracker-explorer)
 #%package evolution-plugin
 #Summary:	Tracker's evolution plugin
 #Group:		User Interface/Desktops
-#Requires:	%{name} = %{version}-%{release}
+#Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 #%description evolution-plugin
 #Tracker's evolution plugin
@@ -75,7 +78,7 @@ around objects in the database based on their relationships (tracker-explorer)
 %package firefox-plugin
 Summary:	A simple bookmark exporter for Tracker
 Group:		User Interface/Desktops
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description firefox-plugin
 This Firefox addon exports your bookmarks to Tracker, so that you can search
@@ -84,7 +87,7 @@ for them for example using tracker-needle.
 %package nautilus-plugin
 Summary:	Tracker's nautilus plugin
 Group:		User Interface/Desktops
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description nautilus-plugin
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
@@ -93,7 +96,7 @@ search in nuautilus using tracker is built-in directly in the nautilus package.
 %package miner-flickr
 Summary:	Tracker's Flickr data miner
 Group:		User Interface/Desktops
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description miner-flickr
 Tracker's Flickr data miner.
@@ -101,7 +104,7 @@ Tracker's Flickr data miner.
 %package thunderbird-plugin
 Summary:	Thunderbird extension to export mails to Tracker
 Group:		User Interface/Desktops
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description thunderbird-plugin
 A simple Thunderbird extension to export mails to Tracker.
@@ -116,6 +119,8 @@ This package contains the documentation for tracker
 
 %prep
 %setup -q
+
+%patch1 -p1 -b .onlyshowin
 
 #%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -141,10 +146,12 @@ mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
 echo "%{_libdir}/tracker-0.14"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
+%if 0%{?fedora} && 0%{?fedora} < 18
 desktop-file-install --delete-original			\
 	--vendor="fedora"				\
 	--dir=%{buildroot}%{_datadir}/applications	\
 	%{buildroot}%{_datadir}/applications/%{name}-needle.desktop
+%endif
 
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
@@ -155,9 +162,6 @@ rm -rf %{buildroot}%{_datadir}/tracker-tests
 
 %post ui-tools
 touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
 
 %postun
 /sbin/ldconfig
@@ -166,13 +170,18 @@ if [ $1 -eq 0 ]; then
 fi
 
 %postun ui-tools
+if [ $1 -eq 0 ] ; then
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
+fi
 
 %posttrans
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+fi
 
 %files -f %{name}.lang
 %defattr(-, root, root, -)
@@ -251,6 +260,13 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Aug 15 2012 Rex Dieter <rdieter@fedoraproject.org> - 0.14.2-2
+- tighten subpkg deps
+- fix icon scriptlet
+- -devel: drop extraneous dep on pkgconfig
+- drop .desktop vendor (f18+)
+- tracker should not auto-start in KDE/XFCE (#771601)
+
 * Mon Jul 30 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.2-1
 - Update to 0.14.2 (http://download.gnome.org/sources/tracker/0.14/tracker-0.14.2.changes)
 - Temporarily disable the evolution plugin, fails to build with evo-3.5
