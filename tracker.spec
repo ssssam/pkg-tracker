@@ -179,6 +179,8 @@ fi
 
 %posttrans
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
+
+%posttrans ui-tools
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
