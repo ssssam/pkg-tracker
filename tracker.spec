@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.14.2
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -17,7 +17,7 @@ BuildRequires:	nautilus-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee06-devel
-BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel id3lib-devel
+BuildRequires:  gstreamer-plugins-base-devel gstreamer-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
 BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
@@ -262,6 +262,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Aug 21 2012 Matthias Clasen <mclasen@redhat.com> - 0.14.2-3
+- Drop obsolete BR on id3lib-devel
+
 * Wed Aug 15 2012 Rex Dieter <rdieter@fedoraproject.org> - 0.14.2-2
 - tighten subpkg deps
 - fix icon scriptlet
