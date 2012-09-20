@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.14.2
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -199,7 +199,7 @@ fi
 %{_libdir}/girepository-1.0/TrackerMiner-0.14.typelib
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
-%{_sysconfdir}/xdg/autostart/tracker*.desktop
+%config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %{_datadir}/glib-2.0/schemas/*
 %exclude %{_bindir}/tracker-explorer
 %exclude %{_bindir}/tracker-needle
@@ -207,6 +207,9 @@ fi
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-needle.1.gz
 %exclude %{_libexecdir}/tracker-miner-flickr
+%exclude %{_sysconfdir}/xdg/autostart/tracker-miner-flickr.desktop
+%exclude %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
+%exclude %{_datadir}/tracker/miners/tracker-miner-flickr.desktop
 
 %files devel
 %defattr(-, root, root, -)
@@ -246,6 +249,9 @@ fi
 %files miner-flickr
 %defattr(-, root, root, -)
 %{_libexecdir}/tracker-miner-flickr
+%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
+%{_datadir}/tracker/miners/tracker-miner-flickr.desktop
+%config(noreplace) %{_sysconfdir}/xdg/autostart/tracker-miner-flickr.desktop
 
 %files thunderbird-plugin
 %defattr(-, root, root, -)
@@ -262,6 +268,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Sep 20 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.2-4
+- Mark autostart desktop files as config (Gerd v. Egidy & Rex Dieter, #842318)
+- Move all the files related to the Flickr miner in the '-miner-flicker' subpackage (Mathieu Bridon, #850900)
+
 * Tue Aug 21 2012 Matthias Clasen <mclasen@redhat.com> - 0.14.2-3
 - Drop obsolete BR on id3lib-devel
 
