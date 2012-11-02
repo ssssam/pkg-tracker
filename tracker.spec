@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.14.2
-Release:	4%{?dist}
+Version:	0.14.4
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -268,6 +268,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Nov 02 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.4-1
+- Update to 0.14.4 (http://download.gnome.org/sources/tracker/0.14/tracker-0.14.4.changes)
+
 * Thu Sep 20 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.2-4
 - Mark autostart desktop files as config (Gerd v. Egidy & Rex Dieter, #842318)
 - Move all the files related to the Flickr miner in the '-miner-flicker' subpackage (Mathieu Bridon, #850900)
