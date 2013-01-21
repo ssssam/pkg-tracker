@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.14.4
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -268,6 +268,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Jan 21 2013 Adam Tkac <atkac redhat com> - 0.14.4-2
+- rebuild due to "jpeg8-ABI" feature drop
+
 * Fri Nov 02 2012 Deji Akingunola <dakingun@gmail.com> - 0.14.4-1
 - Update to 0.14.4 (http://download.gnome.org/sources/tracker/0.14/tracker-0.14.4.changes)
 
