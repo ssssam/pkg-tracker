@@ -1,6 +1,6 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.15.1
+Version:	0.15.2
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -257,6 +257,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Feb 20 2013 Deji Akingunola <dakingun@gmail.com> 0.15.2-1
+- Update to 0.15.2 devel release
+
 * Sat Jan 26 2013 Peter Robinson <pbrobinson@fedoraproject.org> 0.15.1-1
 - Update to 0.15.1 devel release
 - Fix up changelog dates, minor spec cleanups
