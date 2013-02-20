@@ -1,7 +1,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.15.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -11,7 +11,7 @@ Source0:	http://download.gnome.org/sources/tracker/0.15/%{name}-%{version}.tar.x
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch1:		tracker-0.15-onlyshowin.patch
 
-BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel
+BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
 BuildRequires:	nautilus-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel
@@ -19,7 +19,7 @@ BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee06-devel
 BuildRequires:	gstreamer-plugins-base-devel gstreamer-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
-BuildRequires:	upower-devel gnome-keyring-devel NetworkManager-glib-devel
+BuildRequires:	upower-devel libgnome-keyring-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
 BuildRequires:	libosinfo-devel libcue-devel
 BuildRequires:	firefox thunderbird
@@ -35,7 +35,7 @@ Tracker is a powerful desktop-neutral first class object database,
 tag/metadata database, search tool and indexer.
 
 It consists of a common object database that allows entities to have an
-almost infinte number of properties, metadata (both embedded/harvested as
+almost infinite number of properties, metadata (both embedded/harvested as
 well as user definable), a comprehensive database of keywords/tags and
 links to other entities.
 
@@ -90,7 +90,7 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description nautilus-plugin
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
-search in nuautilus using tracker is built-in directly in the nautilus package.
+search in nautilus using tracker is built-in directly in the nautilus package.
 
 %package miner-flickr
 Summary:	Tracker's Flickr data miner
@@ -133,6 +133,8 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 	--enable-gtk-doc		\
 	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
 	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
+	--with-unicode-support=libunistring				\
+	--disable-qt							\
 	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
@@ -257,6 +259,11 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Feb 20 2013 Ville Skyttä <ville.skytta@iki.fi> 0.15.2-2
+- Build with XPS support, fix building with GNOME keyring support.
+- Be explicit about unicode=libunistring and disabling Qt.
+- Description spelling fixes (BZ #902549).
+
 * Wed Feb 20 2013 Deji Akingunola <dakingun@gmail.com> 0.15.2-1
 - Update to 0.15.2 devel release
 
