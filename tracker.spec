@@ -1,11 +1,11 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.15.2
-Release:	2%{?dist}
+Version:	0.16.0
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://download.gnome.org/sources/tracker/0.15/%{name}-%{version}.tar.xz
+Source0:	http://download.gnome.org/sources/tracker/0.16/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
@@ -29,6 +29,7 @@ BuildRequires:	gtk-doc graphviz dia
 BuildRequires:	gobject-introspection
 #BuildRequires:	evolution-devel
 
+Obsoletes: tracker-miner-flickr < 0.16.0
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -92,14 +93,6 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
 search in nautilus using tracker is built-in directly in the nautilus package.
 
-%package miner-flickr
-Summary:	Tracker's Flickr data miner
-Group:		User Interface/Desktops
-Requires:	%{name}%{?_isa} = %{version}-%{release}
-
-%description miner-flickr
-Tracker's Flickr data miner.
-
 %package thunderbird-plugin
 Summary:	Thunderbird extension to export mails to Tracker
 Group:		User Interface/Desktops
@@ -129,7 +122,6 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
 %configure --disable-static		\
-	--disable-tracker-search-bar	\
 	--enable-gtk-doc		\
 	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
 	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
@@ -206,10 +198,6 @@ fi
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-needle.1.gz
-%exclude %{_libexecdir}/tracker-miner-flickr
-%exclude %{_sysconfdir}/xdg/autostart/tracker-miner-flickr.desktop
-%exclude %{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
-%exclude %{_datadir}/tracker/miners/tracker-miner-flickr.desktop
 
 %files devel
 %{_includedir}/tracker-0.16/
@@ -240,12 +228,6 @@ fi
 %files nautilus-plugin
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
 
-%files miner-flickr
-%{_libexecdir}/tracker-miner-flickr
-%{_datadir}/dbus-1/services/org.freedesktop.Tracker1.Miner.Flickr.service
-%{_datadir}/tracker/miners/tracker-miner-flickr.desktop
-%config(noreplace) %{_sysconfdir}/xdg/autostart/tracker-miner-flickr.desktop
-
 %files thunderbird-plugin
 %{_datadir}/xul-ext/trackerbird/
 %{_libdir}/thunderbird/extensions/trackerbird@bustany.org
@@ -259,6 +241,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Mar 21 2013 Kalev Lember <kalevlember@gmail.com> 0.16.0-1
+- Update to 0.16.0
+- Remove and obsolete the tracker-miner-flickr subpackage
+
 * Wed Feb 20 2013 Ville Skyttä <ville.skytta@iki.fi> 0.15.2-2
 - Build with XPS support, fix building with GNOME keyring support.
 - Be explicit about unicode=libunistring and disabling Qt.
