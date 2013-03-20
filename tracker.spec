@@ -19,7 +19,7 @@ BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee06-devel
 BuildRequires:	gstreamer-plugins-base-devel gstreamer-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
-BuildRequires:	upower-devel libgnome-keyring-devel NetworkManager-glib-devel
+BuildRequires:	upower-devel libsecret-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
 BuildRequires:	libosinfo-devel libcue-devel
 BuildRequires:	firefox thunderbird
