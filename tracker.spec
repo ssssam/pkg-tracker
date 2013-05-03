@@ -1,6 +1,6 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.16.0
+Version:	0.16.1
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -241,6 +241,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sat May 04 2013 Kalev Lember <kalevlember@gmail.com> 0.16.1-1
+- Update to 0.16.1
+
 * Thu Mar 21 2013 Kalev Lember <kalevlember@gmail.com> 0.16.0-1
 - Update to 0.16.0
 - Remove and obsolete the tracker-miner-flickr subpackage
