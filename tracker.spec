@@ -1,7 +1,12 @@
+%if 0%{?fedora} > 15
+%global with_enca 1
+%global with_libcue 1
+%endif
+
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.1
-Release:	1%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -18,10 +23,16 @@ BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee06-devel
 BuildRequires:	gstreamer-plugins-base-devel gstreamer-devel
-BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel enca-devel
+BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel
+%if 0%{?with_enca}
+BuildRequires:  enca-devel
+%endif
 BuildRequires:	upower-devel libsecret-devel NetworkManager-glib-devel
 BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
-BuildRequires:	libosinfo-devel libcue-devel
+BuildRequires:	libosinfo-devel
+%if 0%{?with_libcue}
+BuildRequires:  libcue-devel
+%endif
 BuildRequires:	firefox thunderbird
 BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
@@ -179,7 +190,7 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
 fi
 
 %files -f %{name}.lang
-%doc AUTHORS ChangeLog COPYING NEWS README
+%doc AUTHORS COPYING NEWS README
 %{_bindir}/tracker*
 %{_libexecdir}/tracker*
 %{_datadir}/tracker/
@@ -241,6 +252,12 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Jun 21 2013 Matthias Clasen <mclasen@redhat.com> 0.16.1-3
+- Don't install a (humongous) ChangeLog file
+
+* Wed May  8 2013 Matthias Clasen <mclasen@redhat.com> 0.16.1-2
+- Make enca and libcue dependencies conditional
+
 * Sat May 04 2013 Kalev Lember <kalevlember@gmail.com> 0.16.1-1
 - Update to 0.16.1
 
