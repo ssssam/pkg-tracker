@@ -1,3 +1,6 @@
+%global _changelog_trimtime %(date +%s -d "1 year ago")
+
+
 %if 0%{?fedora} > 15
 %global with_enca 1
 %global with_libcue 1
@@ -6,7 +9,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.1
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -15,6 +18,9 @@ Source0:	http://download.gnome.org/sources/tracker/0.16/%{name}-%{version}.tar.x
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch1:		tracker-0.15-onlyshowin.patch
+
+# https://bugzilla.gnome.org/show_bug.cgi?id=703089
+Patch2:         0001-Fix-typos-in-tracker-search-man-page.patch
 
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -124,6 +130,7 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch1 -p1 -b .onlyshowin
+%patch2 -p1 -b .manpage
 
 #%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -252,6 +259,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Jun 26 2013 Matthias Clasen <mclasen@redhat.com> 0.16.1-4
+- Fix typos in man page
+- Trim %%changelog
+
 * Fri Jun 21 2013 Matthias Clasen <mclasen@redhat.com> 0.16.1-3
 - Don't install a (humongous) ChangeLog file
 

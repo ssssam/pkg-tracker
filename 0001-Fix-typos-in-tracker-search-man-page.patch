@@ -1,0 +1,37 @@
+From a9ce2d7941c6c795434a6dc8fb6aeacf5f79fed6 Mon Sep 17 00:00:00 2001
+From: Matthias Clasen <mclasen@redhat.com>
+Date: Wed, 26 Jun 2013 01:18:13 -0400
+Subject: [PATCH] Fix typos in tracker-search man page
+
+A few of the short options were misspelt.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=703097
+---
+ docs/manpages/tracker-search.1 | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docs/manpages/tracker-search.1 b/docs/manpages/tracker-search.1
+index 1b18c88..1e76fdd 100644
+--- a/docs/manpages/tracker-search.1
++++ b/docs/manpages/tracker-search.1
+@@ -70,7 +70,7 @@ and
+ .B \-f, \-\-files
+ Search for files of any type matching \fIEXPRESSION\fR (optional).
+ .TP
+-.B \-e, \-\-folders
++.B \-s, \-\-folders
+ Search for folders matching \fIEXPRESSION\fR (optional).
+ .TP
+ .B \-m, \-\-music
+@@ -82,7 +82,7 @@ Search for music albums matching \fIEXPRESSION\fR (optional).
+ .B      \-\-music\-artists
+ Search for music artists matching \fIEXPRESSION\fR (optional).
+ .TP
+-.B \-l, \-\-images
++.B \-i, \-\-images
+ Search for images matching \fIEXPRESSION\fR (optional).
+ .TP
+ .B \-v, \-\-videos
+-- 
+1.8.3.1
+
