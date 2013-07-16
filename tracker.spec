@@ -6,6 +6,12 @@
 %global with_libcue 1
 %endif
 
+%if 0%{?rhel}
+%global with_thunderbird 0
+%else
+%global with_thunderbird 1
+%endif
+
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.1
@@ -39,12 +45,16 @@ BuildRequires:	libosinfo-devel
 %if 0%{?with_libcue}
 BuildRequires:  libcue-devel
 %endif
-BuildRequires:	firefox thunderbird
+BuildRequires:	firefox
 BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz dia
 BuildRequires:	gobject-introspection
 #BuildRequires:	evolution-devel
+
+%if 0%{?with_thunderbird}
+BuildRequires: thunderbird
+%endif
 
 Obsoletes: tracker-miner-flickr < 0.16.0
 
@@ -110,6 +120,7 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
 search in nautilus using tracker is built-in directly in the nautilus package.
 
+%if 0%{?with_thunderbird}
 %package thunderbird-plugin
 Summary:	Thunderbird extension to export mails to Tracker
 Group:		User Interface/Desktops
@@ -117,6 +128,7 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description thunderbird-plugin
 A simple Thunderbird extension to export mails to Tracker.
+%endif
 
 %package docs
 Summary:	Documentations for tracker
@@ -142,7 +154,9 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 %configure --disable-static		\
 	--enable-gtk-doc		\
 	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
+%if 0%{?with_thunderbird}
 	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
+%endif
 	--with-unicode-support=libunistring				\
 	--disable-qt							\
 	--disable-functional-tests
@@ -246,10 +260,12 @@ fi
 %files nautilus-plugin
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
 
+%if 0%{?with_thunderbird}
 %files thunderbird-plugin
 %{_datadir}/xul-ext/trackerbird/
 %{_libdir}/thunderbird/extensions/trackerbird@bustany.org
 %{_datadir}/applications/trackerbird-launcher.desktop
+%endif
 
 %files docs
 %doc docs/reference/COPYING
@@ -262,6 +278,7 @@ fi
 * Wed Jun 26 2013 Matthias Clasen <mclasen@redhat.com> 0.16.1-4
 - Fix typos in man page
 - Trim %%changelog
+- Re-dethunderbirdize
 
 * Fri Jun 21 2013 Matthias Clasen <mclasen@redhat.com> 0.16.1-3
 - Don't install a (humongous) ChangeLog file
