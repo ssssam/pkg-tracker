@@ -14,8 +14,8 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.16.1
-Release:	5%{?dist}
+Version:	0.16.2
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -275,6 +275,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sun Aug 04 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.16.2-1
+- Update to 0.16.2
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.16.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
