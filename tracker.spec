@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -48,7 +48,7 @@ BuildRequires:  libcue-devel
 BuildRequires:	firefox
 BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
-BuildRequires:	gtk-doc graphviz dia
+BuildRequires:	gtk-doc graphviz
 BuildRequires:	gobject-introspection
 #BuildRequires:	evolution-devel
 
@@ -275,6 +275,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Aug 19 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.16.2-2
+- Try removing the dia BuildRequires
+
 * Sun Aug 04 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.16.2-1
 - Update to 0.16.2
 
