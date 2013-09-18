@@ -35,7 +35,9 @@ BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee06-devel
 BuildRequires:	gstreamer-plugins-base-devel gstreamer-devel
+%if 0
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel
+%endif
 %if 0%{?with_enca}
 BuildRequires:  enca-devel
 %endif
