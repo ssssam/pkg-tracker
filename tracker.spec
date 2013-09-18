@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.2
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -275,6 +275,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Sep 19 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.2-3
+- Rebuilt for totem-pl-parser soname bump
+
 * Mon Aug 19 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.16.2-2
 - Try removing the dia BuildRequires
 
