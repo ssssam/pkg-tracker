@@ -51,7 +51,7 @@ BuildRequires:	firefox
 BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz
-BuildRequires:	gobject-introspection
+BuildRequires:	gobject-introspection-devel
 #BuildRequires:	evolution-devel
 
 %if 0%{?with_thunderbird}
