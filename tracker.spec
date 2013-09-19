@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.2
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -35,9 +35,7 @@ BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee06-devel
 BuildRequires:	gstreamer-plugins-base-devel gstreamer-devel
-%if 0
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel
-%endif
 %if 0%{?with_enca}
 BuildRequires:  enca-devel
 %endif
@@ -277,6 +275,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Sep 19 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.2-4
+- Unbootstrap
+
 * Thu Sep 19 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.2-3
 - Rebuilt for totem-pl-parser soname bump
 
