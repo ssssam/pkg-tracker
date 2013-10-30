@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.2
-Release:	4%{?dist}
+Release:	5%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -275,6 +275,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Oct 30 2013 Richard Hughes <rhughes@redhat.com> - 0.16.2-5
+- Rebuild for upower soname bump
+
 * Thu Sep 19 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.2-4
 - Unbootstrap
 
