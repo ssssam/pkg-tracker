@@ -14,8 +14,8 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.16.2
-Release:	5%{?dist}
+Version:	0.16.3
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -24,9 +24,6 @@ Source0:	http://download.gnome.org/sources/tracker/0.16/%{name}-%{version}.tar.x
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch1:		tracker-0.15-onlyshowin.patch
-
-# https://bugzilla.gnome.org/show_bug.cgi?id=703089
-Patch2:         0001-Fix-typos-in-tracker-search-man-page.patch
 
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel dbus-glib-devel
@@ -142,7 +139,6 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch1 -p1 -b .onlyshowin
-%patch2 -p1 -b .manpage
 
 #%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -275,6 +271,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Nov 01 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.3-1
+- Update to 0.16.3
+
 * Wed Oct 30 2013 Richard Hughes <rhughes@redhat.com> - 0.16.2-5
 - Rebuild for upower soname bump
 
