@@ -31,7 +31,7 @@ BuildRequires:	nautilus-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee06-devel
-BuildRequires:	gstreamer-plugins-base-devel gstreamer-devel
+BuildRequires:	gstreamer1-plugins-base-devel gstreamer1-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel
 %if 0%{?with_enca}
 BuildRequires:  enca-devel
@@ -273,6 +273,7 @@ fi
 %changelog
 * Fri Nov 01 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.3-1
 - Update to 0.16.3
+- Build with gstreamer 1.0
 
 * Wed Oct 30 2013 Richard Hughes <rhughes@redhat.com> - 0.16.2-5
 - Rebuild for upower soname bump
