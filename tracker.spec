@@ -26,11 +26,11 @@ Source0:	http://download.gnome.org/sources/tracker/0.16/%{name}-%{version}.tar.x
 Patch1:		tracker-0.15-onlyshowin.patch
 
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
-BuildRequires:	libuuid-devel dbus-glib-devel
+BuildRequires:	libuuid-devel
 BuildRequires:	nautilus-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
-BuildRequires:	sqlite-devel vala-devel libgee06-devel
+BuildRequires:	sqlite-devel vala-devel libgee-devel
 BuildRequires:	gstreamer1-plugins-base-devel gstreamer1-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel
 %if 0%{?with_enca}
@@ -74,7 +74,6 @@ all types of files and other first class objects
 Summary:	Headers for developing programs that will use %{name}
 Group:		Development/Libraries
 Requires:	%{name}%{?_isa} = %{version}-%{release}
-Requires:	dbus-glib-devel gtk2-devel
 
 %description devel
 This package contains the static libraries and header files needed for
