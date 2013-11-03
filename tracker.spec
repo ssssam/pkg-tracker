@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.3
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -27,9 +27,7 @@ Patch1:		tracker-0.15-onlyshowin.patch
 
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel
-%if 0
 BuildRequires:	nautilus-devel
-%endif
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	sqlite-devel vala-devel libgee-devel
@@ -223,13 +221,11 @@ fi
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %{_datadir}/glib-2.0/schemas/*
-%if 0
 %exclude %{_bindir}/tracker-explorer
 %exclude %{_bindir}/tracker-needle
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
 %exclude %{_mandir}/man1/tracker-needle.1.gz
-%endif
 
 %files devel
 %{_includedir}/tracker-0.16/
@@ -241,16 +237,12 @@ fi
 %{_datadir}/gir-1.0/TrackerMiner-0.16.gir
 
 %files ui-tools
-%if 0
 %{_bindir}/tracker-needle
 %{_bindir}/tracker-preferences
-%endif
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
-%if 0
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
-%endif
 %exclude %{_datadir}/applications/trackerbird-launcher.desktop
 
 #%files evolution-plugin
@@ -262,9 +254,7 @@ fi
 %{_libdir}/firefox/extensions/trackerfox@bustany.org
 
 %files nautilus-plugin
-%if 0
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
-%endif
 
 %if 0%{?with_thunderbird}
 %files thunderbird-plugin
@@ -281,6 +271,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Nov 04 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.3-3
+- Unbootstrap
+
 * Sun Nov 03 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.3-2
 - Bootstrap
 
