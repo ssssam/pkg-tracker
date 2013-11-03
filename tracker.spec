@@ -154,6 +154,7 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 %endif
 	--with-unicode-support=libunistring				\
 	--disable-qt							\
+	--disable-upower						\
 	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
@@ -273,6 +274,7 @@ fi
 * Fri Nov 01 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.3-1
 - Update to 0.16.3
 - Build with gstreamer 1.0
+- Temporarily disable upower support
 
 * Wed Oct 30 2013 Richard Hughes <rhughes@redhat.com> - 0.16.2-5
 - Rebuild for upower soname bump
