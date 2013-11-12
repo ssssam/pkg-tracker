@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.3
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -24,6 +24,9 @@ Source0:	http://download.gnome.org/sources/tracker/0.16/%{name}-%{version}.tar.x
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch1:		tracker-0.15-onlyshowin.patch
+
+# https://bugzilla.gnome.org/show_bug.cgi?id=712142
+Patch2:         0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel
@@ -138,6 +141,7 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch1 -p1 -b .onlyshowin
+%patch2 -p1 -b .memory
 
 #%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -271,6 +275,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Nov 12 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.16.3-4
+- Bump the minimum memory requirement to 768M (GNOME #712142)
+
 * Mon Nov 04 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.3-3
 - Unbootstrap
 
