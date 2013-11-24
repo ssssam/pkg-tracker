@@ -14,8 +14,8 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.16.3
-Release:	4%{?dist}
+Version:	0.16.4
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -158,7 +158,6 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 %endif
 	--with-unicode-support=libunistring				\
 	--disable-qt							\
-	--disable-upower						\
 	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
@@ -275,6 +274,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sun Nov 24 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.4-1
+- Update to 0.16.4
+- Re-enable upower support
+
 * Tue Nov 12 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.16.3-4
 - Bump the minimum memory requirement to 768M (GNOME #712142)
 
