@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.16.4
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -25,8 +25,11 @@ Source0:	http://download.gnome.org/sources/tracker/0.16/%{name}-%{version}.tar.x
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch1:		tracker-0.15-onlyshowin.patch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=1026283
+Patch2:		0001-fts-Strengthen-against-sqlite-failures-in-FTS-functi.patch
+
 # https://bugzilla.gnome.org/show_bug.cgi?id=712142
-Patch2:         0001-Bump-the-minimum-memory-requirement-to-768M.patch
+Patch3:		0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel
@@ -141,7 +144,8 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch1 -p1 -b .onlyshowin
-%patch2 -p1 -b .memory
+%patch2 -p1 -b .fts
+%patch3 -p1 -b .memory
 
 #%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -274,6 +278,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Dec 03 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.16.4-2
+- Strengthen against sqlite failures in FTS functions (Red Hat #1026283)
+
 * Sun Nov 24 2013 Kalev Lember <kalevlember@gmail.com> - 0.16.4-1
 - Update to 0.16.4
 - Re-enable upower support

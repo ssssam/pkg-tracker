@@ -1,0 +1,136 @@
+From 00b71d0f9ae3f4d2b7bc8fa2afe08cd89c5c9c35 Mon Sep 17 00:00:00 2001
+From: Carlos Garnacho <carlosg@gnome.org>
+Date: Tue, 3 Dec 2013 16:17:54 +0100
+Subject: [PATCH] fts: Strengthen against sqlite failures in FTS functions
+
+function_weights() and function_property_names() (used respectively by
+SPARQL fts:rank and fts:offsets functions), initialize all data at first
+from the database, so it's available in memory for posterior runs,
+although currently those are being quite optimistic about the database
+return values in several ways, so:
+
+- Ensure no infinite loops happen on sqlite3_step() if the stmt trips
+  into some unexpected state. SQLITE_BUSY still does keep looping though.
+
+- As initialization here is a failable task, stop using g_once_init_*
+  and use an static GMutex so initialization can be tried later again
+  if it failed previously.
+
+- For the cases where initialization failed, propagate the error code
+  on the sqlite3_context.
+
+Based on work by Tim Waugh and Michael Catanzaro.
+https://bugzilla.redhat.com/show_bug.cgi?id=1026283
+---
+ src/libtracker-fts/tracker-fts.c | 52 +++++++++++++++++++++++++++-------------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
+
+diff --git a/src/libtracker-fts/tracker-fts.c b/src/libtracker-fts/tracker-fts.c
+index 530d831..446a4a6 100644
+--- a/src/libtracker-fts/tracker-fts.c
++++ b/src/libtracker-fts/tracker-fts.c
+@@ -127,13 +127,15 @@ function_weights (sqlite3_context *context,
+                   sqlite3_value   *argv[])
+ {
+ 	static guint *weights = NULL;
+-	static gsize weights_initialized = 0;
++	static GMutex mutex;
++	int rc = SQLITE_DONE;
+ 
+-	if (g_once_init_enter (&weights_initialized)) {
++	g_mutex_lock (&mutex);
++
++	if (G_UNLIKELY (weights == NULL)) {
+ 		GArray *weight_array;
+ 		sqlite3_stmt *stmt;
+ 		sqlite3 *db;
+-		int rc;
+ 
+ 		weight_array = g_array_new (FALSE, FALSE, sizeof (guint));
+ 		db = sqlite3_context_db_handle (context);
+@@ -149,18 +151,26 @@ function_weights (sqlite3_context *context,
+ 				guint weight;
+ 				weight = sqlite3_column_int (stmt, 0);
+ 				g_array_append_val (weight_array, weight);
++			} else if (rc != SQLITE_BUSY) {
++				break;
+ 			}
+ 		}
+ 
++		sqlite3_finalize (stmt);
++
+ 		if (rc == SQLITE_DONE) {
+-			rc = sqlite3_finalize (stmt);
++			weights = (guint *) g_array_free (weight_array, FALSE);
++		} else {
++			g_array_free (weight_array, TRUE);
+ 		}
+-
+-		weights = (guint *) g_array_free (weight_array, FALSE);
+-		g_once_init_leave (&weights_initialized, (rc == SQLITE_OK));
+ 	}
+ 
+-	sqlite3_result_blob (context, weights, sizeof (weights), NULL);
++	g_mutex_unlock (&mutex);
++
++	if (rc == SQLITE_DONE)
++		sqlite3_result_blob (context, weights, sizeof (weights), NULL);
++	else
++		sqlite3_result_error_code (context, rc);
+ }
+ 
+ static void
+@@ -169,13 +179,15 @@ function_property_names (sqlite3_context *context,
+                          sqlite3_value   *argv[])
+ {
+ 	static gchar **names = NULL;
+-	static gsize names_initialized = 0;
++	static GMutex mutex;
++	int rc = SQLITE_DONE;
+ 
+-	if (g_once_init_enter (&names_initialized)) {
++	g_mutex_lock (&mutex);
++
++	if (G_UNLIKELY (names == NULL)) {
+ 		GPtrArray *names_array;
+ 		sqlite3_stmt *stmt;
+ 		sqlite3 *db;
+-		int rc;
+ 
+ 		names_array = g_ptr_array_new ();
+ 		db = sqlite3_context_db_handle (context);
+@@ -194,18 +206,26 @@ function_property_names (sqlite3_context *context,
+ 
+ 				name = sqlite3_column_text (stmt, 0);
+ 				g_ptr_array_add (names_array, g_strdup (name));
++			} else if (rc != SQLITE_BUSY) {
++				break;
+ 			}
+ 		}
+ 
++		sqlite3_finalize (stmt);
++
+ 		if (rc == SQLITE_DONE) {
+-			rc = sqlite3_finalize (stmt);
++			names = (gchar **) g_ptr_array_free (names_array, FALSE);
++		} else {
++			g_ptr_array_free (names_array, TRUE);
+ 		}
+-
+-		names = (gchar **) g_ptr_array_free (names_array, FALSE);
+-		g_once_init_leave (&names_initialized, (rc == SQLITE_OK));
+ 	}
+ 
+-	sqlite3_result_blob (context, names, sizeof (names), NULL);
++	g_mutex_unlock (&mutex);
++
++	if (rc == SQLITE_DONE)
++		sqlite3_result_blob (context, names, sizeof (names), NULL);
++	else
++		sqlite3_result_error_code (context, rc);
+ }
+ 
+ static void
+-- 
+1.8.4.2
+
