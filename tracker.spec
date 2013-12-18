@@ -14,12 +14,12 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.16.4
-Release:	2%{?dist}
+Version:	0.17.0
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
-Source0:	http://download.gnome.org/sources/tracker/0.16/%{name}-%{version}.tar.xz
+Source0:	http://download.gnome.org/sources/tracker/0.17/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
@@ -31,6 +31,10 @@ Patch2:		0001-fts-Strengthen-against-sqlite-failures-in-FTS-functi.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=712142
 Patch3:		0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
+# https://bugzilla.gnome.org/show_bug.cgi?id=720686
+Patch4:		0001-libtracker-extract-Link-against-libicu-when-using-it.patch
+
+BuildRequires:	autoconf
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	nautilus-devel
@@ -146,6 +150,7 @@ This package contains the documentation for tracker
 %patch1 -p1 -b .onlyshowin
 %patch2 -p1 -b .fts
 %patch3 -p1 -b .memory
+%patch4 -p1 -b .build
 
 #%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
 
@@ -154,6 +159,7 @@ This package contains the documentation for tracker
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
+autoreconf -f
 %configure --disable-static		\
 	--enable-gtk-doc		\
 	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
@@ -171,7 +177,7 @@ make V=1 %{?_smp_mflags}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker-0.16"	\
+echo "%{_libdir}/tracker-0.18"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 %if 0%{?fedora} && 0%{?fedora} < 18
@@ -220,10 +226,10 @@ fi
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
-%{_libdir}/tracker-0.16/
-%{_libdir}/girepository-1.0/Tracker-0.16.typelib
-%{_libdir}/girepository-1.0/TrackerExtract-0.16.typelib
-%{_libdir}/girepository-1.0/TrackerMiner-0.16.typelib
+%{_libdir}/tracker-0.18/
+%{_libdir}/girepository-1.0/Tracker-0.18.typelib
+%{_libdir}/girepository-1.0/TrackerExtract-0.18.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-0.18.typelib
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
@@ -235,13 +241,13 @@ fi
 %exclude %{_mandir}/man1/tracker-needle.1.gz
 
 %files devel
-%{_includedir}/tracker-0.16/
+%{_includedir}/tracker-0.18/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.*
-%{_datadir}/gir-1.0/Tracker-0.16.gir
-%{_datadir}/gir-1.0/TrackerExtract-0.16.gir
-%{_datadir}/gir-1.0/TrackerMiner-0.16.gir
+%{_datadir}/gir-1.0/Tracker-0.18.gir
+%{_datadir}/gir-1.0/TrackerExtract-0.18.gir
+%{_datadir}/gir-1.0/TrackerMiner-0.18.gir
 
 %files ui-tools
 %{_bindir}/tracker-needle
@@ -278,6 +284,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Dec 18 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.17.0-1
+- Update to 0.17.0
+
 * Tue Dec 03 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.16.4-2
 - Strengthen against sqlite failures in FTS functions (Red Hat #1026283)
 
