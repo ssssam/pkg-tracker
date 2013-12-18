@@ -57,7 +57,6 @@ BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz
 BuildRequires:	gobject-introspection-devel
-#BuildRequires:	evolution-devel
 
 %if 0%{?with_thunderbird}
 BuildRequires: thunderbird
@@ -99,14 +98,6 @@ Obsoletes:	tracker-search-tool <= 0.12.0
 %description ui-tools
 Graphical frontend to tracker search (tracker-needle) and configuration
 (tracker-preferences) facilities.
-
-#%package evolution-plugin
-#Summary:	Tracker's evolution plugin
-#Group:		User Interface/Desktops
-#Requires:	%{name}%{?_isa} = %{version}-%{release}
-
-#%description evolution-plugin
-#Tracker's evolution plugin
 
 %package firefox-plugin
 Summary:	A simple bookmark exporter for Tracker
@@ -152,8 +143,6 @@ This package contains the documentation for tracker
 %patch3 -p1 -b .memory
 %patch4 -p1 -b .build
 
-#%global evo_plugins_dir %(pkg-config evolution-plugin-3.0 --variable=plugindir)
-
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
@@ -162,6 +151,7 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 autoreconf -f
 %configure --disable-static		\
 	--enable-gtk-doc		\
+	--enable-miner-evolution=no	\
 	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
 %if 0%{?with_thunderbird}
 	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
@@ -257,10 +247,6 @@ fi
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
 %exclude %{_datadir}/applications/trackerbird-launcher.desktop
-
-#%files evolution-plugin
-#%{evo_plugins_dir}/liborg-freedesktop-Tracker-evolution-plugin.so
-#%{evo_plugins_dir}/org-freedesktop-Tracker-evolution-plugin.eplug
 
 %files firefox-plugin
 %{_datadir}/xul-ext/trackerfox/
