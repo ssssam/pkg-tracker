@@ -47,7 +47,8 @@ BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel
 BuildRequires:  enca-devel
 %endif
 BuildRequires:	upower-devel libsecret-devel NetworkManager-glib-devel
-BuildRequires:	libunistring-devel gupnp-dlna-devel taglib-devel rest-devel
+BuildRequires:	gupnp-dlna-devel taglib-devel rest-devel
+BuildRequires:	libicu-devel
 BuildRequires:	libosinfo-devel
 %if 0%{?with_libcue}
 BuildRequires:  libcue-devel
@@ -156,7 +157,7 @@ autoreconf -f
 %if 0%{?with_thunderbird}
 	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
 %endif
-	--with-unicode-support=libunistring				\
+	--with-unicode-support=libicu					\
 	--disable-qt							\
 	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
