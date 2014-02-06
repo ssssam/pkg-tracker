@@ -14,7 +14,7 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.17.0
+Version:	0.17.1
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -25,16 +25,9 @@ Source0:	http://download.gnome.org/sources/tracker/0.17/%{name}-%{version}.tar.x
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch1:		tracker-0.15-onlyshowin.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1026283
-Patch2:		0001-fts-Strengthen-against-sqlite-failures-in-FTS-functi.patch
-
 # https://bugzilla.gnome.org/show_bug.cgi?id=712142
 Patch3:		0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=720686
-Patch4:		0001-libtracker-extract-Link-against-libicu-when-using-it.patch
-
-BuildRequires:	autoconf
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	nautilus-devel
@@ -140,16 +133,13 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch1 -p1 -b .onlyshowin
-%patch2 -p1 -b .fts
 %patch3 -p1 -b .memory
-%patch4 -p1 -b .build
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
-autoreconf -f
 %configure --disable-static		\
 	--enable-gtk-doc		\
 	--enable-miner-evolution=no	\
@@ -271,6 +261,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Feb 06 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.1-1
+- Update to 0.17.1
+- Drop upstreamed patches
+
 * Wed Dec 18 2013 Debarshi Ray <rishi@fedoraproject.org> - 0.17.0-1
 - Update to 0.17.0
 
