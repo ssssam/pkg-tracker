@@ -130,6 +130,13 @@ BuildArch:	noarch
 %description docs
 This package contains the documentation for tracker
 
+%package -n compat-tracker018
+Summary:	Compat package with tracker-0.18 libraries
+
+%description -n compat-tracker018
+Temporary compatibility package to ease the transition from tracker 0.18 ABI to
+the new 1.0 ABI.
+
 %prep
 %setup -q
 
@@ -169,6 +176,10 @@ desktop-file-install --delete-original			\
 	%{buildroot}%{_datadir}/applications/%{name}-needle.desktop
 %endif
 
+# Copy files for compat-tracker018
+cp -a %{_libdir}/libtracker*-0.18.so.* %{buildroot}%{_libdir}/
+cp -a %{_libdir}/girepository-1.0/Tracker*-0.18.typelib %{buildroot}%{_libdir}/girepository-1.0/
+
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
 
@@ -207,7 +218,7 @@ fi
 %{_libexecdir}/tracker*
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
-%{_libdir}/*.so.*
+%{_libdir}/libtracker*-1.0.so.*
 %{_libdir}/tracker-1.0/
 %{_libdir}/girepository-1.0/Tracker-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerExtract-1.0.typelib
@@ -261,9 +272,15 @@ fi
 %{_datadir}/gtk-doc/html/libtracker-sparql/
 %{_datadir}/gtk-doc/html/ontology/
 
+%files -n compat-tracker018
+%{_libdir}/libtracker*-0.18.so.*
+%{_libdir}/girepository-1.0/Tracker*-0.18.typelib
+
 %changelog
 * Fri Feb 14 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.2-1
 - Update to 0.17.2
+- Create a temporary compat-tracker018 subpackage to ease the transition
+  from 0.18 ABI to 1.0
 
 * Thu Feb 13 2014 Adam Williamson <awilliam@redhat.com> - 0.17.1-3
 - rebuilt for new icu (real)
