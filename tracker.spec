@@ -14,8 +14,8 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.17.1
-Release:	3%{?dist}
+Version:	0.17.2
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -33,6 +33,7 @@ BuildRequires:	libuuid-devel
 BuildRequires:	nautilus-devel
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
+BuildRequires:	libmediaart-devel
 BuildRequires:	sqlite-devel vala-devel libgee-devel
 BuildRequires:	gstreamer1-plugins-base-devel gstreamer1-devel
 BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel
@@ -158,7 +159,7 @@ make V=1 %{?_smp_mflags}
 make DESTDIR=%{buildroot} install
 
 mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker-0.18"	\
+echo "%{_libdir}/tracker-1.0"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
 %if 0%{?fedora} && 0%{?fedora} < 18
@@ -207,10 +208,10 @@ fi
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
 %{_libdir}/*.so.*
-%{_libdir}/tracker-0.18/
-%{_libdir}/girepository-1.0/Tracker-0.18.typelib
-%{_libdir}/girepository-1.0/TrackerExtract-0.18.typelib
-%{_libdir}/girepository-1.0/TrackerMiner-0.18.typelib
+%{_libdir}/tracker-1.0/
+%{_libdir}/girepository-1.0/Tracker-1.0.typelib
+%{_libdir}/girepository-1.0/TrackerExtract-1.0.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-1.0.typelib
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
@@ -222,13 +223,13 @@ fi
 %exclude %{_mandir}/man1/tracker-needle.1.gz
 
 %files devel
-%{_includedir}/tracker-0.18/
+%{_includedir}/tracker-1.0/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.*
-%{_datadir}/gir-1.0/Tracker-0.18.gir
-%{_datadir}/gir-1.0/TrackerExtract-0.18.gir
-%{_datadir}/gir-1.0/TrackerMiner-0.18.gir
+%{_datadir}/gir-1.0/Tracker-1.0.gir
+%{_datadir}/gir-1.0/TrackerExtract-1.0.gir
+%{_datadir}/gir-1.0/TrackerMiner-1.0.gir
 
 %files ui-tools
 %{_bindir}/tracker-needle
@@ -261,6 +262,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Feb 14 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.2-1
+- Update to 0.17.2
+
 * Thu Feb 13 2014 Adam Williamson <awilliam@redhat.com> - 0.17.1-3
 - rebuilt for new icu (real)
 
