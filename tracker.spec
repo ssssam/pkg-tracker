@@ -233,12 +233,16 @@ fi
 %{_datadir}/gir-1.0/TrackerMiner-0.18.gir
 
 %files ui-tools
+%if 0
 %{_bindir}/tracker-needle
 %{_bindir}/tracker-preferences
+%endif
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/applications/*.desktop
+%if 0
 %{_mandir}/man1/tracker-preferences.1.gz
 %{_mandir}/man1/tracker-needle.1.gz
+%endif
 %exclude %{_datadir}/applications/trackerbird-launcher.desktop
 
 %files firefox-plugin
