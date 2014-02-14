@@ -102,6 +102,7 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 This Firefox addon exports your bookmarks to Tracker, so that you can search
 for them for example using tracker-needle.
 
+%if 0
 %package nautilus-plugin
 Summary:	Tracker's nautilus plugin
 Group:		User Interface/Desktops
@@ -110,6 +111,7 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 %description nautilus-plugin
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
 search in nautilus using tracker is built-in directly in the nautilus package.
+%endif
 
 %if 0%{?with_thunderbird}
 %package thunderbird-plugin
@@ -249,8 +251,10 @@ fi
 %{_datadir}/xul-ext/trackerfox/
 %{_libdir}/firefox/extensions/trackerfox@bustany.org
 
+%if 0
 %files nautilus-plugin
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
+%endif
 
 %if 0%{?with_thunderbird}
 %files thunderbird-plugin
