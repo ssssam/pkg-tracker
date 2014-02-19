@@ -78,6 +78,7 @@ BuildRequires:	totem-pl-parser-devel
 BuildRequires:	upower-devel
 BuildRequires:	vala-devel
 
+Obsoletes: compat-tracker018 < 0.17.2-2
 Obsoletes: tracker-miner-flickr < 0.16.0
 Obsoletes: tracker-nautilus-plugin < 0.17.2-2
 
@@ -154,13 +155,6 @@ BuildArch:	noarch
 %description docs
 This package contains the documentation for tracker
 
-%package -n compat-tracker018
-Summary:	Compat package with tracker-0.18 libraries
-
-%description -n compat-tracker018
-Temporary compatibility package to ease the transition from tracker 0.18 ABI to
-the new 1.0 ABI.
-
 %prep
 %setup -q
 
@@ -204,10 +198,6 @@ desktop-file-install --delete-original			\
 	--dir=%{buildroot}%{_datadir}/applications	\
 	%{buildroot}%{_datadir}/applications/%{name}-needle.desktop
 %endif
-
-# Copy files for compat-tracker018
-cp -a %{_libdir}/libtracker*-0.18.so.* %{buildroot}%{_libdir}/
-cp -a %{_libdir}/girepository-1.0/Tracker*-0.18.typelib %{buildroot}%{_libdir}/girepository-1.0/
 
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
@@ -303,13 +293,10 @@ fi
 %{_datadir}/gtk-doc/html/libtracker-sparql/
 %{_datadir}/gtk-doc/html/ontology/
 
-%files -n compat-tracker018
-%{_libdir}/libtracker*-0.18.so.*
-%{_libdir}/girepository-1.0/Tracker*-0.18.typelib
-
 %changelog
 * Wed Feb 19 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.2-2
 - Make the nautilus extension conditional and disable it
+- Drop the temporary compat-tracker018 subpackage
 
 * Fri Feb 14 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.2-1
 - Update to 0.17.2
