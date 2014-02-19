@@ -1,5 +1,7 @@
 %global _changelog_trimtime %(date +%s -d "1 year ago")
 
+%global with_nautilus 0
+
 %if 0%{?rhel}
 %global with_enca 0
 %global with_libcue 0
@@ -13,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.17.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -28,7 +30,9 @@ Patch3:		0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
 BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
 BuildRequires:	libuuid-devel
+%if 0%{?with_nautilus}
 BuildRequires:	nautilus-devel
+%endif
 BuildRequires:	libjpeg-devel libexif-devel exempi-devel
 BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
 BuildRequires:	libmediaart-devel
@@ -50,12 +54,14 @@ BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	desktop-file-utils intltool gettext
 BuildRequires:	gtk-doc graphviz
 BuildRequires:	gobject-introspection-devel
+BuildRequires:	gtk3-devel
 
 %if 0%{?with_thunderbird}
 BuildRequires: thunderbird
 %endif
 
 Obsoletes: tracker-miner-flickr < 0.16.0
+Obsoletes: tracker-nautilus-plugin < 0.17.2-2
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -101,6 +107,7 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 This Firefox addon exports your bookmarks to Tracker, so that you can search
 for them for example using tracker-needle.
 
+%if 0%{?with_nautilus}
 %package nautilus-plugin
 Summary:	Tracker's nautilus plugin
 Group:		User Interface/Desktops
@@ -109,6 +116,7 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 %description nautilus-plugin
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
 search in nautilus using tracker is built-in directly in the nautilus package.
+%endif
 
 %if 0%{?with_thunderbird}
 %package thunderbird-plugin
@@ -150,6 +158,11 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 	--enable-gtk-doc		\
 	--enable-miner-evolution=no	\
 	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
+%if %{with_nautilus}
+	--enable-nautilus-extension					\
+%else
+	--disable-nautilus-extension					\
+%endif
 %if 0%{?with_thunderbird}
 	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
 %endif
@@ -253,8 +266,10 @@ fi
 %{_datadir}/xul-ext/trackerfox/
 %{_libdir}/firefox/extensions/trackerfox@bustany.org
 
+%if 0%{?with_nautilus}
 %files nautilus-plugin
 %{_libdir}/nautilus/extensions-3.0/libnautilus-tracker-tags.so
+%endif
 
 %if 0%{?with_thunderbird}
 %files thunderbird-plugin
@@ -275,6 +290,9 @@ fi
 %{_libdir}/girepository-1.0/Tracker*-0.18.typelib
 
 %changelog
+* Wed Feb 19 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.2-2
+- Make the nautilus extension conditional and disable it
+
 * Fri Feb 14 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.2-1
 - Update to 0.17.2
 - Create a temporary compat-tracker018 subpackage to ease the transition
