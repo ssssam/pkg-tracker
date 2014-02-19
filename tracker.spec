@@ -28,37 +28,55 @@ Patch1:		tracker-0.15-onlyshowin.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=712142
 Patch3:		0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
-BuildRequires:	poppler-glib-devel libxml2-devel libgsf-devel libgxps-devel
+BuildRequires:	desktop-file-utils
+%if 0%{?with_enca}
+BuildRequires:	enca-devel
+%endif
+BuildRequires:	exempi-devel
+BuildRequires:	firefox
+BuildRequires:	flac-devel
+BuildRequires:	gdk-pixbuf2-devel
+BuildRequires:	giflib-devel
+BuildRequires:	gobject-introspection-devel
+BuildRequires:	graphviz
+BuildRequires:	gstreamer1-devel
+BuildRequires:	gstreamer1-plugins-base-devel
+BuildRequires:	gtk-doc
+BuildRequires:	gtk3-devel
+BuildRequires:	gupnp-dlna-devel
+BuildRequires:	intltool
+%if 0%{?with_libcue}
+BuildRequires:	libcue-devel
+%endif
+BuildRequires:	libexif-devel
+BuildRequires:	libgee-devel
+BuildRequires:	libgsf-devel
+BuildRequires:	libgxps-devel
+BuildRequires:	libicu-devel
+BuildRequires:	libiptcdata-devel
+BuildRequires:	libjpeg-devel
+BuildRequires:	libmediaart-devel
+BuildRequires:	libosinfo-devel
+BuildRequires:	libpng-devel
+BuildRequires:	libsecret-devel
+BuildRequires:	libtiff-devel
 BuildRequires:	libuuid-devel
+BuildRequires:	libvorbis-devel
+BuildRequires:	libxml2-devel
 %if 0%{?with_nautilus}
 BuildRequires:	nautilus-devel
 %endif
-BuildRequires:	libjpeg-devel libexif-devel exempi-devel
-BuildRequires:	libiptcdata-devel libtiff-devel libpng-devel giflib-devel
-BuildRequires:	libmediaart-devel
-BuildRequires:	sqlite-devel vala-devel libgee-devel
-BuildRequires:	gstreamer1-plugins-base-devel gstreamer1-devel
-BuildRequires:	totem-pl-parser-devel libvorbis-devel flac-devel
-%if 0%{?with_enca}
-BuildRequires:  enca-devel
-%endif
-BuildRequires:	upower-devel libsecret-devel NetworkManager-glib-devel
-BuildRequires:	gupnp-dlna-devel taglib-devel rest-devel
-BuildRequires:	libicu-devel
-BuildRequires:	libosinfo-devel
-%if 0%{?with_libcue}
-BuildRequires:  libcue-devel
-%endif
-BuildRequires:	firefox
-BuildRequires:	gdk-pixbuf2-devel
-BuildRequires:	desktop-file-utils intltool gettext
-BuildRequires:	gtk-doc graphviz
-BuildRequires:	gobject-introspection-devel
-BuildRequires:	gtk3-devel
-
+BuildRequires:	NetworkManager-glib-devel
+BuildRequires:	poppler-glib-devel
+BuildRequires:	rest-devel
+BuildRequires:	sqlite-devel
+BuildRequires:	taglib-devel
 %if 0%{?with_thunderbird}
-BuildRequires: thunderbird
+BuildRequires:	thunderbird
 %endif
+BuildRequires:	totem-pl-parser-devel
+BuildRequires:	upower-devel
+BuildRequires:	vala-devel
 
 Obsoletes: tracker-miner-flickr < 0.16.0
 Obsoletes: tracker-nautilus-plugin < 0.17.2-2
