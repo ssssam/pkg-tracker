@@ -1,14 +1,12 @@
 %global _changelog_trimtime %(date +%s -d "1 year ago")
 
-
-%if 0%{?fedora} > 15
-%global with_enca 1
-%global with_libcue 1
-%endif
-
 %if 0%{?rhel}
+%global with_enca 0
+%global with_libcue 0
 %global with_thunderbird 0
 %else
+%global with_enca 1
+%global with_libcue 1
 %global with_thunderbird 1
 %endif
 
