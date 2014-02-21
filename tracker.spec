@@ -14,8 +14,8 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.17.2
-Release:	2%{?dist}
+Version:	0.17.3
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -240,13 +240,13 @@ fi
 %{_libdir}/libtracker*-1.0.so.*
 %{_libdir}/tracker-1.0/
 %{_libdir}/girepository-1.0/Tracker-1.0.typelib
+%{_libdir}/girepository-1.0/TrackerControl-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerExtract-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-1.0.typelib
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %{_datadir}/glib-2.0/schemas/*
-%exclude %{_bindir}/tracker-explorer
 %exclude %{_bindir}/tracker-needle
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_mandir}/man1/tracker-preferences.1.gz
@@ -258,6 +258,7 @@ fi
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/vala/vapi/tracker*.*
 %{_datadir}/gir-1.0/Tracker-1.0.gir
+%{_datadir}/gir-1.0/TrackerControl-1.0.gir
 %{_datadir}/gir-1.0/TrackerExtract-1.0.gir
 %{_datadir}/gir-1.0/TrackerMiner-1.0.gir
 
@@ -288,12 +289,15 @@ fi
 
 %files docs
 %doc docs/reference/COPYING
+%{_datadir}/gtk-doc/html/libtracker-control/
 %{_datadir}/gtk-doc/html/libtracker-miner/
-%{_datadir}/gtk-doc/html/libtracker-extract/
 %{_datadir}/gtk-doc/html/libtracker-sparql/
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Feb 21 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.3-1
+- Update to 0.17.3
+
 * Wed Feb 19 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.2-2
 - Make the nautilus extension conditional and disable it
 - Drop the temporary compat-tracker018 subpackage
