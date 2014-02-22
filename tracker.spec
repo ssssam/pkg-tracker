@@ -14,7 +14,7 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.17.3
+Version:	0.17.4
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -295,6 +295,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sat Feb 22 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.4-1
+- Update to 0.17.4
+
 * Fri Feb 21 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.3-1
 - Update to 0.17.3
 
