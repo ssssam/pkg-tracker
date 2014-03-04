@@ -241,7 +241,6 @@ fi
 %{_libdir}/tracker-1.0/
 %{_libdir}/girepository-1.0/Tracker-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerControl-1.0.typelib
-%{_libdir}/girepository-1.0/TrackerExtract-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-1.0.typelib
 %{_mandir}/*/tracker*.gz
 %{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
@@ -259,7 +258,6 @@ fi
 %{_datadir}/vala/vapi/tracker*.*
 %{_datadir}/gir-1.0/Tracker-1.0.gir
 %{_datadir}/gir-1.0/TrackerControl-1.0.gir
-%{_datadir}/gir-1.0/TrackerExtract-1.0.gir
 %{_datadir}/gir-1.0/TrackerMiner-1.0.gir
 
 %files ui-tools
