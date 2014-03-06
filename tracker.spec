@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.17.5
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -58,7 +58,6 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmediaart-devel
 BuildRequires:	libosinfo-devel
 BuildRequires:	libpng-devel
-BuildRequires:	libsecret-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	libvorbis-devel
@@ -179,7 +178,6 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
 %endif
 	--with-unicode-support=libicu					\
-	--disable-qt							\
 	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
@@ -293,6 +291,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Mar 05 2014 David King <amigadave@amigadave.com> - 0.17.5-2
+- Remove libsecret-devel BuildRequires
+- Drop removed --disable-qt configure argument
+
 * Tue Mar 04 2014 Debarshi Ray <rishi@fedoraproject.org> - 0.17.5-1
 - Update to 0.17.5
 
