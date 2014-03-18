@@ -14,8 +14,8 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.17.5
-Release:	3%{?dist}
+Version:	0.17.6
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -292,7 +292,10 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
-* Tue Mar 18 2014 Bastien Nocera <bnocera@redhat.com> 0.17.5-3
+* Tue Mar 18 2014 Debarshi Ray <rishi@fedoraproject.org> - 0.17.6-1
+- Update to 0.17.6
+
+* Tue Mar 18 2014 Bastien Nocera <bnocera@redhat.com> - 0.17.5-3
 - Remove home-made mp3 tag extractor
 
 * Wed Mar 05 2014 David King <amigadave@amigadave.com> - 0.17.5-2
