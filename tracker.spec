@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.17.5
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -169,6 +169,7 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 	--enable-gtk-doc		\
 	--enable-miner-evolution=no	\
 	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
+	--disable-mp3							\
 %if %{with_nautilus}
 	--enable-nautilus-extension					\
 %else
@@ -291,6 +292,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Mar 18 2014 Bastien Nocera <bnocera@redhat.com> 0.17.5-3
+- Remove home-made mp3 tag extractor
+
 * Wed Mar 05 2014 David King <amigadave@amigadave.com> - 0.17.5-2
 - Remove libsecret-devel BuildRequires
 - Drop removed --disable-qt configure argument
