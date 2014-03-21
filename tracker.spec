@@ -14,7 +14,7 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.17.6
+Version:	0.17.8
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -292,6 +292,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Mar 21 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-1
+- Update to 0.17.8
+
 * Tue Mar 18 2014 Debarshi Ray <rishi@fedoraproject.org> - 0.17.6-1
 - Update to 0.17.6
 
