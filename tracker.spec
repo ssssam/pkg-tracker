@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.17.8
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -190,6 +190,10 @@ make DESTDIR=%{buildroot} install
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
 
+# Remove .so symlinks for private libraries -- no external users are supposed
+# to link with them.
+rm -f %{buildroot}%{_libdir}/tracker-1.0/*.so
+
 %find_lang %{name}
 
 %check
@@ -279,6 +283,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sat Mar 22 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-3
+- Remove .so symlinks for private libraries
+
 * Sat Mar 22 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-2
 - Use desktop-file-validate instead of desktop-file-install
 - Remove ld.so.conf.d override
