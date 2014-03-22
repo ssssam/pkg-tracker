@@ -198,7 +198,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/tracker-*.desktop
 %post -p /sbin/ldconfig
 
 %post ui-tools
-touch --no-create %{_datadir}/icons/hicolor
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %postun
 /sbin/ldconfig
@@ -208,19 +208,15 @@ fi
 
 %postun ui-tools
 if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
+    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
 %posttrans
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %posttrans ui-tools
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
 %doc AUTHORS COPYING NEWS README
@@ -286,6 +282,7 @@ fi
 * Sat Mar 22 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-2
 - Use desktop-file-validate instead of desktop-file-install
 - Remove ld.so.conf.d override
+- Update icon cache scriptlets
 
 * Fri Mar 21 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-1
 - Update to 0.17.8
