@@ -187,10 +187,6 @@ make V=1 %{?_smp_mflags}
 %install
 make DESTDIR=%{buildroot} install
 
-mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/tracker-1.0"	\
-	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
-
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
 
@@ -238,7 +234,6 @@ fi
 %{_libdir}/girepository-1.0/TrackerControl-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-1.0.typelib
 %{_mandir}/*/tracker*.gz
-%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %{_datadir}/glib-2.0/schemas/*
 %exclude %{_bindir}/tracker-needle
@@ -290,6 +285,7 @@ fi
 %changelog
 * Sat Mar 22 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-2
 - Use desktop-file-validate instead of desktop-file-install
+- Remove ld.so.conf.d override
 
 * Fri Mar 21 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-1
 - Update to 0.17.8
