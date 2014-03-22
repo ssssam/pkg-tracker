@@ -18,7 +18,7 @@ Version:	0.17.8
 Release:	3%{?dist}
 License:	GPLv2+
 Group:		Applications/System
-URL:		http://projects.gnome.org/tracker/
+URL:		https://wiki.gnome.org/Projects/Tracker
 Source0:	http://download.gnome.org/sources/tracker/0.17/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
