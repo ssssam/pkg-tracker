@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.17.8
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		http://projects.gnome.org/tracker/
@@ -191,17 +191,13 @@ mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
 echo "%{_libdir}/tracker-1.0"	\
 	> %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 
-%if 0%{?fedora} && 0%{?fedora} < 18
-desktop-file-install --delete-original			\
-	--vendor="fedora"				\
-	--dir=%{buildroot}%{_datadir}/applications	\
-	%{buildroot}%{_datadir}/applications/%{name}-needle.desktop
-%endif
-
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
 
 %find_lang %{name}
+
+%check
+desktop-file-validate %{buildroot}%{_datadir}/applications/tracker-*.desktop
 
 %post -p /sbin/ldconfig
 
@@ -292,6 +288,9 @@ fi
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sat Mar 22 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-2
+- Use desktop-file-validate instead of desktop-file-install
+
 * Fri Mar 21 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-1
 - Update to 0.17.8
 
