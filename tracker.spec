@@ -14,12 +14,12 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	0.17.8
-Release:	4%{?dist}
+Version:	1.0.0
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		https://wiki.gnome.org/Projects/Tracker
-Source0:	http://download.gnome.org/sources/tracker/0.17/%{name}-%{version}.tar.xz
+Source0:	http://download.gnome.org/sources/tracker/1.0/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
@@ -290,6 +290,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Mar 24 2014 Kalev Lember <kalevlember@gmail.com> - 1.0.0-1
+- Update to 1.0.0
+
 * Mon Mar 24 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-4
 - Temporarily add back an empty ld.so conf (#1079775)
 
