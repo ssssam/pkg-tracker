@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	0.17.8
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		https://wiki.gnome.org/Projects/Tracker
@@ -187,6 +187,12 @@ make V=1 %{?_smp_mflags}
 %install
 make DESTDIR=%{buildroot} install
 
+# Temporarily add back an empty ld.so conf to help transition away from the
+# ld.so conf override.
+# https://bugzilla.redhat.com/show_bug.cgi?id=1079775
+mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d
+touch %{buildroot}%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
+
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 rm -rf %{buildroot}%{_datadir}/tracker-tests
 
@@ -234,6 +240,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/girepository-1.0/TrackerControl-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-1.0.typelib
 %{_mandir}/*/tracker*.gz
+%{_sysconfdir}/ld.so.conf.d/tracker-%{_arch}.conf
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %{_datadir}/glib-2.0/schemas/*
 %exclude %{_bindir}/tracker-needle
@@ -283,6 +290,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Mar 24 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-4
+- Temporarily add back an empty ld.so conf (#1079775)
+
 * Sat Mar 22 2014 Kalev Lember <kalevlember@gmail.com> - 0.17.8-3
 - Remove .so symlinks for private libraries
 
