@@ -14,8 +14,8 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	1.0.1
-Release:	3%{?dist}
+Version:	1.0.2
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		https://wiki.gnome.org/Projects/Tracker
@@ -283,6 +283,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Thu Jul 10 2014 Kalev Lember <kalevlember@gmail.com> - 1.0.2-1
+- Update to 1.0.2
+
 * Fri Jul 04 2014 Kalev Lember <kalevlember@gmail.com> - 1.0.1-3
 - Another try at removing the ld.so.conf.d override
 
