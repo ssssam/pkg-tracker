@@ -1,3 +1,4 @@
+%global basever 1.2
 %global _changelog_trimtime %(date +%s -d "1 year ago")
 
 %global with_nautilus 0
@@ -14,12 +15,12 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	1.0.2
-Release:	2%{?dist}
+Version:	1.1.1
+Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		https://wiki.gnome.org/Projects/Tracker
-Source0:	http://download.gnome.org/sources/tracker/1.0/%{name}-%{version}.tar.xz
+Source0:	http://download.gnome.org/sources/tracker/1.1/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
@@ -29,6 +30,7 @@ Patch1:		tracker-0.15-onlyshowin.patch
 Patch3:		0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
 BuildRequires:	desktop-file-utils
+BuildRequires:	libappstream-glib
 %if 0%{?with_enca}
 BuildRequires:	enca-devel
 %endif
@@ -165,20 +167,20 @@ This package contains the documentation for tracker
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 %build
-%configure --disable-static		\
-	--enable-gtk-doc		\
-	--enable-miner-evolution=no	\
-	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
-	--disable-mp3							\
+%configure --disable-static \
+	--enable-gtk-doc \
+	--enable-miner-evolution=no \
+	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions \
+	--disable-mp3 \
 %if %{with_nautilus}
-	--enable-nautilus-extension					\
+	--enable-nautilus-extension \
 %else
-	--disable-nautilus-extension					\
+	--disable-nautilus-extension \
 %endif
 %if 0%{?with_thunderbird}
-	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
+	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions \
 %endif
-	--with-unicode-support=libicu					\
+	--with-unicode-support=libicu \
 	--disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
@@ -188,16 +190,17 @@ make V=1 %{?_smp_mflags}
 make DESTDIR=%{buildroot} install
 
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
-rm -rf %{buildroot}%{_datadir}/tracker-tests
+rm -rf %{buildroot}%{_datadir}/%{name}-tests
 
 # Remove .so symlinks for private libraries -- no external users are supposed
 # to link with them.
-rm -f %{buildroot}%{_libdir}/tracker-1.0/*.so
+rm -f %{buildroot}%{_libdir}/%{name}-%{basever}/*.so
 
 %find_lang %{name}
 
 %check
-desktop-file-validate %{buildroot}%{_datadir}/applications/tracker-*.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}-*.desktop
+appstream-util validate-relax %{buildroot}%{_datadir}/appdata/%{name}-*.appdata.xml
 
 %post -p /sbin/ldconfig
 
@@ -224,39 +227,40 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
 %doc AUTHORS COPYING NEWS README
-%{_bindir}/tracker*
-%{_libexecdir}/tracker*
+%{_bindir}/%{name}*
+%{_libexecdir}/%{name}*
 %{_datadir}/tracker/
 %{_datadir}/dbus-1/services/org.freedesktop.Tracker*
-%{_libdir}/libtracker*-1.0.so.*
-%{_libdir}/tracker-1.0/
-%{_libdir}/girepository-1.0/Tracker-1.0.typelib
-%{_libdir}/girepository-1.0/TrackerControl-1.0.typelib
-%{_libdir}/girepository-1.0/TrackerMiner-1.0.typelib
-%{_mandir}/*/tracker*.gz
-%config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
+%{_libdir}/lib%{name}*-%{basever}.so.*
+%{_libdir}/%{name}-%{basever}/
+%{_libdir}/girepository-1.0/Tracker-%{basever}.typelib
+%{_libdir}/girepository-1.0/TrackerControl-%{basever}.typelib
+%{_libdir}/girepository-1.0/TrackerMiner-%{basever}.typelib
+%{_mandir}/*/%{name}*.gz
+%config(noreplace) %{_sysconfdir}/xdg/autostart/%{name}*.desktop
 %{_datadir}/glib-2.0/schemas/*
-%exclude %{_bindir}/tracker-needle
-%exclude %{_bindir}/tracker-preferences
-%exclude %{_mandir}/man1/tracker-preferences.1.gz
-%exclude %{_mandir}/man1/tracker-needle.1.gz
+%exclude %{_bindir}/%{name}-needle
+%exclude %{_bindir}/%{name}-preferences
+%exclude %{_mandir}/man1/%{name}-preferences.1.gz
+%exclude %{_mandir}/man1/%{name}-needle.1.gz
 
 %files devel
-%{_includedir}/tracker-1.0/
+%{_includedir}/%{name}-%{basever}/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
-%{_datadir}/vala/vapi/tracker*.*
-%{_datadir}/gir-1.0/Tracker-1.0.gir
-%{_datadir}/gir-1.0/TrackerControl-1.0.gir
-%{_datadir}/gir-1.0/TrackerMiner-1.0.gir
+%{_datadir}/vala/vapi/%{name}*.*
+%{_datadir}/gir-1.0/Tracker-%{basever}.gir
+%{_datadir}/gir-1.0/TrackerControl-%{basever}.gir
+%{_datadir}/gir-1.0/TrackerMiner-%{basever}.gir
 
 %files ui-tools
-%{_bindir}/tracker-needle
-%{_bindir}/tracker-preferences
-%{_datadir}/icons/*/*/apps/tracker.*
+%{_bindir}/%{name}-needle
+%{_bindir}/%{name}-preferences
+%{_datadir}/icons/*/*/apps/%{name}.*
 %{_datadir}/applications/*.desktop
-%{_mandir}/man1/tracker-preferences.1.gz
-%{_mandir}/man1/tracker-needle.1.gz
+%{_datadir}/appdata/%{name}-*.appdata.xml
+%{_mandir}/man1/%{name}-preferences.1.gz
+%{_mandir}/man1/%{name}-needle.1.gz
 %exclude %{_datadir}/applications/trackerbird-launcher.desktop
 
 %files firefox-plugin
@@ -283,6 +287,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Sun Jul 27 2014 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 1.1.1-1
+- 1.1.1 upstream release
+- spec cleanups
+
 * Tue Jul 22 2014 Kalev Lember <kalevlember@gmail.com> - 1.0.2-2
 - Rebuilt for gobject-introspection 1.41.4
 
