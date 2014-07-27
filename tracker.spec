@@ -200,7 +200,7 @@ rm -f %{buildroot}%{_libdir}/%{name}-%{basever}/*.so
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}-*.desktop
-appstream-util validate-relax %{buildroot}%{_datadir}/appdata/%{name}-*.appdata.xml
+appstream-util validate-relax %{buildroot}%{_datadir}/appdata/%{name}-*.appdata.xml --nonet
 
 %post -p /sbin/ldconfig
 
