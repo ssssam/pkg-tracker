@@ -29,7 +29,6 @@ Patch1:		tracker-0.15-onlyshowin.patch
 Patch3:		0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
 BuildRequires:	desktop-file-utils
-BuildRequires:	libappstream-glib
 %if 0%{?with_enca}
 BuildRequires:	enca-devel
 %endif
@@ -199,7 +198,6 @@ rm -f %{buildroot}%{_libdir}/tracker-1.0/*.so
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/tracker-*.desktop
-appstream-util validate-relax %{buildroot}%{_datadir}/appdata/tracker-*.appdata.xml --nonet
 
 %post -p /sbin/ldconfig
 
