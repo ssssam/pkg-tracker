@@ -9,17 +9,13 @@
 %else
 %global with_enca 1
 %global with_libcue 1
-%ifarch aarch64
-%global with_thunderbird 0
-%else
 %global with_thunderbird 1
-%endif
 %endif
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	1.1.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		https://wiki.gnome.org/Projects/Tracker
@@ -289,6 +285,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Aug 15 2014 Peter Robinson <pbrobinson@fedoraproject.org> 1.1.2-2
+- Aarch64 now has Thunderbird
+
 * Wed Aug 13 2014 Kalev Lember <kalevlember@gmail.com> - 1.1.2-1
 - Update to 1.1.2
 
