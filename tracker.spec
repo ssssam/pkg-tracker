@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	1.1.2
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		https://wiki.gnome.org/Projects/Tracker
@@ -285,6 +285,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Mon Aug 18 2014 Kalev Lember <kalevlember@gmail.com> - 1.1.2-4
+- Rebuilt for upower 0.99.1 soname bump
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
