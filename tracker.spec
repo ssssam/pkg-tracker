@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	1.1.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		https://wiki.gnome.org/Projects/Tracker
@@ -285,6 +285,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Tue Aug 26 2014 David Tardon <dtardon@redhat.com> - 1.1.3-2
+- rebuild for ICU 53.1
+
 * Tue Aug 19 2014 Kalev Lember <kalevlember@gmail.com> - 1.1.3-1
 - Update to 1.1.3
 
