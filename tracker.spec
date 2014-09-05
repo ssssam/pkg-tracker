@@ -15,7 +15,7 @@
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
 Version:	1.1.4
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv2+
 Group:		Applications/System
 URL:		https://wiki.gnome.org/Projects/Tracker
@@ -109,7 +109,7 @@ developing with tracker
 Summary:	Tracker search tool
 Requires:	%{name}%{?_isa} = %{version}-%{release}
 Obsoletes:	paperbox <= 0.4.4
-Obsoletes:	ŧracker-ui-tools < 1.1.4
+Obsoletes:	tracker-ui-tools < 1.1.4
 Obsoletes:	tracker-search-tool <= 0.12.0
 
 %description needle
@@ -118,7 +118,7 @@ Graphical frontend to tracker search.
 %package preferences
 Summary:	Tracker preferences
 Requires:	%{name}%{?_isa} = %{version}-%{release}
-Obsoletes:	ŧracker-ui-tools < 1.1.4
+Obsoletes:	tracker-ui-tools < 1.1.4
 
 %description preferences
 Graphical frontend to tracker configuration.
@@ -298,6 +298,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Fri Sep 05 2014 Kalev Lember <kalevlember@gmail.com> - 1.1.4-2
+- Fix tracker-ui-tools obsoletes
+
 * Fri Sep 05 2014 Kalev Lember <kalevlember@gmail.com> - 1.1.4-1
 - Update to 1.1.4
 - Split tracker-needle and tracker-preferences to separate subpackages
