@@ -105,16 +105,23 @@ Requires:	%{name}%{?_isa} = %{version}-%{release}
 This package contains the static libraries and header files needed for
 developing with tracker
 
-%package ui-tools
-Summary:	Tracker search tool(s)
-Group:		User Interface/Desktops
+%package needle
+Summary:	Tracker search tool
 Requires:	%{name}%{?_isa} = %{version}-%{release}
 Obsoletes:	paperbox <= 0.4.4
+Obsoletes:	ŧracker-ui-tools < 1.1.4
 Obsoletes:	tracker-search-tool <= 0.12.0
 
-%description ui-tools
-Graphical frontend to tracker search (tracker-needle) and configuration
-(tracker-preferences) facilities.
+%description needle
+Graphical frontend to tracker search.
+
+%package preferences
+Summary:	Tracker preferences
+Requires:	%{name}%{?_isa} = %{version}-%{release}
+Obsoletes:	ŧracker-ui-tools < 1.1.4
+
+%description preferences
+Graphical frontend to tracker configuration.
 
 %package firefox-plugin
 Summary:	A simple bookmark exporter for Tracker
@@ -201,7 +208,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/tracker-*.desktop
 
 %post -p /sbin/ldconfig
 
-%post ui-tools
+%post preferences
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %postun
@@ -210,7 +217,7 @@ if [ $1 -eq 0 ]; then
   glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 fi
 
-%postun ui-tools
+%postun preferences
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -219,7 +226,7 @@ fi
 %posttrans
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
-%posttrans ui-tools
+%posttrans preferences
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
@@ -238,8 +245,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/glib-2.0/schemas/*
 %exclude %{_bindir}/tracker-needle
 %exclude %{_bindir}/tracker-preferences
-%exclude %{_mandir}/man1/tracker-preferences.1.gz
-%exclude %{_mandir}/man1/tracker-needle.1.gz
+%exclude %{_datadir}/tracker/tracker-needle.ui
+%exclude %{_datadir}/tracker/tracker-preferences.ui
+%exclude %{_mandir}/man1/tracker-preferences.1*
+%exclude %{_mandir}/man1/tracker-needle.1*
 
 %files devel
 %{_includedir}/tracker-1.0/
@@ -250,16 +259,20 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gir-1.0/TrackerControl-1.0.gir
 %{_datadir}/gir-1.0/TrackerMiner-1.0.gir
 
-%files ui-tools
+%files needle
 %{_bindir}/tracker-needle
-%{_bindir}/tracker-preferences
 %{_datadir}/appdata/tracker-needle.appdata.xml
+%{_datadir}/applications/tracker-needle.desktop
+%{_datadir}/tracker/tracker-needle.ui
+%{_mandir}/man1/tracker-needle.1*
+
+%files preferences
+%{_bindir}/tracker-preferences
 %{_datadir}/appdata/tracker-preferences.appdata.xml
+%{_datadir}/applications/tracker-preferences.desktop
 %{_datadir}/icons/*/*/apps/tracker.*
-%{_datadir}/applications/*.desktop
-%{_mandir}/man1/tracker-preferences.1.gz
-%{_mandir}/man1/tracker-needle.1.gz
-%exclude %{_datadir}/applications/trackerbird-launcher.desktop
+%{_datadir}/tracker/tracker-preferences.ui
+%{_mandir}/man1/tracker-preferences.1*
 
 %files firefox-plugin
 %{_datadir}/xul-ext/trackerfox/
@@ -287,6 +300,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Fri Sep 05 2014 Kalev Lember <kalevlember@gmail.com> - 1.1.4-1
 - Update to 1.1.4
+- Split tracker-needle and tracker-preferences to separate subpackages
 
 * Tue Aug 26 2014 David Tardon <dtardon@redhat.com> - 1.1.3-2
 - rebuild for ICU 53.1
