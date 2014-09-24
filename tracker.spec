@@ -14,7 +14,7 @@
 
 Summary:	Desktop-neutral search tool and indexer
 Name:		tracker
-Version:	1.2.1
+Version:	1.2.2
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/System
@@ -298,6 +298,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/ontology/
 
 %changelog
+* Wed Sep 24 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.2-1
+- Update to 1.2.2
+
 * Tue Sep 23 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.1-1
 - Update to 1.2.1
 
