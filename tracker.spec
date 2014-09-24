@@ -12,70 +12,70 @@
 %global with_thunderbird 1
 %endif
 
-Summary:	Desktop-neutral search tool and indexer
-Name:		tracker
-Version:	1.2.2
-Release:	1%{?dist}
-License:	GPLv2+
-Group:		Applications/System
-URL:		https://wiki.gnome.org/Projects/Tracker
-Source0:	http://download.gnome.org/sources/tracker/1.2/%{name}-%{version}.tar.xz
+Name:           tracker
+Version:        1.2.2
+Release:        2%{?dist}
+Summary:        Desktop-neutral search tool and indexer
+
+Group:          Applications/System
+License:        GPLv2+
+URL:            https://wiki.gnome.org/Projects/Tracker
+Source0:        https://download.gnome.org/sources/%{name}/1.2/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
-Patch1:		tracker-0.15-onlyshowin.patch
+Patch1:         tracker-0.15-onlyshowin.patch
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=712142
-Patch3:		0001-Bump-the-minimum-memory-requirement-to-768M.patch
+Patch3:         0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
-BuildRequires:	desktop-file-utils
-%if 0%{?with_enca}
-BuildRequires:	enca-devel
-%endif
-BuildRequires:	exempi-devel
-BuildRequires:	firefox
-BuildRequires:	flac-devel
-BuildRequires:	gdk-pixbuf2-devel
-BuildRequires:	giflib-devel
-BuildRequires:	gobject-introspection-devel
-BuildRequires:	graphviz
-BuildRequires:	gstreamer1-devel
-BuildRequires:	gstreamer1-plugins-base-devel
-BuildRequires:	gtk-doc
-BuildRequires:	gtk3-devel
-BuildRequires:	gupnp-dlna-devel
-BuildRequires:	intltool
-%if 0%{?with_libcue}
-BuildRequires:	libcue-devel
-%endif
-BuildRequires:	libexif-devel
-BuildRequires:	libgee-devel
-BuildRequires:	libgsf-devel
-BuildRequires:	libgxps-devel
-BuildRequires:	libicu-devel
-BuildRequires:	libiptcdata-devel
-BuildRequires:	libjpeg-devel
-BuildRequires:	libmediaart-devel
-BuildRequires:	libosinfo-devel
-BuildRequires:	libpng-devel
-BuildRequires:	libtiff-devel
-BuildRequires:	libuuid-devel
-BuildRequires:	libvorbis-devel
-BuildRequires:	libxml2-devel
-%if 0%{?with_nautilus}
-BuildRequires:	nautilus-devel
-%endif
-BuildRequires:	NetworkManager-glib-devel
-BuildRequires:	poppler-glib-devel
-BuildRequires:	rest-devel
-BuildRequires:	sqlite-devel
-BuildRequires:	taglib-devel
+BuildRequires:  desktop-file-utils
+BuildRequires:  firefox
+BuildRequires:  giflib-devel
+BuildRequires:  graphviz
+BuildRequires:  gtk-doc
+BuildRequires:  intltool
+BuildRequires:  libjpeg-devel
+BuildRequires:  libtiff-devel
 %if 0%{?with_thunderbird}
-BuildRequires:	thunderbird
+BuildRequires:  thunderbird
 %endif
-BuildRequires:	totem-pl-parser-devel
-BuildRequires:	upower-devel
-BuildRequires:	vala-devel
+BuildRequires:  vala-devel
+%if 0%{?with_enca}
+BuildRequires:  pkgconfig(enca)
+%endif
+BuildRequires:  pkgconfig(exempi-2.0)
+BuildRequires:  pkgconfig(flac)
+BuildRequires:  pkgconfig(gobject-introspection-1.0)
+BuildRequires:  pkgconfig(gstreamer-1.0)
+BuildRequires:  pkgconfig(gstreamer-pbutils-1.0)
+BuildRequires:  pkgconfig(gstreamer-tag-1.0)
+BuildRequires:  pkgconfig(gtk+-3.0)
+BuildRequires:  pkgconfig(icu-i18n)
+BuildRequires:  pkgconfig(icu-uc)
+%if 0%{?with_libcue}
+BuildRequires:  pkgconfig(libcue)
+%endif
+BuildRequires:  pkgconfig(libexif)
+BuildRequires:  pkgconfig(gee-0.8)
+BuildRequires:  pkgconfig(libgsf-1)
+BuildRequires:  pkgconfig(libgxps)
+BuildRequires:  pkgconfig(libiptcdata)
+%if 0%{?with_nautilus}
+BuildRequires:  pkgconfig(libnautilus-extension)
+%endif
+BuildRequires:  pkgconfig(libnm-glib)
+BuildRequires:  pkgconfig(libosinfo-1.0)
+BuildRequires:  pkgconfig(libpng)
+BuildRequires:  pkgconfig(libmediaart-1.0)
+BuildRequires:  pkgconfig(libxml-2.0)
+BuildRequires:  pkgconfig(poppler-glib)
+BuildRequires:  pkgconfig(sqlite3)
+BuildRequires:  pkgconfig(taglib_c)
+BuildRequires:  pkgconfig(totem-plparser)
+BuildRequires:  pkgconfig(upower-glib)
+BuildRequires:  pkgconfig(uuid)
+BuildRequires:  pkgconfig(vorbisfile)
 
 Obsoletes: compat-tracker018 < 0.17.2-2
 Obsoletes: tracker-miner-flickr < 0.16.0
@@ -97,36 +97,36 @@ It has the ability to index, store, harvest metadata. retrieve and search
 all types of files and other first class objects
 
 %package devel
-Summary:	Headers for developing programs that will use %{name}
-Group:		Development/Libraries
-Requires:	%{name}%{?_isa} = %{version}-%{release}
+Summary:        Headers for developing programs that will use %{name}
+Group:          Development/Libraries
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 This package contains the static libraries and header files needed for
 developing with tracker
 
 %package needle
-Summary:	Tracker search tool
-Requires:	%{name}%{?_isa} = %{version}-%{release}
-Obsoletes:	paperbox <= 0.4.4
-Obsoletes:	tracker-ui-tools < 1.1.4
-Obsoletes:	tracker-search-tool <= 0.12.0
+Summary:        Tracker search tool
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Obsoletes:      paperbox <= 0.4.4
+Obsoletes:      tracker-ui-tools < 1.1.4
+Obsoletes:      tracker-search-tool <= 0.12.0
 
 %description needle
 Graphical frontend to tracker search.
 
 %package preferences
-Summary:	Tracker preferences
-Requires:	%{name}%{?_isa} = %{version}-%{release}
-Obsoletes:	tracker-ui-tools < 1.1.4
+Summary:        Tracker preferences
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Obsoletes:      tracker-ui-tools < 1.1.4
 
 %description preferences
 Graphical frontend to tracker configuration.
 
 %package firefox-plugin
-Summary:	A simple bookmark exporter for Tracker
-Group:		User Interface/Desktops
-Requires:	%{name}%{?_isa} = %{version}-%{release}
+Summary:        A simple bookmark exporter for Tracker
+Group:          User Interface/Desktops
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description firefox-plugin
 This Firefox addon exports your bookmarks to Tracker, so that you can search
@@ -134,9 +134,9 @@ for them for example using tracker-needle.
 
 %if 0%{?with_nautilus}
 %package nautilus-plugin
-Summary:	Tracker's nautilus plugin
-Group:		User Interface/Desktops
-Requires:	%{name}%{?_isa} = %{version}-%{release}
+Summary:        Tracker's nautilus plugin
+Group:          User Interface/Desktops
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description nautilus-plugin
 Tracker's nautilus plugin, provides 'tagging' functionality. Ability to perform
@@ -145,21 +145,22 @@ search in nautilus using tracker is built-in directly in the nautilus package.
 
 %if 0%{?with_thunderbird}
 %package thunderbird-plugin
-Summary:	Thunderbird extension to export mails to Tracker
-Group:		User Interface/Desktops
-Requires:	%{name}%{?_isa} = %{version}-%{release}
+Summary:        Thunderbird extension to export mails to Tracker
+Group:          User Interface/Desktops
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description thunderbird-plugin
 A simple Thunderbird extension to export mails to Tracker.
 %endif
 
 %package docs
-Summary:	Documentations for tracker
-Group:		Documentation
-BuildArch:	noarch
+Summary:        Documentations for tracker
+Group:          Documentation
+BuildArch:      noarch
 
 %description docs
 This package contains the documentation for tracker
+
 
 %prep
 %setup -q
@@ -171,30 +172,34 @@ This package contains the documentation for tracker
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
+
 %build
-%configure --disable-static		\
-	--enable-gtk-doc		\
-	--enable-miner-evolution=no	\
-	--with-firefox-plugin-dir=%{_libdir}/firefox/extensions		\
-	--disable-mp3							\
+%configure --disable-static \
+           --enable-gtk-doc \
+           --enable-libflac \
+           --enable-libvorbis \
+           --enable-miner-evolution=no \
+           --with-firefox-plugin-dir=%{_libdir}/firefox/extensions \
+           --disable-mp3 \
 %if %{with_nautilus}
-	--enable-nautilus-extension					\
+           --enable-nautilus-extension \
 %else
-	--disable-nautilus-extension					\
+           --disable-nautilus-extension \
 %endif
 %if 0%{?with_thunderbird}
-	--with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions	\
+           --with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions \
 %endif
-	--with-unicode-support=libicu					\
-	--disable-functional-tests
+           --with-unicode-support=libicu \
+           --disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
 make V=1 %{?_smp_mflags}
 
-%install
-make DESTDIR=%{buildroot} install
 
-find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
+%install
+make DESTDIR=%{buildroot} INSTALL="install -p" install
+
+find %{buildroot} -type f -name "*.la" -delete
 rm -rf %{buildroot}%{_datadir}/tracker-tests
 
 # Remove .so symlinks for private libraries -- no external users are supposed
@@ -203,8 +208,10 @@ rm -f %{buildroot}%{_libdir}/tracker-1.0/*.so
 
 %find_lang %{name}
 
+
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/tracker-*.desktop
+
 
 %post -p /sbin/ldconfig
 
@@ -228,6 +235,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &>/dev/null || :
 
 %posttrans preferences
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
 
 %files -f %{name}.lang
 %doc AUTHORS COPYING NEWS README
@@ -297,7 +305,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/gtk-doc/html/libtracker-sparql/
 %{_datadir}/gtk-doc/html/ontology/
 
+
 %changelog
+* Wed Sep 24 2014 David King <amigadave@amigadave.com> - 1.2.2-2
+- Use pkgconfig for BuildRequires
+- Preserve timestamps during install
+- Enable FLAC and Vorbis extractors
+
 * Wed Sep 24 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.2-1
 - Update to 1.2.2
 
