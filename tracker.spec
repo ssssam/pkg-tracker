@@ -13,8 +13,8 @@
 %endif
 
 Name:           tracker
-Version:        1.2.2
-Release:        2%{?dist}
+Version:        1.2.3
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -307,6 +307,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Oct 17 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.3-1
+- Update to 1.2.3
+
 * Wed Sep 24 2014 David King <amigadave@amigadave.com> - 1.2.2-2
 - Use pkgconfig for BuildRequires
 - Preserve timestamps during install
