@@ -6,15 +6,17 @@
 %global with_enca 0
 %global with_libcue 0
 %global with_thunderbird 0
+%global with_libmediaart 0
 %else
 %global with_enca 1
 %global with_libcue 1
 %global with_thunderbird 1
+%global with_libmediaart 1
 %endif
 
 Name:           tracker
 Version:        1.2.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -67,7 +69,9 @@ BuildRequires:  pkgconfig(libnautilus-extension)
 BuildRequires:  pkgconfig(libnm-glib)
 BuildRequires:  pkgconfig(libosinfo-1.0)
 BuildRequires:  pkgconfig(libpng)
+%if 0%{?with_libmediaart}
 BuildRequires:  pkgconfig(libmediaart-1.0)
+%endif
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(poppler-glib)
 BuildRequires:  pkgconfig(sqlite3)
@@ -185,6 +189,11 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
            --enable-nautilus-extension \
 %else
            --disable-nautilus-extension \
+%endif
+%if %{with_libmediaart}
+           --enable-libmediaart \
+%else
+           --disable-libmediaart \
 %endif
 %if 0%{?with_thunderbird}
            --with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions \
@@ -307,6 +316,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Nov 03 2014 Richard Hughes <richard@hughsie.com> - 1.2.3-2
+- Fix non-Fedora build
+
 * Fri Oct 17 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.3-1
 - Update to 1.2.3
 
