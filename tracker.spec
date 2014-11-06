@@ -15,8 +15,8 @@
 %endif
 
 Name:           tracker
-Version:        1.2.3
-Release:        2%{?dist}
+Version:        1.2.4
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -316,6 +316,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Nov 06 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.4-1
+- Update to 1.2.4
+
 * Mon Nov 03 2014 Richard Hughes <richard@hughsie.com> - 1.2.3-2
 - Fix non-Fedora build
 
