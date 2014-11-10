@@ -29,7 +29,7 @@ Source0:        https://download.gnome.org/sources/%{name}/1.2/%{name}-%{version
 Patch1:         tracker-0.15-onlyshowin.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1133924
-Patch2:         0001-Bump-the-minimum-memory-requirement-to-768M.patch
+Patch2:         0001-tracker-extract-Avoid-the-use-of-setrlimit-it-s-caus.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
