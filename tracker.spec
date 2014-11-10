@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.2.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -28,8 +28,8 @@ Source0:        https://download.gnome.org/sources/%{name}/1.2/%{name}-%{version
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch1:         tracker-0.15-onlyshowin.patch
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=712142
-Patch3:         0001-Bump-the-minimum-memory-requirement-to-768M.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1133924
+Patch2:         0001-Bump-the-minimum-memory-requirement-to-768M.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -170,7 +170,7 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch1 -p1 -b .onlyshowin
-%patch3 -p1 -b .memory
+%patch2 -p1 -b .rlimits
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -316,6 +316,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Nov 10 2014 Debarshi Ray <rishi@fedoraproject.org> - 1.2.4-2
+- Backport upstream patch to avoid use of setrlimit (RH #1133924)
+
 * Thu Nov 06 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.4-1
 - Update to 1.2.4
 
