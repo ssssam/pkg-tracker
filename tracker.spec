@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.2.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -84,6 +84,11 @@ BuildRequires:  pkgconfig(vorbisfile)
 Obsoletes: compat-tracker018 < 0.17.2-2
 Obsoletes: tracker-miner-flickr < 0.16.0
 Obsoletes: tracker-nautilus-plugin < 0.17.2-2
+
+%if 0%{?fedora}
+# From rhughes-f20-gnome-3-12 copr
+Obsoletes: compat-tracker016 < 0.18
+%endif
 
 %description
 Tracker is a powerful desktop-neutral first class object database,
@@ -316,6 +321,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Nov 16 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.4-3
+- Obsolete compat-tracker016 from rhughes-f20-gnome-3-12 copr
+
 * Mon Nov 10 2014 Debarshi Ray <rishi@fedoraproject.org> - 1.2.4-2
 - Backport upstream patch to avoid use of setrlimit (RH #1133924)
 
