@@ -1,0 +1,99 @@
+From 72a8e44e0f13f10f941a6a5333744fcd9e47d5ae Mon Sep 17 00:00:00 2001
+From: David King <amigadave@amigadave.com>
+Date: Fri, 28 Nov 2014 14:59:31 +0000
+Subject: [PATCH] build: Fix symlink target for D-Bus service files
+
+Do not link to a target in DESTDIR, but instead link to a path in the
+install root.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=740864
+---
+ src/miners/apps/Makefile.am        | 2 +-
+ src/miners/fs/Makefile.am          | 2 +-
+ src/miners/rss/Makefile.am         | 2 +-
+ src/miners/user-guides/Makefile.am | 2 +-
+ src/plugins/evolution/Makefile.am  | 2 +-
+ src/tracker-extract/Makefile.am    | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/src/miners/apps/Makefile.am b/src/miners/apps/Makefile.am
+index 9e450b7..9bff30d 100644
+--- a/src/miners/apps/Makefile.am
++++ b/src/miners/apps/Makefile.am
+@@ -33,7 +33,7 @@ INTLTOOL_SERVICE_RULE='%.service:   %.service.in   $(INTLTOOL_MERGE) $(wildcard
+ 
+ install-data-hook:
+ 	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \
+-	$(LN_S) -f "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)" \
++	$(LN_S) -f "$(datadir)/tracker/miners/$(service_DATA)" \
+ 	           "$(DESTDIR)$(servicedir)/$(service_DATA)"
+ 
+ uninstall-local:
+diff --git a/src/miners/fs/Makefile.am b/src/miners/fs/Makefile.am
+index 904f6fb..7c97498 100644
+--- a/src/miners/fs/Makefile.am
++++ b/src/miners/fs/Makefile.am
+@@ -69,7 +69,7 @@ INTLTOOL_SERVICE_RULE='%.service:   %.service.in   $(INTLTOOL_MERGE) $(wildcard
+ 
+ install-data-hook:
+ 	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \
+-	$(LN_S) -f "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)" \
++	$(LN_S) -f "$(datadir)/tracker/miners/$(service_DATA)" \
+ 	           "$(DESTDIR)$(servicedir)/$(service_DATA)"
+ 
+ uninstall-local:
+diff --git a/src/miners/rss/Makefile.am b/src/miners/rss/Makefile.am
+index 6385c0e..369fca2 100644
+--- a/src/miners/rss/Makefile.am
++++ b/src/miners/rss/Makefile.am
+@@ -33,7 +33,7 @@ INTLTOOL_SERVICE_RULE='%.service:   %.service.in   $(INTLTOOL_MERGE) $(wildcard
+ 
+ install-data-hook:
+ 	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \
+-	$(LN_S) -f "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)" \
++	$(LN_S) -f "$(datadir)/tracker/miners/$(service_DATA)" \
+ 	           "$(DESTDIR)$(servicedir)/$(service_DATA)"
+ 
+ uninstall-local:
+diff --git a/src/miners/user-guides/Makefile.am b/src/miners/user-guides/Makefile.am
+index 74aea0c..4b82562 100644
+--- a/src/miners/user-guides/Makefile.am
++++ b/src/miners/user-guides/Makefile.am
+@@ -33,7 +33,7 @@ INTLTOOL_SERVICE_RULE='%.service:   %.service.in   $(INTLTOOL_MERGE) $(wildcard
+ 
+ install-data-hook:
+ 	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \
+-	$(LN_S) -f "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)" \
++	$(LN_S) -f "$(datadir)/tracker/miners/$(service_DATA)" \
+ 	           "$(DESTDIR)$(servicedir)/$(service_DATA)"
+ 
+ uninstall-local:
+diff --git a/src/plugins/evolution/Makefile.am b/src/plugins/evolution/Makefile.am
+index 595613a..4e46e24 100644
+--- a/src/plugins/evolution/Makefile.am
++++ b/src/plugins/evolution/Makefile.am
+@@ -55,7 +55,7 @@ INTLTOOL_SERVICE_RULE='%.service:   %.service.in   $(INTLTOOL_MERGE) $(wildcard
+ 
+ install-data-hook:
+ 	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \
+-	$(LN_S) -f "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)" \
++	$(LN_S) -f "$(datadir)/tracker/miners/$(service_DATA)" \
+ 	           "$(DESTDIR)$(servicedir)/$(service_DATA)"
+ 
+ uninstall-local:
+diff --git a/src/tracker-extract/Makefile.am b/src/tracker-extract/Makefile.am
+index a04a9c0..92622bd 100644
+--- a/src/tracker-extract/Makefile.am
++++ b/src/tracker-extract/Makefile.am
+@@ -592,7 +592,7 @@ INTLTOOL_SERVICE_RULE='%.service:   %.service.in   $(INTLTOOL_MERGE) $(wildcard
+ 
+ install-data-hook:
+ 	$(MKDIR_P) "$(DESTDIR)$(datadir)/tracker/miners" && \
+-	$(LN_S) -f "$(DESTDIR)$(datadir)/tracker/miners/$(service_DATA)" \
++	$(LN_S) -f "$(datadir)/tracker/miners/$(service_DATA)" \
+ 	           "$(DESTDIR)$(servicedir)/$(service_DATA)"
+ 
+ uninstall-local:
+-- 
+2.1.0
+

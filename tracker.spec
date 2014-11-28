@@ -15,21 +15,22 @@
 %endif
 
 Name:           tracker
-Version:        1.2.4
-Release:        3%{?dist}
+Version:        1.3.0
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
-Source0:        https://download.gnome.org/sources/%{name}/1.2/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/1.3/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
-Patch1:         tracker-0.15-onlyshowin.patch
+Patch0:         0001-Only-autostart-in-GNOME-771601.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1133924
-Patch2:         0001-tracker-extract-Avoid-the-use-of-setrlimit-it-s-caus.patch
+# Avoid symlinks with targets inside the buildroot.
+# https://bugzilla.gnome.org/show_bug.cgi?id=740864
+Patch1:         0001-build-Fix-symlink-target-for-D-Bus-service-files.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -174,8 +175,8 @@ This package contains the documentation for tracker
 %prep
 %setup -q
 
-%patch1 -p1 -b .onlyshowin
-%patch2 -p1 -b .rlimits
+%patch0 -p1 -b .autostart-gnome
+%patch1 -p1 -b .symlink
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -321,6 +322,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Nov 28 2014 David King <amigadave@amigadave.com> - 1.3.0-1
+- Update to 1.3.0
+
 * Sun Nov 16 2014 Kalev Lember <kalevlember@gmail.com> - 1.2.4-3
 - Obsolete compat-tracker016 from rhughes-f20-gnome-3-12 copr
 
