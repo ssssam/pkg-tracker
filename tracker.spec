@@ -15,7 +15,7 @@
 %endif
 
 Name:           tracker
-Version:        1.3.0
+Version:        1.3.1
 Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
@@ -27,10 +27,6 @@ Source0:        https://download.gnome.org/sources/%{name}/1.3/%{name}-%{version
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
-
-# Avoid symlinks with targets inside the buildroot.
-# https://bugzilla.gnome.org/show_bug.cgi?id=740864
-Patch1:         0001-build-Fix-symlink-target-for-D-Bus-service-files.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -176,7 +172,6 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch0 -p1 -b .autostart-gnome
-%patch1 -p1 -b .symlink
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -322,6 +317,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Dec 03 2014 Kalev Lember <kalevlember@gmail.com> - 1.3.1-1
+- Update to 1.3.1
+
 * Fri Nov 28 2014 David King <amigadave@amigadave.com> - 1.3.0-1
 - Update to 1.3.0
 
