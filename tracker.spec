@@ -259,6 +259,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/girepository-1.0/TrackerControl-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-1.0.typelib
 %{_mandir}/*/tracker*.gz
+%{_sysconfdir}/bash_completion.d/tracker-prompt.sh
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %{_datadir}/glib-2.0/schemas/*
 %exclude %{_bindir}/tracker-needle
