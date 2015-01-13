@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.3.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -30,6 +30,9 @@ Patch0:         0001-Only-autostart-in-GNOME-771601.patch
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=742391
 Patch1:         0001-miners-Detect-locale-changes-only-when-the-miner-cou.patch
+
+# https://bugzilla.gnome.org/show_bug.cgi?id=735406
+Patch2:         0001-libtracker-miner-Restrict-the-amount-of-data-that-is.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -176,6 +179,7 @@ This package contains the documentation for tracker
 
 %patch0 -p1 -b .autostart-gnome
 %patch1 -p1 -b .detect-locale-changes
+%patch2 -p1 -b .restrict-logs
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -322,6 +326,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Jan 13 2015 Debarshi Ray <rishi@fedoraproject.org> - 1.3.2-3
+- Backport upstream patch to restrict the amount of data that is logged for
+  errors (GNOME #735406)
+
 * Tue Jan 06 2015 Debarshi Ray <rishi@fedoraproject.org> - 1.3.2-2
 - Backport upstream patch to fix a crash (GNOME #742391)
 
