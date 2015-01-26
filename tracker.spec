@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.3.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -33,6 +33,9 @@ Patch1:         0001-miners-Detect-locale-changes-only-when-the-miner-cou.patch
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=735406
 Patch2:         0001-libtracker-miner-Restrict-the-amount-of-data-that-is.patch
+
+# https://bugzilla.gnome.org/show_bug.cgi?id=743250
+Patch3:         tracker-1.3.2-libmediaart-2.0.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -73,7 +76,7 @@ BuildRequires:  pkgconfig(libnm-glib)
 BuildRequires:  pkgconfig(libosinfo-1.0)
 BuildRequires:  pkgconfig(libpng)
 %if 0%{?with_libmediaart}
-BuildRequires:  pkgconfig(libmediaart-1.0)
+BuildRequires:  pkgconfig(libmediaart-2.0)
 %endif
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(poppler-glib)
@@ -83,6 +86,9 @@ BuildRequires:  pkgconfig(totem-plparser)
 BuildRequires:  pkgconfig(upower-glib)
 BuildRequires:  pkgconfig(uuid)
 BuildRequires:  pkgconfig(vorbisfile)
+
+# Needed for autoreconf
+BuildRequires:  autoconf automake libtool
 
 Obsoletes: compat-tracker018 < 0.17.2-2
 Obsoletes: tracker-miner-flickr < 0.16.0
@@ -180,6 +186,9 @@ This package contains the documentation for tracker
 %patch0 -p1 -b .autostart-gnome
 %patch1 -p1 -b .detect-locale-changes
 %patch2 -p1 -b .restrict-logs
+%patch3 -p1 -b .mediaart-2.0
+
+autoreconf --force --install
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -326,6 +335,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Jan 26 2015 David King <amigadave@amigadave.com> - 1.3.2-4
+- Use libmediaart-2.0
+
 * Tue Jan 13 2015 Debarshi Ray <rishi@fedoraproject.org> - 1.3.2-3
 - Backport upstream patch to restrict the amount of data that is logged for
   errors (GNOME #735406)
