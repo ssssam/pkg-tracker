@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.3.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -335,6 +335,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Jan 26 2015 David Tardon <dtardon@redhat.com> - 1.3.2-5
+- rebuild for ICU 54.1
+
 * Mon Jan 26 2015 David King <amigadave@amigadave.com> - 1.3.2-4
 - Use libmediaart-2.0
 
