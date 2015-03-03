@@ -248,7 +248,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files -f %{name}.lang
-%doc AUTHORS COPYING NEWS README
+%license COPYING
+%doc AUTHORS NEWS README
 %{_bindir}/tracker*
 %{_libexecdir}/tracker*
 %{_datadir}/tracker/
@@ -310,7 +311,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %files docs
-%doc docs/reference/COPYING
+%license docs/reference/COPYING
 %{_datadir}/gtk-doc/html/libtracker-control/
 %{_datadir}/gtk-doc/html/libtracker-miner/
 %{_datadir}/gtk-doc/html/libtracker-sparql/
@@ -320,6 +321,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Tue Mar 03 2015 Kalev Lember <kalevlember@gmail.com> - 1.3.4-1
 - Update to 1.3.4
+- Use license macro for COPYING files
 
 * Tue Mar 03 2015 Debarshi Ray <rishi@fedoraproject.org> - 1.3.3-2
 - Backport upstream patch to fix database migration failures (GNOME #743727)
