@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.3.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -27,6 +27,8 @@ Source0:        https://download.gnome.org/sources/%{name}/1.3/%{name}-%{version
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=743727
+Patch1:         0001-data-manager-Account-for-cardinality-0-on-DB-migrati.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -172,6 +174,7 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch0 -p1 -b .autostart-gnome
+%patch1 -p1 -b .cardinality
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -318,6 +321,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Mar 03 2015 Debarshi Ray <rishi@fedoraproject.org> - 1.3.3-2
+- Backport upstream patch to fix database migration failures (GNOME #743727)
+
 * Fri Feb 06 2015 David King <amigadave@amigadave.com> - 1.3.3-1
 - Update to 1.3.3
 
