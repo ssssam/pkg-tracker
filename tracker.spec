@@ -30,8 +30,10 @@ Patch0:         0001-Only-autostart-in-GNOME-771601.patch
 # Fix checking for gif support.
 # https://bugzilla.gnome.org/show_bug.cgi?id=745582
 Patch1:         tracker-1.3.4-fix-giflib-check.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1198166
+Patch2:         tracker-1.3.4-fix-tracker-compat.patch
 
-# Required for patch1.
+# Required for patch1 and patch2.
 BuildRequires:  autoconf automake libtool
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -178,6 +180,7 @@ This package contains the documentation for tracker
 
 %patch0 -p1 -b .autostart-gnome
 %patch1 -p1 -b .giflib-check
+%patch2 -p1 -b .tracker-compat
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -332,6 +335,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Tue Mar 03 2015 David King <amigadave@amigadave.com> - 1.3.4-2
 - Fix checking for giflib
+- Fix tracker-compat script path (#1198166)
 
 * Tue Mar 03 2015 Kalev Lember <kalevlember@gmail.com> - 1.3.4-1
 - Update to 1.3.4

@@ -1,0 +1,58 @@
+From 4b5ab1ebf21df6a190d1e3d775709a53262b5c51 Mon Sep 17 00:00:00 2001
+From: David King <amigadave@amigadave.com>
+Date: Tue, 3 Mar 2015 18:22:41 +0000
+Subject: [PATCH 1/3] tracker-compat: put absolute path in shell script
+
+https://bugzilla.gnome.org/show_bug.cgi?id=743738
+---
+ src/tracker/Makefile.am       | 5 ++++-
+ src/tracker/tracker-compat    | 8 --------
+ src/tracker/tracker-compat.in | 8 ++++++++
+ 3 files changed, 12 insertions(+), 9 deletions(-)
+ delete mode 100755 src/tracker/tracker-compat
+ create mode 100755 src/tracker/tracker-compat.in
+
+diff --git a/src/tracker/Makefile.am b/src/tracker/Makefile.am
+index cb777aa..7c16dff 100644
+--- a/src/tracker/Makefile.am
++++ b/src/tracker/Makefile.am
+@@ -79,4 +79,7 @@ uninstall-hook:
+ completiondir = $(sysconfdir)/bash_completion.d
+ completion_DATA = tracker-prompt.sh
+ 
+-EXTRA_DIST = $(completion_DATA) tracker-compat
++tracker-compat: tracker-compat.in
++	$(AM_V_at)sed -e "s|@bindir[@]|${bindir}|" $< > $@
++
++EXTRA_DIST = $(completion_DATA) tracker-compat.in
+diff --git a/src/tracker/tracker-compat b/src/tracker/tracker-compat
+deleted file mode 100755
+index 4667ad6..0000000
+--- a/src/tracker/tracker-compat
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#!/bin/sh
+-
+-#export TRACKER_OLD_CMD=`echo $0 | sed 's/^[./]*//'`
+-export TRACKER_OLD_CMD=`basename $0`
+-echo "WARNING: The '$TRACKER_OLD_CMD' command is no longer available." > /dev/stderr
+-echo "WARNING: Use 'tracker <command> [<args>]' instead...\n" > /dev/stderr
+-
+-./tracker $@
+diff --git a/src/tracker/tracker-compat.in b/src/tracker/tracker-compat.in
+new file mode 100755
+index 0000000..263d3d5
+--- /dev/null
++++ b/src/tracker/tracker-compat.in
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++#export TRACKER_OLD_CMD=`echo $0 | sed 's/^[./]*//'`
++export TRACKER_OLD_CMD=`basename $0`
++echo "WARNING: The '$TRACKER_OLD_CMD' command is no longer available." > /dev/stderr
++echo "WARNING: Use 'tracker <command> [<args>]' instead...\n" > /dev/stderr
++
++@bindir@/tracker $@
+-- 
+2.3.1
+
