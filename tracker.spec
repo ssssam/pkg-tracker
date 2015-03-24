@@ -15,14 +15,14 @@
 %endif
 
 Name:           tracker
-Version:        1.3.6
+Version:        1.4.0
 Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
-Source0:        https://download.gnome.org/sources/%{name}/1.3/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/1.4/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
@@ -323,6 +323,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Mar 24 2015 Kalev Lember <kalevlember@gmail.com> - 1.4.0-1
+- Update to 1.4.0
+
 * Tue Mar 17 2015 Kalev Lember <kalevlember@gmail.com> - 1.3.6-1
 - Update to 1.3.6
 
