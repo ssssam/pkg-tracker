@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.4.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -36,6 +36,7 @@ BuildRequires:  gtk-doc
 BuildRequires:  intltool
 BuildRequires:  libjpeg-devel
 BuildRequires:  libtiff-devel
+BuildRequires:  libappstream-glib
 %if 0%{?with_thunderbird}
 BuildRequires:  thunderbird
 %endif
@@ -213,6 +214,15 @@ make V=1 %{?_smp_mflags}
 %install
 make DESTDIR=%{buildroot} INSTALL="install -p" install
 
+# Update the screenshot shown in the software center
+#
+# NOTE: It would be *awesome* if this file was pushed upstream.
+#
+# See http://people.freedesktop.org/~hughsient/appdata/#screenshots for more details.
+#
+appstream-util replace-screenshots $RPM_BUILD_ROOT%{_datadir}/appdata/tracker-needle.appdata.xml \
+  https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/tracker-needle/a.png 
+
 find %{buildroot} -type f -name "*.la" -delete
 rm -rf %{buildroot}%{_datadir}/tracker-tests
 
@@ -323,6 +333,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Mar 30 2015 Richard Hughes <rhughes@redhat.com> - 1.4.0-2
+- Use better AppData screenshots
+
 * Tue Mar 24 2015 Kalev Lember <kalevlember@gmail.com> - 1.4.0-1
 - Update to 1.4.0
 
