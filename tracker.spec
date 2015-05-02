@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.4.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -333,6 +333,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 1.4.0-3
+- Rebuilt for GCC 5 C++11 ABI change
+
 * Mon Mar 30 2015 Richard Hughes <rhughes@redhat.com> - 1.4.0-2
 - Use better AppData screenshots
 
