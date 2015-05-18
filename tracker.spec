@@ -6,12 +6,10 @@
 %global with_enca 0
 %global with_libcue 0
 %global with_thunderbird 0
-%global with_libmediaart 0
 %else
 %global with_enca 1
 %global with_libcue 1
 %global with_thunderbird 1
-%global with_libmediaart 1
 %endif
 
 Name:           tracker
@@ -67,9 +65,7 @@ BuildRequires:  pkgconfig(libnautilus-extension)
 BuildRequires:  pkgconfig(libnm-glib)
 BuildRequires:  pkgconfig(libosinfo-1.0)
 BuildRequires:  pkgconfig(libpng)
-%if 0%{?with_libmediaart}
 BuildRequires:  pkgconfig(libmediaart-2.0)
-%endif
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(poppler-glib)
 BuildRequires:  pkgconfig(sqlite3)
@@ -192,11 +188,7 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 %else
            --disable-nautilus-extension \
 %endif
-%if %{with_libmediaart}
            --enable-libmediaart \
-%else
-           --disable-libmediaart \
-%endif
 %if 0%{?with_thunderbird}
            --with-thunderbird-plugin-dir=%{_libdir}/thunderbird/extensions \
 %endif
