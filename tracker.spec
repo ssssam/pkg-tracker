@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.4.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -180,9 +180,6 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
 
 %build
-# Workaround linking problems with AC_CHECK_LIB.
-LDFLAGS_save="$LDFLAGS"
-LDFLAGS="$LDFLAGS -fPIC"
 %configure --disable-static \
            --enable-gtk-doc \
            --enable-libflac \
@@ -207,7 +204,6 @@ LDFLAGS="$LDFLAGS -fPIC"
            --disable-functional-tests
 # Disable the functional tests for now, they use python bytecodes.
 
-LDFLAGS="$LDFLAGS_save"
 make V=1 %{?_smp_mflags}
 
 
@@ -333,6 +329,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon May 18 2015 Debarshi Ray <rishi@fedoraproject.org> - 1.4.0-4
+- Remove remnants of AC_CHECK_LIB workaround
+
 * Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 1.4.0-3
 - Rebuilt for GCC 5 C++11 ABI change
 
