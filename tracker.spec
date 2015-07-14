@@ -15,14 +15,14 @@
 %endif
 
 Name:           tracker
-Version:        1.4.0
-Release:        6%{?dist}
+Version:        1.5.0
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
-Source0:        https://download.gnome.org/sources/%{name}/1.4/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/1.5/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
@@ -329,6 +329,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Jul 14 2015 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.5.0-1
+- Update to 1.5.0
+
 * Tue Jul 14 2015 Igor Gnatenko <ignatenko@src.gnome.org> - 1.4.0-6
 - Rebuild due to enabled FTS in sqlite
 - Add RSS support
