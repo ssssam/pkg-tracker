@@ -1,0 +1,38 @@
+From 69edbc76f1d964d190b23f3ffea1aa044220446c Mon Sep 17 00:00:00 2001
+From: Igor Gnatenko <ignatenko@src.gnome.org>
+Date: Tue, 14 Jul 2015 16:47:53 +0300
+Subject: [PATCH] bump libgrss to latest 0.6
+
+There are no API break since 0.5, but 0.5 doesn't work well and doesn't shipped in distros
+
+Reference: https://bugzilla.gnome.org/show_bug.cgi?id=752371
+Signed-off-by: Igor Gnatenko <ignatenko@src.gnome.org>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index d84b5ad..d1ad1bb 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -225,7 +225,7 @@ EDS_REQUIRED=2.32.0
+ CAMEL_REQUIRED=2.32.0
+ GEE_REQUIRED=0.3
+ TAGLIB_REQUIRED=1.6
+-LIBGRSS_REQUIRED=0.5
++LIBGRSS_REQUIRED=0.6
+ REST_REQUIRED=0.6
+ NETWORK_MANAGER_REQUIRED=0.8
+ GSTREAMER_REQUIRED=0.10.31
+@@ -499,7 +499,7 @@ fi
+ 
+ # Check requirements for tracker-miner-rss
+ TRACKER_MINER_RSS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
+-                            libgrss-0.5  >= $LIBGRSS_REQUIRED"
++                            libgrss-0.6  >= $LIBGRSS_REQUIRED"
+ 
+ PKG_CHECK_MODULES(TRACKER_MINER_RSS, [$TRACKER_MINER_RSS_REQUIRED],
+                   [have_tracker_miner_rss=yes],
+-- 
+2.4.5
+

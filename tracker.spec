@@ -6,10 +6,12 @@
 %global with_enca 0
 %global with_libcue 0
 %global with_thunderbird 0
+%global with_rss 0
 %else
 %global with_enca 1
 %global with_libcue 1
 %global with_thunderbird 1
+%global with_rss 1
 %endif
 
 Name:           tracker
@@ -25,6 +27,8 @@ Source0:        https://download.gnome.org/sources/%{name}/1.4/%{name}-%{version
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=752371
+Patch1:         0001-bump-libgrss-to-latest-0.6.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -74,6 +78,9 @@ BuildRequires:  pkgconfig(totem-plparser)
 BuildRequires:  pkgconfig(upower-glib)
 BuildRequires:  pkgconfig(uuid)
 BuildRequires:  pkgconfig(vorbisfile)
+%if 0%{?with_rss}
+BuildRequires:  pkgconfig(libgrss-0.6)
+%endif
 
 Obsoletes: compat-tracker018 < 0.17.2-2
 Obsoletes: tracker-miner-flickr < 0.16.0
@@ -169,6 +176,7 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch0 -p1 -b .autostart-gnome
+%patch1 -p1 -b .rss
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -323,6 +331,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Tue Jul 14 2015 Igor Gnatenko <ignatenko@src.gnome.org> - 1.4.0-6
 - Rebuild due to enabled FTS in sqlite
+- Add RSS support
 
 * Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.4.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
