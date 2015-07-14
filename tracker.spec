@@ -27,8 +27,6 @@ Source0:        https://download.gnome.org/sources/%{name}/1.5/%{name}-%{version
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=752371
-Patch1:         0001-bump-libgrss-to-latest-0.6.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -176,12 +174,12 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch0 -p1 -b .autostart-gnome
-%patch1 -p1 -b .rss
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
+sed -i -e 's|libgrss-0.5|libgrss-0.6|' configure
 
 %build
 %configure --disable-static \
