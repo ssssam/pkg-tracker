@@ -15,8 +15,8 @@
 %endif
 
 Name:           tracker
-Version:        1.5.0
-Release:        2%{?dist}
+Version:        1.5.1
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -327,6 +327,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Jul 22 2015 Igor Gnatenko <ignatenko@src.gnome.org> - 1.5.1-1
+- 1.5.1
+
 * Tue Jul 21 2015 David King <amigadave@amigadave.com> - 1.5.0-2
 - Bump for new libgrss
 
