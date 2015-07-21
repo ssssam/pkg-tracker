@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -77,7 +77,7 @@ BuildRequires:  pkgconfig(upower-glib)
 BuildRequires:  pkgconfig(uuid)
 BuildRequires:  pkgconfig(vorbisfile)
 %if 0%{?with_rss}
-BuildRequires:  pkgconfig(libgrss-0.6)
+BuildRequires:  pkgconfig(libgrss)
 %endif
 
 Obsoletes: compat-tracker018 < 0.17.2-2
@@ -179,7 +179,7 @@ This package contains the documentation for tracker
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
-sed -i -e 's|libgrss-0.5|libgrss-0.6|' configure
+sed -i -e 's|libgrss-0.5|libgrss|' configure
 
 %build
 %configure --disable-static \
@@ -327,6 +327,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Jul 21 2015 David King <amigadave@amigadave.com> - 1.5.0-2
+- Bump for new libgrss
+
 * Tue Jul 14 2015 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.5.0-1
 - Update to 1.5.0
 
