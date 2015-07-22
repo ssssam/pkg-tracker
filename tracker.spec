@@ -28,6 +28,9 @@ Source0:        https://download.gnome.org/sources/%{name}/1.5/%{name}-%{version
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
 
+# Fix broken printf format string.
+Patch1:         tracker-1.5.1-fix-printf-string-format.patch
+
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
 BuildRequires:  giflib-devel
@@ -174,6 +177,7 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch0 -p1 -b .autostart-gnome
+%patch1 -p1 -b .tracker-printf
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -325,7 +329,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
-* Wed Jul 22 2015 Igor Gnatenko <ignatenko@src.gnome.org> - 1.5.1-1
+* Wed Jul 22 2015 David King <amigadave@amigadave.com> - 1.5.1-1
 - Update to 1.5.1
 
 * Tue Jul 21 2015 David King <amigadave@amigadave.com> - 1.5.0-2
