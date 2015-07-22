@@ -179,8 +179,6 @@ This package contains the documentation for tracker
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
 sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
 
-sed -i -e 's|libgrss-0.5|libgrss|' configure
-
 %build
 %configure --disable-static \
            --enable-gtk-doc \
@@ -328,7 +326,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
 * Wed Jul 22 2015 Igor Gnatenko <ignatenko@src.gnome.org> - 1.5.1-1
-- 1.5.1
+- Update to 1.5.1
 
 * Tue Jul 21 2015 David King <amigadave@amigadave.com> - 1.5.0-2
 - Bump for new libgrss
