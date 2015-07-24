@@ -1,29 +1,27 @@
-From ae76cb8c7aa3f4aff89f78bc124eeab06a58e083 Mon Sep 17 00:00:00 2001
+From 68990f25f322e29b041bb47c20348021f8e5787f Mon Sep 17 00:00:00 2001
 From: David King <amigadave@amigadave.com>
 Date: Wed, 22 Jul 2015 13:31:55 +0100
-Subject: [PATCH] libtracker-data: Fix printf string format
+Subject: [PATCH 1/4] libtracker-data: Fix printf string format
 
 Introduced by commit 81135ae19c727df716d0c0945869462e75a53497.
 
 https://bugzilla.gnome.org/show_bug.cgi?id=752717
 ---
- src/libtracker-data/tracker-db-interface-sqlite.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ src/libtracker-data/tracker-db-interface-sqlite.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/src/libtracker-data/tracker-db-interface-sqlite.c b/src/libtracker-data/tracker-db-interface-sqlite.c
-index 7ea87c8..17ea88d 100644
+index 7ea87c8..a1d4d83 100644
 --- a/src/libtracker-data/tracker-db-interface-sqlite.c
 +++ b/src/libtracker-data/tracker-db-interface-sqlite.c
-@@ -1304,7 +1304,8 @@ tracker_db_interface_sqlite_fts_delete_id (TrackerDBInterface *db_interface,
+@@ -1304,6 +1304,7 @@ tracker_db_interface_sqlite_fts_delete_id (TrackerDBInterface *db_interface,
  	stmt = tracker_db_interface_create_statement (db_interface,
  	                                              TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE,
  	                                              &error,
--	                                              db_interface->fts_delete_str);
 +	                                              "%s",
-+                                                      db_interface->fts_delete_str);
+ 	                                              db_interface->fts_delete_str);
  	if (!stmt || error) {
  		if (error) {
- 			g_warning ("Could not create FTS delete statement: %s",
 -- 
 2.4.6
 

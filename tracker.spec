@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.5.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -28,8 +28,11 @@ Source0:        https://download.gnome.org/sources/%{name}/1.5/%{name}-%{version
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
 
-# Fix broken printf format string.
-Patch1:         tracker-1.5.1-fix-printf-string-format.patch
+# Hotfixes from master
+Patch1:         0001-libtracker-data-Fix-printf-string-format.patch
+Patch2:         0002-libtracker-miner-Fallback-to-basename-checks-on-hidd.patch
+Patch3:         0003-rss-Set-website-url-as-a-nfo-WebSite.patch
+Patch4:         0004-rss-fix-typo.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -177,7 +180,10 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch0 -p1 -b .autostart-gnome
-%patch1 -p1 -b .tracker-printf
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -329,6 +335,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Jul 24 2015 Igor Gnatenko <ignatenko@src.gnome.org> - 1.5.1-2
+- Backport rss fixes from upstream
+
 * Wed Jul 22 2015 David King <amigadave@amigadave.com> - 1.5.1-1
 - Update to 1.5.1
 
