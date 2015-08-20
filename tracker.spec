@@ -270,7 +270,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
 %dir %{_datadir}/bash-completion
 %dir %{_datadir}/bash-completion/completions
-%{_datadir}/bash-completion/completions/tracker/
+%{_datadir}/bash-completion/completions/tracker
 %{_datadir}/glib-2.0/schemas/*
 %exclude %{_bindir}/tracker-needle
 %exclude %{_bindir}/tracker-preferences
