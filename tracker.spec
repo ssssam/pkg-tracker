@@ -46,6 +46,7 @@ BuildRequires:  pkgconfig(enca)
 %endif
 BuildRequires:  pkgconfig(exempi-2.0)
 BuildRequires:  pkgconfig(flac)
+BuildRequires:  pkgconfig(gee-0.8)
 BuildRequires:  pkgconfig(gobject-introspection-1.0)
 BuildRequires:  pkgconfig(gstreamer-1.0)
 BuildRequires:  pkgconfig(gstreamer-pbutils-1.0)
@@ -57,17 +58,19 @@ BuildRequires:  pkgconfig(icu-uc)
 BuildRequires:  pkgconfig(libcue)
 %endif
 BuildRequires:  pkgconfig(libexif)
-BuildRequires:  pkgconfig(gee-0.8)
+%if 0%{?with_rss}
+BuildRequires:  pkgconfig(libgrss)
+%endif
 BuildRequires:  pkgconfig(libgsf-1)
 BuildRequires:  pkgconfig(libgxps)
 BuildRequires:  pkgconfig(libiptcdata)
+BuildRequires:  pkgconfig(libmediaart-2.0)
 %if 0%{?with_nautilus}
 BuildRequires:  pkgconfig(libnautilus-extension)
 %endif
 BuildRequires:  pkgconfig(libnm-glib)
 BuildRequires:  pkgconfig(libosinfo-1.0)
 BuildRequires:  pkgconfig(libpng)
-BuildRequires:  pkgconfig(libmediaart-2.0)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(poppler-glib)
 BuildRequires:  pkgconfig(sqlite3)
@@ -76,9 +79,6 @@ BuildRequires:  pkgconfig(totem-plparser)
 BuildRequires:  pkgconfig(upower-glib)
 BuildRequires:  pkgconfig(uuid)
 BuildRequires:  pkgconfig(vorbisfile)
-%if 0%{?with_rss}
-BuildRequires:  pkgconfig(libgrss)
-%endif
 
 Obsoletes: compat-tracker018 < 0.17.2-2
 Obsoletes: tracker-miner-flickr < 0.16.0
