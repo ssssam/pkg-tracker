@@ -205,7 +205,7 @@ make V=1 %{?_smp_mflags}
 
 
 %install
-make DESTDIR=%{buildroot} INSTALL="install -p" install
+%make_install
 
 # Update the screenshot shown in the software center
 #
@@ -328,6 +328,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Thu Aug 20 2015 Kalev Lember <klember@redhat.com> - 1.5.2-1
 - Update to 1.5.2
+- Use make_install macro
 
 * Fri Jul 24 2015 Igor Gnatenko <ignatenko@src.gnome.org> - 1.5.1-2
 - Backport rss fixes from upstream
