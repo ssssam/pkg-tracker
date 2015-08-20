@@ -267,8 +267,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/girepository-1.0/TrackerControl-1.0.typelib
 %{_libdir}/girepository-1.0/TrackerMiner-1.0.typelib
 %{_mandir}/*/tracker*.gz
-%{_datadir}/bash-completion/completions/%{name}
 %config(noreplace) %{_sysconfdir}/xdg/autostart/tracker*.desktop
+%dir %{_datadir}/bash-completion
+%dir %{_datadir}/bash-completion/completions
+%{_datadir}/bash-completion/completions/tracker/
 %{_datadir}/glib-2.0/schemas/*
 %exclude %{_bindir}/tracker-needle
 %exclude %{_bindir}/tracker-preferences
@@ -329,6 +331,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * Thu Aug 20 2015 Kalev Lember <klember@redhat.com> - 1.5.2-1
 - Update to 1.5.2
 - Use make_install macro
+- Co-own bash-completion directories
 
 * Fri Jul 24 2015 Igor Gnatenko <ignatenko@src.gnome.org> - 1.5.1-2
 - Backport rss fixes from upstream
