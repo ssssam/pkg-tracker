@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.5.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -332,6 +332,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Sep 03 2015 Jonathan Wakely <jwakely@redhat.com> - 1.5.2-3
+- Rebuilt for Boost 1.59
+
 * Tue Aug 25 2015 David King <amigadave@amigadave.com> - 1.5.2-2
 - Add patch to fix FS miner crash (#1246896)
 
