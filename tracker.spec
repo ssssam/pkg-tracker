@@ -15,21 +15,18 @@
 %endif
 
 Name:           tracker
-Version:        1.5.2
-Release:        3%{?dist}
+Version:        1.6.0
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
-Source0:        https://download.gnome.org/sources/%{name}/1.5/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/1.6/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1246896
-Patch1:         tracker-1.5.2-fix-fs-miner-crash.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -177,7 +174,6 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch0 -p1 -b .autostart-gnome
-%patch1 -p1 -b .miner-crash
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -332,6 +328,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Sep 22 2015 Kalev Lember <klember@redhat.com> - 1.6.0-1
+- Update to 1.6.0
+
 * Thu Sep 03 2015 Jonathan Wakely <jwakely@redhat.com> - 1.5.2-3
 - Rebuilt for Boost 1.59
 
