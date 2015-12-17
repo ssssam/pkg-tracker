@@ -15,7 +15,7 @@
 %endif
 
 Name:           tracker
-Version:        1.7.0
+Version:        1.7.1
 Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
@@ -328,6 +328,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Dec 17 2015 Kalev Lember <klember@redhat.com> - 1.7.1-1
+- Update to 1.7.1
+
 * Thu Nov 26 2015 Kalev Lember <klember@redhat.com> - 1.7.0-1
 - Update to 1.7.0
 
