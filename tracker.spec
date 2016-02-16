@@ -15,8 +15,8 @@
 %endif
 
 Name:           tracker
-Version:        1.7.2
-Release:        2%{?dist}
+Version:        1.7.3
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -328,6 +328,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Feb 16 2016 David King <amigadave@amigadave.com> - 1.7.3-1
+- Update to 1.7.3
+
 * Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
