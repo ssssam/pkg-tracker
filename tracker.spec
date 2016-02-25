@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.7.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -328,6 +328,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Feb 24 2016 Adam Williamson <awilliam@redhat.com> - 1.7.3-2
+- rebuilt for new libcue
+
 * Tue Feb 16 2016 David King <amigadave@amigadave.com> - 1.7.3-1
 - Update to 1.7.3
 
