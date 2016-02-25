@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.7.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -27,6 +27,8 @@ Source0:        https://download.gnome.org/sources/%{name}/1.7/%{name}-%{version
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
+# See https://bugzilla.gnome.org/762512
+Patch1:		tracker-libcue-201-fix.diff
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firefox
@@ -174,6 +176,7 @@ This package contains the documentation for tracker
 %setup -q
 
 %patch0 -p1 -b .autostart-gnome
+%patch1 -p1 -b .libcue201
 
 ## nuke unwanted rpaths, see also
 ## https://fedoraproject.org/wiki/Packaging/Guidelines#Beware_of_Rpath
@@ -328,6 +331,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Feb 25 2016 Peter Lemenkov <lemenkov@gmail.com> - 1.7.3-3
+- Fixed FTBFS with new libcue
+
 * Wed Feb 24 2016 Adam Williamson <awilliam@redhat.com> - 1.7.3-2
 - rebuilt for new libcue
 
