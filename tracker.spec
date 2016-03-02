@@ -15,8 +15,8 @@
 %endif
 
 Name:           tracker
-Version:        1.7.3
-Release:        3%{?dist}
+Version:        1.7.4
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -331,6 +331,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Mar 02 2016 David King <amigadave@amigadave.com> - 1.7.4-1
+- Update to 1.7.4
+
 * Thu Feb 25 2016 Peter Lemenkov <lemenkov@gmail.com> - 1.7.3-3
 - Fixed FTBFS with new libcue
 
