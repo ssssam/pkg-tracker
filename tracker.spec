@@ -15,7 +15,7 @@
 %endif
 
 Name:           tracker
-Version:        1.7.4
+Version:        1.7.5
 Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
@@ -331,6 +331,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Mar 15 2016 David King <amigadave@amigadave.com> - 1.7.5-1
+- Update to 1.7.5
+
 * Wed Mar 02 2016 David King <amigadave@amigadave.com> - 1.7.4-1
 - Update to 1.7.4
 
