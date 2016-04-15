@@ -16,7 +16,7 @@
 
 Name:           tracker
 Version:        1.8.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
@@ -328,6 +328,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Apr 15 2016 David Tardon <dtardon@redhat.com> - 1.8.0-2
+- rebuild for ICU 57.1
+
 * Mon Mar 21 2016 David King <amigadave@amigadave.com> - 1.8.0-1
 - Update to 1.8.0
 
