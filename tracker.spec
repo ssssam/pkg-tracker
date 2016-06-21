@@ -15,14 +15,14 @@
 %endif
 
 Name:           tracker
-Version:        1.8.0
-Release:        3%{?dist}
+Version:        1.9.0
+Release:        1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
-Source0:        https://download.gnome.org/sources/%{name}/1.8/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/1.9/%{name}-%{version}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
@@ -37,6 +37,7 @@ BuildRequires:  intltool
 BuildRequires:  libjpeg-devel
 BuildRequires:  libtiff-devel
 BuildRequires:  libappstream-glib
+BuildRequires:  systemd
 %if 0%{?with_thunderbird}
 BuildRequires:  thunderbird
 %endif
@@ -272,6 +273,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_datadir}/bash-completion/completions
 %{_datadir}/bash-completion/completions/tracker
 %{_datadir}/glib-2.0/schemas/*
+%{_userunitdir}/tracker-*.service
 %exclude %{_bindir}/tracker-needle
 %exclude %{_bindir}/tracker-preferences
 %exclude %{_datadir}/tracker/tracker-needle.ui
@@ -328,6 +330,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Jun 21 2016 David King <amigadave@amigadave.com> - 1.9.0-1
+- Update to 1.9.0
+
 * Tue Jun  7 2016 Peter Lemenkov <lemenkov@gmail.com> - 1.8.0-3
 - rebuilt for new libcue
 
