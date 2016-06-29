@@ -22,7 +22,7 @@ Summary:        Desktop-neutral search tool and indexer
 Group:          Applications/System
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
-Source0:        https://download.gnome.org/sources/%{name}/1.9/%{name}-%{version}.tar.xz
+Source0:        %{name}-%{version}-%{dist}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
