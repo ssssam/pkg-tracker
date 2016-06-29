@@ -16,20 +16,19 @@
 
 Name:           tracker
 Version:        1.9.0
-Release:        1%{?dist}
+Release:        resource0.1%{?dist}
 Summary:        Desktop-neutral search tool and indexer
 
 Group:          Applications/System
 License:        GPLv2+
 URL:            https://wiki.gnome.org/Projects/Tracker
-Source0:        %{name}-%{version}-%{dist}.tar.xz
+Source0:        %{name}-%{version}-%{release}.tar.xz
 
 # only autostart in Gnome, see also
 # https://bugzilla.redhat.com/show_bug.cgi?id=771601
 Patch0:         0001-Only-autostart-in-GNOME-771601.patch
 
 BuildRequires:  desktop-file-utils
-BuildRequires:  firefox
 BuildRequires:  giflib-devel
 BuildRequires:  graphviz
 BuildRequires:  gtk-doc
@@ -132,15 +131,6 @@ Obsoletes:      tracker-ui-tools < 1.1.4
 %description preferences
 Graphical frontend to tracker configuration.
 
-%package firefox-plugin
-Summary:        A simple bookmark exporter for Tracker
-Group:          User Interface/Desktops
-Requires:       %{name}%{?_isa} = %{version}-%{release}
-
-%description firefox-plugin
-This Firefox addon exports your bookmarks to Tracker, so that you can search
-for them for example using tracker-needle.
-
 %if 0%{?with_nautilus}
 %package nautilus-plugin
 Summary:        Tracker's nautilus plugin
@@ -187,7 +177,6 @@ sed -i -e 's|"/lib /usr/lib|"/%{_lib} %{_libdir}|' configure
            --enable-libflac \
            --enable-libvorbis \
            --enable-miner-evolution=no \
-           --with-firefox-plugin-dir=%{_libdir}/firefox/extensions \
            --disable-mp3 \
 %if %{with_nautilus}
            --enable-nautilus-extension \
@@ -304,10 +293,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/*/*/apps/tracker.*
 %{_datadir}/tracker/tracker-preferences.ui
 %{_mandir}/man1/tracker-preferences.1*
-
-%files firefox-plugin
-%{_datadir}/xul-ext/trackerfox/
-%{_libdir}/firefox/extensions/trackerfox@bustany.org
 
 %if 0%{?with_nautilus}
 %files nautilus-plugin
